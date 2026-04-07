@@ -1,0 +1,19 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: Doctor One
+  practice: First Practice
+  phone_number: 123-456-7890
+  email: test@test.com
+  fax_number: 098-765-4321
+  address: 123 Main St, Anytown, USA
+  specialty: Cardiology
+
+two:
+  name: Doctor Two
+  practice: Second Practice
+  phone_number: 234-567-8901
+  email: test2@test.test
+  fax_number: 987-654-3210
+  address: 456 Elm St, Othertown, USA
+  specialty: Dermatology
