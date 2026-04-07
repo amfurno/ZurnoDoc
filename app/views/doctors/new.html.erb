@@ -1,0 +1,33 @@
+<%# app/views/doctors/new.html.erb %>
+<h1>Add New Doctor</h1>
+
+<%= form_with model: @doctor, local: true do |form| %>
+  <div>
+    <%= form.label :name %>
+    <%= form.text_field :name %>
+  </div>
+  <div>
+    <%= form.label :practice %>
+    <%= form.text_field :practice %>
+  </div>
+  <div>
+    <%= form.label :speciality %>
+    <%= form.text_field :speciality %>
+  </div>
+  <div>
+    <%= form.label :email %>
+    <%= form.email_field :email %>
+  </div>
+  <div>
+    <%= form.label :phone %>
+    <%= form.text_field :phone %>
+  </div>
+  <div>
+    <%= form.label :fax_number %>
+    <%= form.text_field :fax_number %>
+  </div>
+
+
+
+  <%= form.submit "Create Doctor" %>
+<% end %>
