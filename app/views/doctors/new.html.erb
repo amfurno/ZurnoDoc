@@ -1,7 +1,7 @@
 <%# app/views/doctors/new.html.erb %>
 <h1>Add New Doctor</h1>
 
-<%= form_with model: @doctor, local: true do |form| %>
+<%= form_with model: @doctor do |form| %>
   <div>
     <%= form.label :name %>
     <%= form.text_field :name %>
@@ -26,8 +26,13 @@
     <%= form.label :fax_number %>
     <%= form.text_field :fax_number %>
   </div>
+  <div>
+    <%= form.label :address %>
+    <%= form.text_field :address %>
+  </div>
 
 
 
   <%= form.submit "Create Doctor" %>
 <% end %>
+<%= link_to "Cancel", doctors_path %>
