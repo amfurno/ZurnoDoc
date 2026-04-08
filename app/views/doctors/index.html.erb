@@ -1,13 +1,16 @@
 <%# app/views/doctors/index.html.erb %>
-<h1>Doctors</h1>
-<%= link_to "Add New Doctor", new_doctor_path %>
-<div id="doctors-list">
-  <% @doctors.each do |doctor| %>
-    <div class="doctor-card">
-      <h2><%= doctor.name %></h2>
-      <a href="/doctors/<%= doctor.id %>">View Details</a>
-      <p><strong>Speciality:</strong> <%= doctor.speciality %></p>
-      <p><strong>Email:</strong> <%= doctor.email %></p>
-    </div>
-  <% end %>
+<div class="content">
+  <h1 class='block, title'>Doctors</h1>
+  <div class='box' id="doctors-list">
+    <% @doctors.each do |doctor| %>
+      <div class='box' class="doctor-card">
+        <h2><%= doctor.name %></h2>
+        <!-- <a href="/doctors/<%= doctor.id %>" class='button'>View Details</a> -->
+        <p><strong>Speciality:</strong> <%= doctor.speciality %></p>
+        <p><strong>Email:</strong> <%= doctor.email %></p>
+        <%= link_to "View Details", doctor, class: "button is-info" %>
+      </div>
+    <% end %>
+  </div>
+  <%= link_to "Add New Doctor", new_doctor_path, class: "button is-primary" %>
 </div>
