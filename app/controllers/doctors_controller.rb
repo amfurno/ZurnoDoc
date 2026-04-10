@@ -38,5 +38,4 @@ class DoctorsController < ApplicationController
   def doctor_params
     params.expect(doctor: [ :name, :practice, :speciality, :email, :phone_number, :fax_number, :address ])
   end
-
 end
