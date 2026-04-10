@@ -2,36 +2,34 @@
 <h1>Add New Doctor</h1>
 
 <%= form_with model: @doctor do |form| %>
-  <div>
-    <%= form.label :name %>
-    <%= form.text_field :name %>
+  <div class="field">
+    <%= form.label :name, class: 'label' %>
+    <%= form.text_field :name, class: 'input' %>
   </div>
-  <div>
-    <%= form.label :practice %>
-    <%= form.text_field :practice %>
+  <div class="field">
+    <%= form.label :practice, class: 'label' %>
+    <%= form.text_field :practice, class: 'input' %>
   </div>
-  <div>
-    <%= form.label :speciality %>
-    <%= form.text_field :speciality %>
+  <div class="field">
+    <%= form.label :speciality, class: 'label' %>
+    <%= form.text_field :speciality, class: 'input' %>
   </div>
-  <div>
-    <%= form.label :email %>
-    <%= form.email_field :email %>
+  <div class="field">
+    <%= form.label :email, class: 'label' %>
+    <%= form.email_field :email, class: 'input' %>
   </div>
-  <div>
-    <%= form.label :phone %>
-    <%= form.text_field :phone %>
+  <div class="field">
+    <%= form.label :phone, class: 'label' %>
+    <%= form.phone_field :phone, class: 'input' %>
   </div>
-  <div>
-    <%= form.label :fax_number %>
-    <%= form.text_field :fax_number %>
+  <div class="field">
+    <%= form.label :fax_number, class: 'label' %>
+    <%= form.phone_field :fax_number, class: 'input' %>
   </div>
-  <div>
-    <%= form.label :address %>
-    <%= form.text_field :address %>
+  <div class="field">
+    <%= form.label :address, class: 'label' %>
+    <%= form.text_field :address, class: 'input' %>
   </div>
-
-
 
   <%= form.submit "Create Doctor" %>
 <% end %>

@@ -68,3 +68,5 @@ group :test do
 end
 
 gem "pg", "~> 1.6"
+
+gem "cssbundling-rails", "~> 1.4"
