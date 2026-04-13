@@ -40,6 +40,7 @@ gem "image_processing", "~> 1.2"
 
 group :development, :test do
   gem "rubocop", "~> 1.86"
+  gem "rubocop-rspec", "~> 3.9"
 
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
@@ -63,6 +64,9 @@ group :test do
   # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
   gem "capybara"
   gem "selenium-webdriver"
+  gem "rspec-rails", "~> 7.1"
+  gem "simplecov", require: false
+  gem "rails-controller-testing"
 end
 
 gem "pg", "~> 1.6"
