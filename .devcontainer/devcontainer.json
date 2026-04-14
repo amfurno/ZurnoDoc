@@ -23,6 +23,10 @@
 	// This can be used to network with other containers or the host.
 	// "forwardPorts": [3000, 5432],
 
+	// Pre-create OpenCode auth and config files on the host before the container starts.
+	// This prevents Docker from creating them as directories instead of files.
+	"initializeCommand": "mkdir -p ~/.local/share/opencode ~/.config/opencode && touch ~/.local/share/opencode/auth.json ~/.config/opencode/opencode.json",
+
 	// Use 'postCreateCommand' to run commands after the container is created.
 	"postCreateCommand": "cd zurnoDoc && bundle install && rails db:migrate",
 	"customizations": {
