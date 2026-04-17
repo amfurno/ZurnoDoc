@@ -9,11 +9,9 @@ services:
 
     volumes:
       - ../..:/workspaces:cached
-      # Persist OpenCode auth token and global config across container rebuilds.
-      # The initializeCommand in devcontainer.json pre-creates these files on the host
-      # so Docker bind-mounts them as files (not directories).
-      - ~/.local/share/opencode/auth.json:/home/vscode/.local/share/opencode/auth.json
-      - ~/.config/opencode/opencode.json:/home/vscode/.config/opencode/opencode.json
+      # Persist OpenCode data across rebuilds without host-shell path differences.
+      - opencode-share:/home/vscode/.local/share/opencode
+      - opencode-config:/home/vscode/.config/opencode
 
     # Overrides default command so things don't shut down after the process ends.
     command: sleep infinity
@@ -78,6 +76,10 @@ volumes:
   postgres-data:
     # Named volume ensures data persists across container restarts
     # Located at /var/lib/postgresql/data inside the container
+  opencode-share:
+    # Persist OpenCode auth/log/db data independent of host OS path semantics
+  opencode-config:
+    # Persist OpenCode config independent of host OS path semantics
 
 # Custom bridge network for service communication  
 # Replaces the problematic network_mode: service:db approach

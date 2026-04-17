@@ -23,18 +23,12 @@
 	// This can be used to network with other containers or the host.
 	// "forwardPorts": [3000, 5432],
 
-	// Pre-create OpenCode auth and config files on the host before the container starts.
-	// This prevents Docker from creating them as directories instead of files.
-	// Object form needed: initializeCommand runs on the host. On Windows cmd.exe doesn't
-	// understand mkdir -p / touch / ~, so we invoke wsl (available when Docker uses WSL backend).
-	"initializeCommand": {
-		"linux": "mkdir -p ~/.local/share/opencode ~/.config/opencode && touch ~/.local/share/opencode/auth.json ~/.config/opencode/opencode.json",
-		"osx": "mkdir -p ~/.local/share/opencode ~/.config/opencode && touch ~/.local/share/opencode/auth.json ~/.config/opencode/opencode.json",
-		"windows": "wsl mkdir -p ~/.local/share/opencode ~/.config/opencode && wsl touch ~/.local/share/opencode/auth.json ~/.config/opencode/opencode.json"
-	},
+	// Fix ownership of ~/.local (Docker named-volume mounts create parent dirs as root).
+	// onCreateCommand runs before extensions/tools start, preventing EACCES errors.
+	"onCreateCommand": "sudo mkdir -p /home/vscode/.local/state /home/vscode/.local/share/opencode /home/vscode/.config/opencode && sudo chown -R vscode:vscode /home/vscode/.local /home/vscode/.config/opencode",
 
 	// Use 'postCreateCommand' to run commands after the container is created.
-	"postCreateCommand": "cd zurnoDoc && bundle install && rails db:migrate",
+	"postCreateCommand": "bundle install && rails db:migrate",
 	"customizations": {
 		"vscode": {
 			"extensions": [
