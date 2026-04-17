@@ -30,7 +30,7 @@ RSpec.describe DoctorsController, type: :controller do
 
     it 'redirects to sign-in when not authenticated' do
       get :index
-      expect(response).to redirect_to(new_session_path)
+      expect(response).to redirect_to(login_path)
     end
   end
 

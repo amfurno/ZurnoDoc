@@ -23,7 +23,7 @@ RSpec.describe SessionsController, type: :controller do
     context 'with invalid credentials' do
       it 'redirects back to sign-in with an alert' do
         post :create, params: { email_address: 'user@example.com', password: 'wrongpassword' }
-        expect(response).to redirect_to(new_session_path)
+        expect(response).to redirect_to(login_path)
         expect(flash[:alert]).to be_present
       end
     end
@@ -42,7 +42,7 @@ RSpec.describe SessionsController, type: :controller do
 
     it 'destroys the current session and redirects to sign-in' do
       delete :destroy
-      expect(response).to redirect_to(new_session_path)
+      expect(response).to redirect_to(login_path)
     end
 
     it 'removes the session record' do

@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   resource :session
+  get "login" => "sessions#new", as: :login
   resources :passwords, param: :token
   resources :users, only: %i[new create]
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
