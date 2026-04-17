@@ -1,0 +1,52 @@
+<% content_for :title, "Sign Up" %>
+
+<section class="section">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-5">
+        <h1 class="title">Create an Account</h1>
+
+        <%= form_with model: @user, url: users_path do |form| %>
+          <% if @user.errors.any? %>
+            <div class="notification is-danger">
+              <ul>
+                <% @user.errors.full_messages.each do |msg| %>
+                  <li><%= msg %></li>
+                <% end %>
+              </ul>
+            </div>
+          <% end %>
+
+          <div class="field">
+            <%= form.label :email_address, "Email Address", class: "label" %>
+            <div class="control">
+              <%= form.email_field :email_address, class: "input", autofocus: true, autocomplete: "email" %>
+            </div>
+          </div>
+
+          <div class="field">
+            <%= form.label :password, class: "label" %>
+            <div class="control">
+              <%= form.password_field :password, class: "input", autocomplete: "new-password" %>
+            </div>
+          </div>
+
+          <div class="field">
+            <%= form.label :password_confirmation, "Confirm Password", class: "label" %>
+            <div class="control">
+              <%= form.password_field :password_confirmation, class: "input", autocomplete: "new-password" %>
+            </div>
+          </div>
+
+          <div class="field">
+            <%= form.submit "Create Account", class: "button is-primary" %>
+          </div>
+        <% end %>
+
+        <p class="mt-4">
+          Already have an account? <%= link_to "Sign in", new_session_path %>
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
