@@ -1,3 +1,4 @@
 {
-    "ruby.rubocop.configFilePath": "/workspaces/ruby-rails-postgres/zurnoDoc/.rubocop.yml"
+    "ruby.rubocop.configFilePath": "/workspaces/zurnoDoc/.rubocop.yml",
+    "ruby.rubocop.executePath": "/workspaces/ZurnoDoc/bin/"
 }
