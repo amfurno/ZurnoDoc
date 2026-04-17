@@ -32,6 +32,7 @@ Two processes run: `web` (`bin/rails server`) and `css` (`yarn build:css --watch
 
 - RSpec only — no Minitest. Run from `zurnoDoc/`:
   ```sh
+  bin/rails db:test:prepare                #only once
   bundle exec rspec                        # full suite
   bundle exec rspec spec/path/to/file_spec.rb  # focused
   ```
