@@ -1,17 +1,23 @@
-<div class="content">
-  <h1 class="title">Sign In</h1>
-  <%= tag.div(flash[:alert], style: "color:red") if flash[:alert] %>
-  <%= tag.div(flash[:notice], style: "color:green") if flash[:notice] %>
+<section class="section">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-5">
+        <h1 class="title">Sign In</h1>
+        <%= tag.div(flash[:alert], style: "color:red") if flash[:alert] %>
+        <%= tag.div(flash[:notice], style: "color:green") if flash[:notice] %>
 
-  <%= form_with url: session_path, class: "form block" do |form| %>
-    <div class="block">
-      <%= form.label :email_address, class: 'label' %>
-      <%= form.email_field :email_address, required: true, autofocus: true, autocomplete: "username", placeholder: "Enter your email address", value: params[:email_address], class: "input" %><br>
-      <%= form.label :password, class: 'label' %>
-      <%= form.password_field :password, required: true, autocomplete: "current-password", placeholder: "Enter your password", maxlength: 72, class: "input" %><br>
-    </div>
-    <%= form.submit "Sign in", class: "button is-primary" %> <br>
-  <% end %>
+        <%= form_with url: session_path, class: "form block" do |form| %>
+          <div class="block">
+            <%= form.label :email_address, class: 'label' %>
+            <%= form.email_field :email_address, required: true, autofocus: true, autocomplete: "username", placeholder: "Enter your email address", value: params[:email_address], class: "input" %><br>
+            <%= form.label :password, class: 'label' %>
+            <%= form.password_field :password, required: true, autocomplete: "current-password", placeholder: "Enter your password", maxlength: 72, class: "input" %><br>
+          </div>
+          <%= form.submit "Sign in", class: "button is-primary" %> <br>
+        <% end %>
 
   <!--- <%= link_to "Forgot password?", new_password_path, class: "button is-danger" %> --->
-</div>
+      </div>
+    </div>
+  </div>
+</section>
