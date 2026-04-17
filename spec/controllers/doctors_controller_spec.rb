@@ -19,6 +19,21 @@ RSpec.describe DoctorsController, type: :controller do
 
   let(:doctor) { Doctor.create! valid_attributes }
 
+  # Stub authentication for all examples in this group so that
+  # DoctorsController tests are not blocked by the auth before_action.
+  before do
+    allow(controller).to receive(:require_authentication)
+  end
+
+  describe 'unauthenticated access' do
+    before { allow(controller).to receive(:require_authentication).and_call_original }
+
+    it 'redirects to sign-in when not authenticated' do
+      get :index
+      expect(response).to redirect_to(login_path)
+    end
+  end
+
   describe 'GET #index' do
     it 'returns a success response' do
       get :index

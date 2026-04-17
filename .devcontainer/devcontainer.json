@@ -24,7 +24,7 @@
 	// "forwardPorts": [3000, 5432],
 
 	// Use 'postCreateCommand' to run commands after the container is created.
-	"postCreateCommand": "cd zurnoDoc && bundle install && rails db:migrate",
+	"postCreateCommand": "bundle install && rails db:migrate",
 	"customizations": {
 		"vscode": {
 			"extensions": [

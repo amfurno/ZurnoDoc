@@ -24,6 +24,32 @@
   </head>
 
   <body>
+    <nav class="navbar is-light" role="navigation" aria-label="main navigation">
+      <div class="navbar-brand">
+        <span class="navbar-item has-text-weight-bold">Zurno Doc</span>
+      </div>
+      <div class="navbar-menu">
+        <div class="navbar-end">
+          <div class="navbar-item">
+            <% if authenticated? %>
+              <%= link_to "Doctors", doctors_path, class: "button is-light mr-2" %>
+              <%= button_to "Sign Out", session_path, method: :delete, class: "button is-danger is-light" %>
+            <% else %>
+              <%= link_to "Sign In", login_path, class: "button is-light mr-2" %>
+              <%= link_to "Sign Up", new_user_path, class: "button is-primary" %>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <% if flash[:notice] %>
+      <div class="notification is-success is-light mx-4 mt-4"><%= flash[:notice] %></div>
+    <% end %>
+    <% if flash[:alert] %>
+      <div class="notification is-warning is-light mx-4 mt-4"><%= flash[:alert] %></div>
+    <% end %>
+
     <%= yield %>
   </body>
 </html>
