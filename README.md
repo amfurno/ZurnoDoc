@@ -34,19 +34,9 @@ Tests run via Docker — no local Ruby or PostgreSQL installation required.
 docker compose -f docker-compose.dev.yml build
 ```
 
-**Prepare the test database** (once, or after new migrations):
+**Run tests** 
 ```sh
-docker compose -f docker-compose.dev.yml run --rm app bin/rails db:test:prepare
-```
-
-**Run the full RSpec suite:**
-```sh
-docker compose -f docker-compose.dev.yml run --rm app bundle exec rspec
-```
-
-**Run a single spec file:**
-```sh
-docker compose -f docker-compose.dev.yml run --rm app bundle exec rspec spec/path/to/file_spec.rb
+docker compose -f docker-compose.dev.yml up --build
 ```
 
 **Teardown containers and volumes:**
