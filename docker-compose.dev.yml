@@ -1,0 +1,34 @@
+services:
+  zurnodoc-test:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      RAILS_ENV: test
+    networks:
+      - test-network
+    command: >-
+      bash -c "bin/rails db:test:prepare && bundle exec rspec"
+
+  db:
+    image: postgres:16
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: zurnodoc_test
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+    networks:
+      - test-network
+
+networks:
+  test-network:
+    driver: bridge
