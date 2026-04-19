@@ -1,5 +1,5 @@
 services:
-  zurnoDoc-test:
+  zurnodoc-test:
     build:
       context: .
       dockerfile: Dockerfile.dev
@@ -8,7 +8,6 @@ services:
         condition: service_healthy
     environment:
       RAILS_ENV: test
-      DATABASE_URL: "" # prevent DATABASE_URL overriding config/database.yml in test
     networks:
       - test-network
     command: >-
@@ -20,7 +19,7 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: zurnoDoc_test
+      POSTGRES_DB: zurnodoc_test
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 5s
