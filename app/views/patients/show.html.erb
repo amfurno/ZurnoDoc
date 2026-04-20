@@ -1,0 +1,99 @@
+<%# app/views/patients/show.html.erb %>
+<div class="content" data-controller="confirm-delete" data-confirm-delete-name-value="<%= @patient.name %>">
+  <h1 class="title"><%= @patient.name %></h1>
+
+  <div class="buttons">
+    <%= link_to "Edit", edit_patient_path(@patient), class: "button is-warning" %>
+  </div>
+
+  <div class="columns is-multiline">
+
+    <%# Doctors %>
+    <div class="column">
+      <div class="box">
+        <div class="level">
+          <div class="level-left">
+            <h2 class="title is-4">Doctors</h2>
+          </div>
+          <div class="level-right">
+            <%= link_to "Add Doctor", new_patient_doctor_path(@patient), class: "button is-primary is-small" %>
+          </div>
+        </div>
+        <% if @patient.doctors.any? %>
+          <% @patient.doctors.each do |doctor| %>
+            <div class="box">
+              <div class="level">
+                <div class="level-left">
+                  <div>
+                    <p class="has-text-weight-bold"><%= doctor.name %></p>
+                    <p class="is-size-7"><%= doctor.practice %></p>
+                    <p class="is-size-7 has-text-grey"><%= doctor.speciality %></p>
+                  </div>
+                </div>
+                <div class="level-right">
+                  <%= link_to "View", patient_doctor_path(@patient, doctor), class: "button is-info is-small" %>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        <% else %>
+          <p class="has-text-grey">No doctors added yet.</p>
+        <% end %>
+      </div>
+    </div>
+
+    <%# Medications (placeholder) %>
+    <div class="column">
+      <div class="box">
+        <h2 class="title is-4">Medications</h2>
+        <p class="has-text-grey">Coming soon.</p>
+      </div>
+    </div>
+
+    <%# Visits (placeholder) %>
+    <div class="column">
+      <div class="box">
+        <h2 class="title is-4">Visits</h2>
+        <p class="has-text-grey">Coming soon.</p>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="buttons">
+    <%= link_to "Back to Patients", patients_path, class: "button is-light" %>
+  </div>
+  <div>
+    <button class="button is-danger is-small" data-action="confirm-delete#open">Delete Patient</button>
+  </div>
+
+  <%# Confirm delete modal %>
+  <div class="modal" data-confirm-delete-target="modal">
+    <div class="modal-background" data-action="click->confirm-delete#close"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">Delete Patient</p>
+        <button class="delete" aria-label="close" data-action="confirm-delete#close"></button>
+      </header>
+      <section class="modal-card-body">
+        <p class="mb-4">
+          This will permanently delete <strong><%= @patient.name %></strong> and all associated records.
+          Type the patient's name to confirm.
+        </p>
+        <div class="field">
+          <div class="control">
+            <input class="input" type="text" placeholder="<%= @patient.name %>"
+                   data-confirm-delete-target="input"
+                   data-action="input->confirm-delete#validate">
+          </div>
+        </div>
+      </section>
+      <footer class="modal-card-foot buttons">
+        <%= button_to "Confirm Delete", @patient, method: :delete, class: "button is-danger",
+              data: { "confirm-delete-target": "confirmButton" } %>
+        <button class="button" data-action="confirm-delete#close">Cancel</button>
+      </footer>
+    </div>
+  </div>
+
+</div>
