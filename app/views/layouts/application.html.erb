@@ -49,6 +49,10 @@
       <div class="notification is-warning is-light mx-4 mt-4"><%= flash[:alert] %></div>
     <% end %>
 
-    <%= yield %>
+    <section class="section">
+      <div class="container">
+        <%= yield %>
+      </div>
+    </section>
   </body>
 </html>
