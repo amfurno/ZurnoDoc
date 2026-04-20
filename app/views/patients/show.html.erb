@@ -1,11 +1,9 @@
 <%# app/views/patients/show.html.erb %>
-<div class="content">
+<div class="content" data-controller="confirm-delete" data-confirm-delete-name-value="<%= @patient.name %>">
   <h1 class="title"><%= @patient.name %></h1>
 
   <div class="buttons">
     <%= link_to "Edit", edit_patient_path(@patient), class: "button is-warning" %>
-    <%= button_to "Delete", @patient, method: :delete, class: "button is-danger",
-          data: { turbo_confirm: "Delete #{@patient.name}? This will also delete all their doctors." } %>
   </div>
 
   <div class="columns is-multiline">
@@ -62,5 +60,40 @@
 
   </div>
 
-  <%= link_to "Back to Patients", patients_path, class: "button is-light" %>
+  <div class="buttons">
+    <%= link_to "Back to Patients", patients_path, class: "button is-light" %>
+  </div>
+  <div>
+    <button class="button is-danger is-small" data-action="confirm-delete#open">Delete Patient</button>
+  </div>
+
+  <%# Confirm delete modal %>
+  <div class="modal" data-confirm-delete-target="modal">
+    <div class="modal-background" data-action="click->confirm-delete#close"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">Delete Patient</p>
+        <button class="delete" aria-label="close" data-action="confirm-delete#close"></button>
+      </header>
+      <section class="modal-card-body">
+        <p class="mb-4">
+          This will permanently delete <strong><%= @patient.name %></strong> and all associated records.
+          Type the patient's name to confirm.
+        </p>
+        <div class="field">
+          <div class="control">
+            <input class="input" type="text" placeholder="<%= @patient.name %>"
+                   data-confirm-delete-target="input"
+                   data-action="input->confirm-delete#validate">
+          </div>
+        </div>
+      </section>
+      <footer class="modal-card-foot buttons">
+        <%= button_to "Confirm Delete", @patient, method: :delete, class: "button is-danger",
+              data: { "confirm-delete-target": "confirmButton" } %>
+        <button class="button" data-action="confirm-delete#close">Cancel</button>
+      </footer>
+    </div>
+  </div>
+
 </div>
