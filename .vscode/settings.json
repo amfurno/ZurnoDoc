@@ -1,4 +1,5 @@
 {
-    "ruby.rubocop.configFilePath": "/workspaces/zurnoDoc/.rubocop.yml",
-    "ruby.rubocop.executePath": "/workspaces/ZurnoDoc/bin/"
+    "ruby.rubocop.configFilePath": "/workspaces/ZurnoDoc/.rubocop.yml",
+    "ruby.rubocop.executePath": "/workspaces/ZurnoDoc/bin/",
+    "rubyLsp.rubyExecutablePath": "/workspaces/ZurnoDoc/bin"
 }

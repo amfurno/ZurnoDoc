@@ -11,8 +11,7 @@
 			"version": "lts",
 			"pnpmVersion": "latest",
 			"nvmVersion": "latest"
-		},
-		"ghcr.io/jsburckhardt/devcontainer-features/opencode:1": {}
+		}
 	},
 
 	// Features to add to the dev container. More info: https://containers.dev/features.
@@ -23,7 +22,7 @@
 	// "forwardPorts": [3000, 5432],
 
 	// Use 'postCreateCommand' to run commands after the container is created.
-	"postCreateCommand": "bundle install && rails db:migrate",
+	"postCreateCommand": "bundle install && bin/rails db:prepare",
 	"customizations": {
 		"vscode": {
 			"extensions": [
