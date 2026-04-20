@@ -1,39 +1,52 @@
 class DoctorsController < ApplicationController
+  before_action :set_patient
+  before_action :set_doctor, only: %i[show edit update destroy]
+
   def index
-    @doctors = Doctor.all
+    @doctors = @patient.doctors
   end
 
   def show
-    @doctor = Doctor.find(params[:id])
   end
 
   def new
-    @doctor = Doctor.new
+    @doctor = @patient.doctors.build
   end
 
   def create
-    @doctor = Doctor.new(doctor_params)
+    @doctor = @patient.doctors.build(doctor_params)
     if @doctor.save
-      redirect_to @doctor
+      redirect_to patient_doctor_path(@patient, @doctor)
     else
       render :new, status: :unprocessable_entity
     end
   end
 
   def edit
-    @doctor = Doctor.find(params[:id])
   end
 
   def update
-    @doctor = Doctor.find(params[:id])
     if @doctor.update(doctor_params)
-      redirect_to @doctor
+      redirect_to patient_doctor_path(@patient, @doctor)
     else
       render :edit, status: :unprocessable_entity
     end
   end
 
+  def destroy
+    @doctor.destroy
+    redirect_to patient_doctors_path(@patient)
+  end
+
   private
+
+  def set_patient
+    @patient = Current.user.patients.find(params[:patient_id])
+  end
+
+  def set_doctor
+    @doctor = @patient.doctors.find(params[:id])
+  end
 
   def doctor_params
     params.expect(doctor: [ :name, :practice, :speciality, :email, :phone_number, :fax_number, :address ])
