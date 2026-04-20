@@ -18,7 +18,7 @@ class DoctorsController < ApplicationController
     if @doctor.save
       redirect_to patient_doctor_path(@patient, @doctor)
     else
-      render :new, status: :unprocessable_entity
+      render :new, status: :unprocessable_content
     end
   end
 
@@ -29,7 +29,7 @@ class DoctorsController < ApplicationController
     if @doctor.update(doctor_params)
       redirect_to patient_doctor_path(@patient, @doctor)
     else
-      render :edit, status: :unprocessable_entity
+      render :edit, status: :unprocessable_content
     end
   end
 

@@ -117,9 +117,9 @@ RSpec.describe DoctorsController, type: :controller do
         expect(response).to render_template(:new)
       end
 
-      it 'returns unprocessable_entity status' do
+      it 'returns unprocessable_content status' do
         post :create, params: { patient_id: patient.to_param, doctor: invalid_attributes }
-        expect(response).to have_http_status(:unprocessable_entity)
+        expect(response).to have_http_status(:unprocessable_content)
       end
     end
   end
@@ -177,9 +177,9 @@ RSpec.describe DoctorsController, type: :controller do
         expect(response).to render_template(:edit)
       end
 
-      it 'returns unprocessable_entity status' do
+      it 'returns unprocessable_content status' do
         put :update, params: { patient_id: patient.to_param, id: doctor.to_param, doctor: invalid_attributes }
-        expect(response).to have_http_status(:unprocessable_entity)
+        expect(response).to have_http_status(:unprocessable_content)
       end
     end
   end
