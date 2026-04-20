@@ -32,7 +32,6 @@
         <div class="navbar-end">
           <div class="navbar-item">
             <% if authenticated? %>
-              <%= link_to "Doctors", doctors_path, class: "button is-light mr-2" %>
               <%= button_to "Sign Out", session_path, method: :delete, class: "button is-danger is-light" %>
             <% else %>
               <%= link_to "Sign In", login_path, class: "button is-light mr-2" %>

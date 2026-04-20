@@ -1,36 +1,38 @@
 <%# app/views/doctors/edit.html.erb %>
-<h1>Edit Doctor</h1>
+<div class="content">
+  <h1>Edit Doctor</h1>
 
-<%= form_with model: @doctor do |form| %>
-  <div class="field">
-    <%= form.label :name, class: 'label' %>
-    <%= form.text_field :name, class: 'input' %>
-  </div>
-  <div class="field">
-    <%= form.label :practice, class: 'label' %>
-    <%= form.text_field :practice, class: 'input' %>
-  </div>
-  <div class="field">
-    <%= form.label :speciality, class: 'label' %>
-    <%= form.text_field :speciality, class: 'input' %>
-  </div>
-  <div class="field">
-    <%= form.label :email, class: 'label' %>
-    <%= form.email_field :email, class: 'input' %>
-  </div>
-  <div class="field">
-    <%= form.label :phone_number, class: 'label' %>
-    <%= form.phone_field :phone_number, class: 'input' %>
-  </div>
-  <div class="field">
-    <%= form.label :fax_number, class: 'label' %>
-    <%= form.phone_field :fax_number, class: 'input' %>
-  </div>
-  <div class="field">
-    <%= form.label :address, class: 'label' %>
-    <%= form.text_field :address, class: 'input' %>
-  </div>
+  <%= form_with model: [@patient, @doctor] do |form| %>
+    <div class="field">
+      <%= form.label :name, class: 'label' %>
+      <%= form.text_field :name, class: 'input' %>
+    </div>
+    <div class="field">
+      <%= form.label :practice, class: 'label' %>
+      <%= form.text_field :practice, class: 'input' %>
+    </div>
+    <div class="field">
+      <%= form.label :speciality, class: 'label' %>
+      <%= form.text_field :speciality, class: 'input' %>
+    </div>
+    <div class="field">
+      <%= form.label :email, class: 'label' %>
+      <%= form.email_field :email, class: 'input' %>
+    </div>
+    <div class="field">
+      <%= form.label :phone_number, class: 'label' %>
+      <%= form.phone_field :phone_number, class: 'input' %>
+    </div>
+    <div class="field">
+      <%= form.label :fax_number, class: 'label' %>
+      <%= form.phone_field :fax_number, class: 'input' %>
+    </div>
+    <div class="field">
+      <%= form.label :address, class: 'label' %>
+      <%= form.text_field :address, class: 'input' %>
+    </div>
 
-  <%= form.submit "Update Doctor" %>
-<% end %>
-<%= link_to "Cancel", doctors_path %>
+    <%= form.submit "Update Doctor", class: "button is-primary" %>
+  <% end %>
+  <%= link_to "Cancel", patient_doctor_path(@patient, @doctor), class: "button is-light" %>
+</div>

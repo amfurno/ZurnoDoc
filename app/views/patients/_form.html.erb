@@ -1,0 +1,10 @@
+<%# app/views/patients/_form.html.erb %>
+<div class="content">
+    <%= form_with model: @patient do |form| %>
+    <div class="field">
+        <%= form.label :name, class: "label" %>
+        <%= form.text_field :name, class: "input" %>
+    </div>
+  <%= form.submit class: "button is-primary" %>
+</div>
+<% end %>
