@@ -8,6 +8,7 @@ on:
 jobs:
   scan_ruby:
     runs-on: ubuntu-latest
+    contents: read
 
     steps:
       - name: Checkout code
@@ -26,6 +27,7 @@ jobs:
       
   scan_js:
     runs-on: ubuntu-latest
+    contents: read
 
     steps:
       - name: Checkout code
@@ -41,8 +43,10 @@ jobs:
 
   lint:
     runs-on: ubuntu-latest
+    contents: read
     env:
       RUBOCOP_CACHE_ROOT: tmp/rubocop
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v6
@@ -67,6 +71,7 @@ jobs:
 
   test:
     runs-on: ubuntu-latest
+    contents: read
 
     steps:
       - name: Checkout code
