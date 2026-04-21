@@ -1,6 +1,18 @@
 <%# app/views/doctors/show.html.erb %>
-<h1><%= @doctor.name %></h1>
+<div class="content">
+  <h1 class="title"><%= @doctor.name %></h1>
+  <p><strong>Practice:</strong> <%= @doctor.practice %></p>
+  <p><strong>Speciality:</strong> <%= @doctor.speciality %></p>
+  <p><strong>Email:</strong> <%= @doctor.email %></p>
+  <p><strong>Phone:</strong> <%= @doctor.phone_number %></p>
+  <p><strong>Fax:</strong> <%= @doctor.fax_number %></p>
+  <p><strong>Address:</strong> <%= @doctor.address %></p>
 
-<p><%= @doctor.speciality %></p>
-<p><%= @doctor.email %></p>
-<%= link_to "Back", doctors_path %>
+  <div class="buttons">
+    <%= link_to "Edit", edit_patient_doctor_path(@patient, @doctor), class: "button is-warning" %>
+    <%= button_to "Delete", patient_doctor_path(@patient, @doctor), method: :delete, class: "button is-danger",
+          data: { turbo_confirm: "Delete Dr. #{@doctor.name}?" } %>
+  </div>
+
+  <%= link_to "Back to Doctors", patient_doctors_path(@patient), class: "button is-light" %>
+</div>

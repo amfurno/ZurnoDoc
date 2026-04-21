@@ -1,0 +1,14 @@
+<%# app/views/patients/index.html.erb %>
+<div class="content">
+  <h1 class="block title">Patients</h1>
+  <div class="box" id="patients-list">
+    <% @patients.each do |patient| %>
+      <div class="box">
+        <h2><%= patient.name %></h2>
+        <%= link_to "View", patient, class: "button is-info" %>
+        <%= link_to "Edit", edit_patient_path(patient), class: "button is-warning" %>
+      </div>
+    <% end %>
+  </div>
+  <%= link_to "Add New Patient", new_patient_path, class: "button is-primary" %>
+</div>
