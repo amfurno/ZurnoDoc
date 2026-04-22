@@ -6,6 +6,7 @@
 - Stack: Ruby 4.0.1, Rails 8.1.3, PostgreSQL (host `db`, user/pass `postgres/postgres`).
 - Ignore any `rvm install "ruby-4.0.1"` warnings in shell output.
 - App purpose: track patients, doctors, medications, doctor visits, and vitals.
+- When implementing a plan, always pause between phases for confirmation.
 
 ## Dev Server
 
