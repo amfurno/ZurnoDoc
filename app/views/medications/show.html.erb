@@ -1,25 +1,6 @@
 <%# app/views/medications/show.html.erb %>
 <div class="content">
   <h1 class="title"><%= @medication.name %></h1>
-  <p><strong>Drug Class:</strong> <%= @medication.drug_class %></p>
-  <p><strong>Dosage:</strong> <%= @medication.dosage %></p>
-  <p><strong>Doctor:</strong> <%= @medication.doctor&.name || "—" %></p>
-  <p><strong>Date Started:</strong> <%= @medication.date_started %></p>
-  <p><strong>Date Stopped:</strong> <%= @medication.date_stopped || "—" %></p>
-  <p><strong>Notes:</strong> <%= @medication.notes %></p>
-  <p><strong>Side Effects:</strong> <%= @medication.side_effects %></p>
-
-  <div class="buttons">
-    <%= link_to "Edit", edit_patient_medication_path(@patient, @medication), class: "button is-warning" %>
-    <%= button_to "Delete", patient_medication_path(@patient, @medication), method: :delete, class: "button is-danger",
-          data: { turbo_confirm: "Delete #{@medication.name}?" } %>
-  </div>
-
-  <%= link_to "Back to Medications", patient_medications_path(@patient), class: "button is-light" %>
-</div>
-<%# app/views/medications/show.html.erb %>
-<div class="content">
-  <h1 class="title"><%= @medication.name %></h1>
 
   <table class="table is-bordered">
     <tbody>
@@ -28,8 +9,8 @@
         <td><%= @medication.doctor&.name || "—" %></td>
       </tr>
       <tr>
-        <th>Class</th>
-        <td><%= @medication.medication_class.presence || "—" %></td>
+        <th>Drug Class</th>
+        <td><%= @medication.drug_class.presence || "—" %></td>
       </tr>
       <tr>
         <th>Dosage</th>
