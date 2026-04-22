@@ -58,6 +58,9 @@ end
 group :development do
   # Use console on exceptions pages [https://github.com/rails/web-console]
   gem "web-console"
+
+  # Generate realistic fake data for seeding development database
+  gem "faker"
 end
 
 group :test do
