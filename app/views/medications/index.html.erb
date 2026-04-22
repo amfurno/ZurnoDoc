@@ -1,0 +1,79 @@
+<%# app/views/medications/index.html.erb %>
+<div class="content">
+  <div class="level">
+    <div class="level-left">
+      <h1 class="title">Medications for <%= @patient.name %></h1>
+    </div>
+    <div class="level-right">
+      <%= link_to "Add Medication", new_patient_medication_path(@patient), class: "button is-primary" %>
+    </div>
+  </div>
+
+  <h2 class="title is-4">Active Medications</h2>
+  <% if @active_medications.any? %>
+    <table class="table is-fullwidth is-striped is-hoverable">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Drug Class</th>
+          <th>Dosage</th>
+          <th>Doctor</th>
+          <th>Date Started</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @active_medications.each do |medication| %>
+          <tr>
+            <td><%= medication.name %></td>
+            <td><%= medication.drug_class %></td>
+            <td><%= medication.dosage %></td>
+            <td><%= medication.doctor&.name || "—" %></td>
+            <td><%= medication.date_started %></td>
+            <td>
+              <%= link_to "View", patient_medication_path(@patient, medication), class: "button is-info is-small" %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% else %>
+    <p class="has-text-grey">No active medications.</p>
+  <% end %>
+
+  <h2 class="title is-4 mt-5">Past Medications</h2>
+  <% if @past_medications.any? %>
+    <table class="table is-fullwidth is-striped is-hoverable">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Drug Class</th>
+          <th>Dosage</th>
+          <th>Doctor</th>
+          <th>Date Started</th>
+          <th>Date Stopped</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @past_medications.each do |medication| %>
+          <tr>
+            <td><%= medication.name %></td>
+            <td><%= medication.drug_class %></td>
+            <td><%= medication.dosage %></td>
+            <td><%= medication.doctor&.name || "—" %></td>
+            <td><%= medication.date_started %></td>
+            <td><%= medication.date_stopped %></td>
+            <td>
+              <%= link_to "View", patient_medication_path(@patient, medication), class: "button is-info is-small" %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% else %>
+    <p class="has-text-grey">No past medications.</p>
+  <% end %>
+
+  <%= link_to "Back to Patient", @patient, class: "button is-light mt-4" %>
+</div>
