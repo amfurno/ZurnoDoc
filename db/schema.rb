@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_04_20_000001) do
+ActiveRecord::Schema[8.1].define(version: 2026_04_22_021449) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -26,6 +26,22 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_20_000001) do
     t.string "speciality"
     t.datetime "updated_at", null: false
     t.index ["patient_id"], name: "index_doctors_on_patient_id"
+  end
+
+  create_table "medications", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.date "date_started"
+    t.date "date_stopped"
+    t.bigint "doctor_id"
+    t.string "dosage"
+    t.string "drug_class"
+    t.string "name", null: false
+    t.text "notes"
+    t.bigint "patient_id", null: false
+    t.text "side_effects"
+    t.datetime "updated_at", null: false
+    t.index ["doctor_id"], name: "index_medications_on_doctor_id"
+    t.index ["patient_id"], name: "index_medications_on_patient_id"
   end
 
   create_table "patients", force: :cascade do |t|
@@ -54,6 +70,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_20_000001) do
   end
 
   add_foreign_key "doctors", "patients"
+  add_foreign_key "medications", "doctors"
+  add_foreign_key "medications", "patients"
   add_foreign_key "patients", "users"
   add_foreign_key "sessions", "users"
 end
