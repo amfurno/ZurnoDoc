@@ -23,8 +23,8 @@
         <% if @patient.doctors.any? %>
           <% @patient.doctors.order(updated_at: :desc).limit(5).each do |doctor| %>
             <div class="box">
-              <div class="level">
-                <div class="level-left">
+              <div class="level is-flex-wrap-wrap" style="gap: 0.5rem;">
+                <div class="level-left is-flex-grow-1" style="min-width: 0;">
                   <div>
                     <p class="has-text-weight-bold"><%= doctor.name %></p>
                     <p class="is-size-6"><%= doctor.practice %></p>
@@ -58,8 +58,8 @@
         <% if @patient.medications.any? %>
           <% @patient.medications.includes(:doctor).order(updated_at: :desc).limit(5).each do |medication| %>
             <div class="box">
-              <div class="level">
-                <div class="level-left">
+              <div class="level is-flex-wrap-wrap" style="gap: 0.5rem;">
+                <div class="level-left is-flex-grow-1" style="min-width: 0;">
                   <div>
                     <p class="has-text-weight-bold"><%= medication.name %></p>
                     <p class="is-size-6"><%= medication.drug_class %></p>

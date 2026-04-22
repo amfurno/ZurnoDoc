@@ -35,7 +35,7 @@ namespace :patient_data do
           # Randomly associate medication to a doctor (if doctors exist), or nil
           doctor = created_doctors.sample
           medication = patient.medications.create!(
-            name: Faker::Adjective.positive + " " + Faker::Hacker.noun,
+            name: Faker::Lorem.words(number: Faker::Number.between(from: 1, to: 3)).join(" ").titleize,
             drug_class: Faker::Job.title,
             dosage: "#{Faker::Number.between(from: 1, to: 1000)} #{[ 'mg', 'ml', 'units' ].sample}",
             date_started: Faker::Date.backward(days: 365),
