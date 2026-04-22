@@ -26,8 +26,8 @@
                 <div class="level-left">
                   <div>
                     <p class="has-text-weight-bold"><%= doctor.name %></p>
-                    <p class="is-size-7"><%= doctor.practice %></p>
-                    <p class="is-size-7 has-text-grey"><%= doctor.speciality %></p>
+                    <p class="is-size-6"><%= doctor.practice %></p>
+                    <p class="is-size-6 has-text-grey"><%= doctor.speciality %></p>
                   </div>
                 </div>
                 <div class="level-right">
@@ -42,11 +42,37 @@
       </div>
     </div>
 
-    <%# Medications (placeholder) %>
+    <%# Medications %>
     <div class="column">
       <div class="box">
-        <h2 class="title is-4">Medications</h2>
-        <p class="has-text-grey">Coming soon.</p>
+        <div class="level">
+          <div class="level-left">
+            <h2 class="title is-4">Medications</h2>
+          </div>
+          <div class="level-right">
+            <%= link_to "Add Medication", new_patient_medication_path(@patient), class: "button is-primary is-small" %>
+          </div>
+        </div>
+        <% if @patient.medications.any? %>
+          <% @patient.medications.includes(:doctor).each do |medication| %>
+            <div class="box">
+              <div class="level">
+                <div class="level-left">
+                  <div>
+                    <p class="has-text-weight-bold"><%= medication.name %></p>
+                    <p class="is-size-6"><%= medication.drug_class %></p>
+                    <p class="is-size-6 has-text-grey"><%= medication.doctor&.name %></p>
+                  </div>
+                </div>
+                <div class="level-right">
+                  <%= link_to "View", patient_medication_path(@patient, medication), class: "button is-info is-small" %>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        <% else %>
+          <p class="has-text-grey">No medications added yet.</p>
+        <% end %>
       </div>
     </div>
 
