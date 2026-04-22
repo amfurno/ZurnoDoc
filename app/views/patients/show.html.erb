@@ -6,7 +6,7 @@
     <%= link_to "Edit", edit_patient_path(@patient), class: "button is-warning" %>
   </div>
 
-  <div class="columns is-multiline">
+  <div class="columns">
 
     <%# Doctors %>
     <div class="column">
@@ -16,11 +16,12 @@
             <h2 class="title is-4">Doctors</h2>
           </div>
           <div class="level-right">
+            <%= link_to "View All", patient_doctors_path(@patient), class: "button is-info is-small" %>
             <%= link_to "Add Doctor", new_patient_doctor_path(@patient), class: "button is-primary is-small" %>
           </div>
         </div>
         <% if @patient.doctors.any? %>
-          <% @patient.doctors.each do |doctor| %>
+          <% @patient.doctors.order(updated_at: :desc).limit(5).each do |doctor| %>
             <div class="box">
               <div class="level">
                 <div class="level-left">
@@ -50,11 +51,12 @@
             <h2 class="title is-4">Medications</h2>
           </div>
           <div class="level-right">
+            <%= link_to "View All", patient_medications_path(@patient), class: "button is-info is-small" %>
             <%= link_to "Add Medication", new_patient_medication_path(@patient), class: "button is-primary is-small" %>
           </div>
         </div>
         <% if @patient.medications.any? %>
-          <% @patient.medications.includes(:doctor).each do |medication| %>
+          <% @patient.medications.includes(:doctor).order(updated_at: :desc).limit(5).each do |medication| %>
             <div class="box">
               <div class="level">
                 <div class="level-left">
