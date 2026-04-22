@@ -29,7 +29,8 @@
 				"misogi.ruby-rubocop",
 				"oderwat.indent-rainbow",
 				"streetsidesoftware.code-spell-checker",
-				"eamodio.gitlens"
+				"eamodio.gitlens",
+				"ms-vscode.live-server"
 			]
 		}
 	}
