@@ -72,27 +72,29 @@ No PostgreSQL service block is configured in CI — tests that need the DB may f
 |---|---|
 | `patients` | `user_id` (FK, not null), `name` (not null) |
 | `doctors` | `patient_id` (FK, not null), `name`, `practice`, `speciality`, `address`, `phone_number`, `fax_number`, `email` |
+| `medications` | `patient_id` (FK, not null), `doctor_id` (FK, null), `name` (not null), `drug_class`, `dosage`, `date_started`, `date_stopped`, `notes`, `side_effects` |
 | `users` | `email_address` (unique, normalised to lowercase+stripped), `password_digest` |
 | `sessions` | `user_id` (FK), `ip_address`, `user_agent` |
 
-Routes: `resources :patients do; resources :doctors; end`, `resource :session`, `resources :passwords, param: :token`, `resources :users, only: [:new, :create]`. Root → `patients#index`.
+Routes: `resources :patients do; resources :doctors; resources :medications; end`, `resource :session`, `resources :passwords, param: :token`, `resources :users, only: [:new, :create]`. Root → `patients#index`.
 
 ## Patient — Ownership Layer
 
 `Patient` is the connector between `User` (authentication) and all medical records.
 
-**Ownership chain:** `User → has_many :patients → has_many :doctors`
+**Ownership chain:** `User → has_many :patients → has_many :doctors / :medications`
 
-**Dependent destroy cascade:** destroying a `User` destroys all their `Patient` records; destroying a `Patient` destroys all their `Doctor` records (and future medical models should follow the same pattern — `belongs_to :patient` with `has_many :<model>, dependent: :destroy` on `Patient`).
+**Dependent destroy cascade:** destroying a `User` destroys all their `Patient` records; destroying a `Patient` destroys all their `Doctor` and `Medication` records (all medical models follow this pattern — `belongs_to :patient` with `has_many :<model>, dependent: :destroy` on `Patient`).
 
 **Models**
-- `Patient` — `belongs_to :user`, `has_many :doctors, dependent: :destroy`, `validates :name, presence: true`.
-- `User` — gains `has_many :patients, dependent: :destroy`.
-- `Doctor` — gains `belongs_to :patient` (Rails default `optional: false` enforces presence at model level; DB column is also `null: false`).
+- `Patient` — `belongs_to :user`, `has_many :doctors, dependent: :destroy`, `has_many :medications, dependent: :destroy`, `validates :name, presence: true`.
+- `User` — `has_many :patients, dependent: :destroy`.
+- `Doctor` — `belongs_to :patient`, `validates :name, presence: true`.
+- `Medication` — `belongs_to :patient`, `belongs_to :doctor, optional: true`, `validates :name, presence: true`. Column `drug_class` stores the medication class (not `class` — reserved word).
 
-**Routing** — doctors are fully nested under patients: `/patients/:patient_id/doctors/:id`. Named helpers: `patient_doctors_path`, `patient_doctor_path`, `new_patient_doctor_path`, `edit_patient_doctor_path`.
+**Routing** — both doctors and medications are fully nested under patients. Named helpers: `patient_doctors_path`, `patient_doctor_path`, `new_patient_doctor_path`, `edit_patient_doctor_path`; `patient_medications_path`, `patient_medication_path`, `new_patient_medication_path`, `edit_patient_medication_path`.
 
-**Scoping** — all controllers scope queries through `Current.user.patients` so users can only access their own data. `PatientsController` uses `Current.user.patients.find(params[:id])`; `DoctorsController` resolves the parent patient first via the same scope before querying doctors.
+**Scoping** — all controllers scope queries through `Current.user.patients` so users can only access their own data. `PatientsController` uses `Current.user.patients.find(params[:id])`; `DoctorsController` and `MedicationsController` resolve the parent patient first via the same scope before querying their respective records.
 
 ## Authentication
 
@@ -101,8 +103,9 @@ Implemented via `bin/rails generate authentication` (Rails 8 built-in).
 **Models**
 - `User` — `has_secure_password`, `has_many :sessions, dependent: :destroy`, `has_many :patients, dependent: :destroy`, `normalizes :email_address`, `validates :email_address, presence: true, uniqueness: true`.
 - `Session` — `belongs_to :user`, stores `ip_address` and `user_agent`.
-- `Patient` — `belongs_to :user`, `has_many :doctors, dependent: :destroy`, `validates :name, presence: true`.
+- `Patient` — `belongs_to :user`, `has_many :doctors, dependent: :destroy`, `has_many :medications, dependent: :destroy`, `validates :name, presence: true`.
 - `Doctor` — `belongs_to :patient`, `validates :name, presence: true`.
+- `Medication` — `belongs_to :patient`, `belongs_to :doctor, optional: true`, `validates :name, presence: true`.
 - `Current < ActiveSupport::CurrentAttributes` — exposes `Current.session` and `Current.user` per-request.
 
 **Concern** — `app/controllers/concerns/authentication.rb` is `include`d by `ApplicationController`, which sets `before_action :require_authentication` on every action. Key helpers available in controllers and views:
@@ -115,6 +118,7 @@ Implemented via `bin/rails generate authentication` (Rails 8 built-in).
 **Controllers**
 - `PatientsController` — full CRUD (`index`/`show`/`new`/`create`/`edit`/`update`/`destroy`); all queries scoped through `Current.user.patients`.
 - `DoctorsController` — full CRUD; parent patient resolved via `Current.user.patients.find(params[:patient_id])` before every action; doctor queries scoped through `@patient.doctors`.
+- `MedicationsController` — full CRUD; same pattern as `DoctorsController`; medication queries scoped through `@patient.medications`; `index` assigns `@active_medications` (`date_stopped: nil`) and `@past_medications` (`date_stopped` present); `set_doctors` populates `@doctors` for the form select (scoped to `@patient.doctors`).
 - `SessionsController` — sign-in (`new`/`create`/`destroy`); rate-limited to 10 POSTs per 3 minutes.
 - `PasswordsController` — forgot/reset password flow; reset token valid for 15 minutes.
 - `UsersController` — sign-up (`new`/`create`); auto-signs-in on success via `start_new_session_for`.
