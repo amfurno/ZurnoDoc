@@ -1,11 +1,18 @@
 class MedicationsController < ApplicationController
+  SORTABLE_COLUMNS = %w[name drug_class dosage date_started date_stopped].freeze
+
   before_action :set_patient
   before_action :set_medication, only: %i[show edit update destroy]
   before_action :set_doctors, only: %i[new create edit update]
 
   def index
-    @active_medications = @patient.medications.where(date_stopped: nil).includes(:doctor)
-    @past_medications = @patient.medications.where.not(date_stopped: nil).includes(:doctor)
+    @sort = SORTABLE_COLUMNS.include?(params[:sort]) ? params[:sort] : "name"
+    @direction = params[:direction] == "desc" ? "desc" : "asc"
+
+    order_clause = Arel.sql("#{ActiveRecord::Base.connection.quote_column_name(@sort)} #{@direction}")
+
+    @active_medications = @patient.medications.where(date_stopped: nil).includes(:doctor).order(order_clause)
+    @past_medications = @patient.medications.where.not(date_stopped: nil).includes(:doctor).order(order_clause)
   end
 
   def show

@@ -14,11 +14,11 @@
     <table class="table is-fullwidth is-striped is-hoverable">
       <thead>
         <tr>
-          <th>Name</th>
-          <th>Drug Class</th>
-          <th>Dosage</th>
+          <th><%= sort_link("Name", "name", patient_medications_path(@patient)) %></th>
+          <th><%= sort_link("Drug Class", "drug_class", patient_medications_path(@patient)) %></th>
+          <th><%= sort_link("Dosage", "dosage", patient_medications_path(@patient)) %></th>
           <th>Doctor</th>
-          <th>Date Started</th>
+          <th><%= sort_link("Date Started", "date_started", patient_medications_path(@patient)) %></th>
           <th></th>
         </tr>
       </thead>
@@ -46,12 +46,12 @@
     <table class="table is-fullwidth is-striped is-hoverable">
       <thead>
         <tr>
-          <th>Name</th>
-          <th>Drug Class</th>
-          <th>Dosage</th>
+          <th><%= sort_link("Name", "name", patient_medications_path(@patient)) %></th>
+          <th><%= sort_link("Drug Class", "drug_class", patient_medications_path(@patient)) %></th>
+          <th><%= sort_link("Dosage", "dosage", patient_medications_path(@patient)) %></th>
           <th>Doctor</th>
-          <th>Date Started</th>
-          <th>Date Stopped</th>
+          <th><%= sort_link("Date Started", "date_started", patient_medications_path(@patient)) %></th>
+          <th><%= sort_link("Date Stopped", "date_stopped", patient_medications_path(@patient)) %></th>
           <th></th>
         </tr>
       </thead>
