@@ -1,5 +1,5 @@
 <%# app/views/medications/show.html.erb %>
-<div class="content">
+<div class="content" data-controller="confirm-delete-simple">
   <div class="level is-mobile">
     <div class="level-left">
       <h1 class="title mb-0"><%= @medication.name %></h1>
@@ -55,10 +55,19 @@
   <% end %>
 
   <div class="buttons mt-4">
+    <% if @medication.date_stopped.blank? %>
+      <%= button_to "Stop Medication", stop_patient_medication_path(@patient, @medication), method: :patch, class: "button is-primary",
+            data: { turbo_confirm: "Mark #{@medication.name} as stopped today?" } %>
+    <% end %>
     <%= link_to "Edit", edit_patient_medication_path(@patient, @medication), class: "button is-warning" %>
-    <%= button_to "Delete", patient_medication_path(@patient, @medication), method: :delete, class: "button is-danger",
-          data: { turbo_confirm: "Delete #{@medication.name}?" } %>
+    <button class="button is-danger" data-action="confirm-delete-simple#open">Delete</button>
   </div>
 
   <%= link_to "Back to Medications", patient_medications_path(@patient), class: "button is-light" %>
+
+  <%= render "shared/confirm_delete_modal",
+        title: "Delete Medication",
+        message: "This will permanently delete #{@medication.name}. This cannot be undone.",
+        delete_path: patient_medication_path(@patient, @medication) %>
+
 </div>

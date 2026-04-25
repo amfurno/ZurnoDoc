@@ -19,6 +19,10 @@ Rails.application.routes.draw do
 
   resources :patients do
     resources :doctors
-    resources :medications
+    resources :medications do
+      member do
+        patch :stop
+      end
+    end
   end
 end

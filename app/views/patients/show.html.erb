@@ -56,7 +56,7 @@
           </div>
         </div>
         <% if @patient.medications.any? %>
-          <% @patient.medications.includes(:doctor).order(updated_at: :desc).limit(5).each do |medication| %>
+          <% @patient.medications.includes(:doctor).order(updated_at: :desc).where(date_stopped: nil).limit(5).each do |medication| %>
             <div class="box">
               <div class="level is-flex-wrap-wrap" style="gap: 0.5rem;">
                 <div class="level-left is-flex-grow-1" style="min-width: 0;">

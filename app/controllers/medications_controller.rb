@@ -1,6 +1,6 @@
 class MedicationsController < ApplicationController
   before_action :set_patient
-  before_action :set_medication, only: %i[show edit update destroy]
+  before_action :set_medication, only: %i[show edit update destroy stop]
   before_action :set_doctors, only: %i[new create edit update]
 
   def index
@@ -47,6 +47,11 @@ class MedicationsController < ApplicationController
   def destroy
     @medication.destroy
     redirect_to patient_medications_path(@patient)
+  end
+
+  def stop
+    @medication.update!(date_stopped: Date.today)
+    redirect_to patient_medication_path(@patient, @medication)
   end
 
   private
