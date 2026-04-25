@@ -1,22 +1,16 @@
 class MedicationsController < ApplicationController
-  SORTABLE_COLUMNS = %w[name drug_class dosage date_started date_stopped].freeze
-
   before_action :set_patient
   before_action :set_medication, only: %i[show edit update destroy]
   before_action :set_doctors, only: %i[new create edit update]
 
   def index
-    @active_sort = SORTABLE_COLUMNS.include?(params[:active_sort]) ? params[:active_sort] : "name"
-    @active_direction = params[:active_direction] == "desc" ? "desc" : "asc"
-    @past_sort = SORTABLE_COLUMNS.include?(params[:past_sort]) ? params[:past_sort] : "name"
-    @past_direction = params[:past_direction] == "desc" ? "desc" : "asc"
+    @active_sort      = resolve_sort(params[:active_sort])
+    @active_direction = resolve_direction(params[:active_direction])
+    @past_sort        = resolve_sort(params[:past_sort])
+    @past_direction   = resolve_direction(params[:past_direction])
 
-    conn = ActiveRecord::Base.connection
-    active_order = Arel.sql("#{conn.quote_column_name(@active_sort)} #{@active_direction}")
-    past_order = Arel.sql("#{conn.quote_column_name(@past_sort)} #{@past_direction}")
-
-    @active_medications = @patient.medications.where(date_stopped: nil).includes(:doctor).order(active_order)
-    @past_medications = @patient.medications.where.not(date_stopped: nil).includes(:doctor).order(past_order)
+    @active_medications = @patient.medications.active.sorted(@active_sort, @active_direction)
+    @past_medications   = @patient.medications.past.sorted(@past_sort, @past_direction)
   end
 
   def show
@@ -63,6 +57,14 @@ class MedicationsController < ApplicationController
 
   def set_doctors
     @doctors = @patient.doctors
+  end
+
+  def resolve_sort(column)
+    Medication::SORTABLE_COLUMNS.include?(column.to_s) ? column.to_s : "name"
+  end
+
+  def resolve_direction(direction)
+    direction == "desc" ? "desc" : "asc"
   end
 
   def medication_params
