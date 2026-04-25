@@ -1,9 +1,10 @@
 require 'rails_helper'
 
 RSpec.describe Patient, type: :model do
+  subject(:patient) { Patient.new(name: 'John Smith', user: user) }
+
   let(:user) { User.create!(email_address: 'user@example.com', password: 'password123') }
 
-  subject(:patient) { Patient.new(name: 'John Smith', user: user) }
 
   describe 'validations' do
     it 'is valid with valid attributes' do

@@ -70,6 +70,7 @@ group :test do
   gem "rspec-rails", "~> 7.1"
   gem "simplecov", require: false
   gem "rails-controller-testing"
+  gem "factory_bot_rails"
 end
 
 gem "pg", "~> 1.6"
