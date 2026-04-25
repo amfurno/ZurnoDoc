@@ -94,5 +94,25 @@ RSpec.describe Medication, type: :model do
     it 'falls back to asc when given an invalid direction' do
       expect(Medication.sorted('name', 'sideways').to_a).to eq([ med_a, med_b ])
     end
+
+    context 'when sorting by doctor_name' do
+      let(:doctor_a) { create(:doctor, patient: patient, name: 'Dr. Adams') }
+      let(:doctor_z) { create(:doctor, patient: patient, name: 'Dr. Zane') }
+      let!(:med_with_doctor_z) { create(:medication, patient: patient, name: 'Aspirin', doctor: doctor_z) }
+      let!(:med_with_doctor_a) { create(:medication, patient: patient, name: 'Zyrtec',  doctor: doctor_a) }
+      let!(:med_no_doctor)     { create(:medication, patient: patient, name: 'Metformin') }
+
+      it 'sorts by doctor name ascending with nulls last' do
+        result = Medication.sorted('doctor_name', 'asc').to_a
+        expect(result.index(med_with_doctor_a)).to be < result.index(med_with_doctor_z)
+        expect(result.last).to eq(med_no_doctor)
+      end
+
+      it 'sorts by doctor name descending with nulls last' do
+        result = Medication.sorted('doctor_name', 'desc').to_a
+        expect(result.index(med_with_doctor_z)).to be < result.index(med_with_doctor_a)
+        expect(result.last).to eq(med_no_doctor)
+      end
+    end
   end
 end

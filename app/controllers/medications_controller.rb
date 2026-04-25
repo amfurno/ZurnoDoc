@@ -9,8 +9,12 @@ class MedicationsController < ApplicationController
     @past_sort        = resolve_sort(params[:past_sort])
     @past_direction   = resolve_direction(params[:past_direction])
 
-    @active_medications = @patient.medications.active.sorted(@active_sort, @active_direction)
-    @past_medications   = @patient.medications.past.sorted(@past_sort, @past_direction)
+    @active_medications = @patient.medications.active
+                                   .sorted(@active_sort, @active_direction)
+                                   .then { |r| @active_sort == "doctor_name" ? r : r.includes(:doctor) }
+    @past_medications   = @patient.medications.past
+                                   .sorted(@past_sort, @past_direction)
+                                   .then { |r| @past_sort == "doctor_name" ? r : r.includes(:doctor) }
   end
 
   def show

@@ -75,6 +75,16 @@ RSpec.describe MedicationsController, type: :controller do
       get :index, params: { patient_id: patient.to_param, active_direction: 'sideways' }
       expect(assigns(:active_direction)).to eq('asc')
     end
+
+    it 'sorts active medications by doctor name ascending' do
+      doctor_a = create(:doctor, patient: patient, name: 'Dr. Adams')
+      doctor_z = create(:doctor, patient: patient, name: 'Dr. Zane')
+      med_z = create(:medication, patient: patient, name: 'Aspirin', doctor: doctor_z)
+      med_a = create(:medication, patient: patient, name: 'Zyrtec', doctor: doctor_a)
+      get :index, params: { patient_id: patient.to_param, active_sort: 'doctor_name', active_direction: 'asc' }
+      result = assigns(:active_medications).to_a
+      expect(result.index(med_a)).to be < result.index(med_z)
+    end
   end
 
   describe 'GET #index sorting past medications' do
@@ -106,6 +116,16 @@ RSpec.describe MedicationsController, type: :controller do
     it 'ignores an invalid sort column and falls back to name' do
       get :index, params: { patient_id: patient.to_param, past_sort: 'injected_column' }
       expect(assigns(:past_sort)).to eq('name')
+    end
+
+    it 'sorts past medications by doctor name ascending' do
+      doctor_a = create(:doctor, patient: patient, name: 'Dr. Adams')
+      doctor_z = create(:doctor, patient: patient, name: 'Dr. Zane')
+      past_z = create(:medication, :past, patient: patient, name: 'Aspirin', doctor: doctor_z)
+      past_a = create(:medication, :past, patient: patient, name: 'Zyrtec', doctor: doctor_a)
+      get :index, params: { patient_id: patient.to_param, past_sort: 'doctor_name', past_direction: 'asc' }
+      result = assigns(:past_medications).to_a
+      expect(result.index(past_a)).to be < result.index(past_z)
     end
   end
 
