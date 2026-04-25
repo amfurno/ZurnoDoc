@@ -6,13 +6,17 @@ class MedicationsController < ApplicationController
   before_action :set_doctors, only: %i[new create edit update]
 
   def index
-    @sort = SORTABLE_COLUMNS.include?(params[:sort]) ? params[:sort] : "name"
-    @direction = params[:direction] == "desc" ? "desc" : "asc"
+    @active_sort = SORTABLE_COLUMNS.include?(params[:active_sort]) ? params[:active_sort] : "name"
+    @active_direction = params[:active_direction] == "desc" ? "desc" : "asc"
+    @past_sort = SORTABLE_COLUMNS.include?(params[:past_sort]) ? params[:past_sort] : "name"
+    @past_direction = params[:past_direction] == "desc" ? "desc" : "asc"
 
-    order_clause = Arel.sql("#{ActiveRecord::Base.connection.quote_column_name(@sort)} #{@direction}")
+    conn = ActiveRecord::Base.connection
+    active_order = Arel.sql("#{conn.quote_column_name(@active_sort)} #{@active_direction}")
+    past_order = Arel.sql("#{conn.quote_column_name(@past_sort)} #{@past_direction}")
 
-    @active_medications = @patient.medications.where(date_stopped: nil).includes(:doctor).order(order_clause)
-    @past_medications = @patient.medications.where.not(date_stopped: nil).includes(:doctor).order(order_clause)
+    @active_medications = @patient.medications.where(date_stopped: nil).includes(:doctor).order(active_order)
+    @past_medications = @patient.medications.where.not(date_stopped: nil).includes(:doctor).order(past_order)
   end
 
   def show
