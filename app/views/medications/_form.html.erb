@@ -1,4 +1,5 @@
 <%# app/views/medications/_form.html.erb %>
+<div class="content"> 
 <%= form_with model: [@patient, @medication] do |form| %>
   <% if @medication.errors.any? %>
     <div class="notification is-danger">
@@ -72,4 +73,5 @@
       <%= form.submit class: "button is-primary" %>
     </div>
   </div>
+</div>
 <% end %>
