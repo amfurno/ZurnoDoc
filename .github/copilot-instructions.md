@@ -7,6 +7,7 @@
 - Ignore any `rvm install "ruby-4.0.1"` warnings in shell output.
 - App purpose: track patients, doctors, medications, doctor visits, and vitals.
 - When implementing a plan, always pause between phases for confirmation.
+- This website will be heavily used in mobile contexts — design with a mobile-first approach. The UI should be clean and simple, optimised for small screens and touch interactions.
 
 ## Dev Server
 
