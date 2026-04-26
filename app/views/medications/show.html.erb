@@ -1,0 +1,73 @@
+<%# app/views/medications/show.html.erb %>
+<div class="content" data-controller="confirm-delete-simple">
+  <div class="level is-mobile">
+    <div class="level-left">
+      <h1 class="title mb-0"><%= @medication.name %></h1>
+    </div>
+    <div class="level-right">
+      <% if @medication.date_stopped.present? %>
+        <span class="tag is-light is-medium">Inactive</span>
+      <% else %>
+        <span class="tag is-success is-light is-medium">Active</span>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="box mt-4">
+    <div class="columns is-multiline">
+      <div class="column is-half">
+        <p class="subtitle is-5">Doctor</p>
+        <p><%= @medication.doctor&.name || "—" %></p>
+      </div>
+      <div class="column is-half">
+        <p class="subtitle is-5 mb-1">Drug Class</p>
+        <p><%= @medication.drug_class.presence || "—" %></p>
+      </div>
+      <div class="column is-half">
+        <p class="subtitle is-5 mb-1">Dosage</p>
+        <p><%= @medication.dosage.presence || "—" %></p>
+      </div>
+      <div class="column is-half">
+        <p class="subtitle is-5 mb-1">Date Started</p>
+        <p><%= @medication.date_started || "—" %></p>
+      </div>
+      <% if @medication.date_stopped.present? %>
+        <div class="column is-half">
+          <p class="subtitle is-5 mb-1">Date Stopped</p>
+          <p><%= @medication.date_stopped %></p>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <% if @medication.notes.present? %>
+    <div class="box">
+      <p class="subtitle is-5 mb-1">Notes</p>
+      <p><%= @medication.notes %></p>
+    </div>
+  <% end %>
+
+  <% if @medication.side_effects.present? %>
+    <div class="box">
+      <p class="subtitle is-5 mb-1">Side Effects</p>
+      <p><%= @medication.side_effects %></p>
+    </div>
+  <% end %>
+
+  <div class="buttons mt-4">
+    <% if @medication.date_stopped.blank? %>
+      <%= button_to "Stop Medication", stop_patient_medication_path(@patient, @medication), method: :patch, class: "button is-primary",
+            data: { turbo_confirm: "Mark #{@medication.name} as stopped today?" } %>
+    <% end %>
+    <%= link_to "Edit", edit_patient_medication_path(@patient, @medication), class: "button is-warning" %>
+    <button class="button is-danger" data-action="confirm-delete-simple#open">Delete</button>
+  </div>
+
+  <%= link_to "Back to Medications", patient_medications_path(@patient), class: "button is-light" %>
+
+  <%= render "shared/confirm_delete_modal",
+        title: "Delete Medication",
+        message: "This will permanently delete #{@medication.name}. This cannot be undone.",
+        delete_path: patient_medication_path(@patient, @medication) %>
+
+</div>

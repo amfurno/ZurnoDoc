@@ -1,0 +1,85 @@
+<%# app/views/medications/index.html.erb %>
+<div class="content">
+  <div class="level is-mobile">
+    <div class="level-left">
+      <h1 class="title">Medications for <%= @patient.name %></h1>
+    </div>
+    <div class="level-right">
+      <%= link_to "Add Medication", new_patient_medication_path(@patient), class: "button is-primary" %>
+    </div>
+  </div>
+
+  <h2 class="title is-4">Active Medications</h2>
+  <% if @active_medications.any? %>
+    <div class="table-container">
+      <table class="table is-fullwidth is-striped is-hoverable">
+        <thead>
+          <tr>
+            <% past_params = { past_sort: @past_sort, past_direction: @past_direction } %>
+            <th><%= sort_link("Name", "name", patient_medications_path(@patient), sort_param: "active_sort", dir_param: "active_direction", current_sort: @active_sort, current_direction: @active_direction, extra_params: past_params) %></th>
+            <th><%= sort_link("Drug Class", "drug_class", patient_medications_path(@patient), sort_param: "active_sort", dir_param: "active_direction", current_sort: @active_sort, current_direction: @active_direction, extra_params: past_params) %></th>
+            <th class="is-hidden-mobile"><%= sort_link("Dosage", "dosage", patient_medications_path(@patient), sort_param: "active_sort", dir_param: "active_direction", current_sort: @active_sort, current_direction: @active_direction, extra_params: past_params) %></th>
+            <th class="is-hidden-mobile"><%= sort_link("Doctor", "doctor_name", patient_medications_path(@patient), sort_param: "active_sort", dir_param: "active_direction", current_sort: @active_sort, current_direction: @active_direction, extra_params: past_params) %></th>
+            <th class="is-hidden-mobile"><%= sort_link("Date Started", "date_started", patient_medications_path(@patient), sort_param: "active_sort", dir_param: "active_direction", current_sort: @active_sort, current_direction: @active_direction, extra_params: past_params) %></th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @active_medications.each do |medication| %>
+            <tr>
+              <td><%= medication.name %></td>
+              <td><%= medication.drug_class %></td>
+              <td class="is-hidden-mobile"><%= medication.dosage %></td>
+              <td class="is-hidden-mobile"><%= medication.doctor&.name || "—" %></td>
+              <td class="is-hidden-mobile"><%= medication.date_started %></td>
+              <td>
+                <%= link_to "View", patient_medication_path(@patient, medication), class: "button is-info is-small" %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  <% else %>
+    <p class="has-text-grey">No active medications.</p>
+  <% end %>
+
+  <h2 class="title is-4 mt-5">Past Medications</h2>
+  <% if @past_medications.any? %>
+    <div class="table-container">
+      <table class="table is-fullwidth is-striped is-hoverable">
+        <thead>
+          <tr>
+            <% active_params = { active_sort: @active_sort, active_direction: @active_direction } %>
+            <th><%= sort_link("Name", "name", patient_medications_path(@patient), sort_param: "past_sort", dir_param: "past_direction", current_sort: @past_sort, current_direction: @past_direction, extra_params: active_params) %></th>
+            <th><%= sort_link("Drug Class", "drug_class", patient_medications_path(@patient), sort_param: "past_sort", dir_param: "past_direction", current_sort: @past_sort, current_direction: @past_direction, extra_params: active_params) %></th>
+            <th class="is-hidden-mobile"><%= sort_link("Dosage", "dosage", patient_medications_path(@patient), sort_param: "past_sort", dir_param: "past_direction", current_sort: @past_sort, current_direction: @past_direction, extra_params: active_params) %></th>
+            <th class="is-hidden-mobile"><%= sort_link("Doctor", "doctor_name", patient_medications_path(@patient), sort_param: "past_sort", dir_param: "past_direction", current_sort: @past_sort, current_direction: @past_direction, extra_params: active_params) %></th>
+            <th class="is-hidden-mobile"><%= sort_link("Date Started", "date_started", patient_medications_path(@patient), sort_param: "past_sort", dir_param: "past_direction", current_sort: @past_sort, current_direction: @past_direction, extra_params: active_params) %></th>
+            <th class="is-hidden-mobile"><%= sort_link("Date Stopped", "date_stopped", patient_medications_path(@patient), sort_param: "past_sort", dir_param: "past_direction", current_sort: @past_sort, current_direction: @past_direction, extra_params: active_params) %></th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @past_medications.each do |medication| %>
+            <tr>
+              <td><%= medication.name %></td>
+              <td><%= medication.drug_class %></td>
+              <td class="is-hidden-mobile"><%= medication.dosage %></td>
+              <td class="is-hidden-mobile"><%= medication.doctor&.name || "—" %></td>
+              <td class="is-hidden-mobile"><%= medication.date_started %></td>
+              <td class="is-hidden-mobile"><%= medication.date_stopped %></td>
+              <td>
+                <%= link_to "View", patient_medication_path(@patient, medication), class: "button is-info is-small" %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  <% else %>
+    <p class="has-text-grey">No past medications.</p>
+  <% end %>
+
+  <%= link_to "Back to Patient", @patient, class: "button is-light mt-4" %>
+</div>

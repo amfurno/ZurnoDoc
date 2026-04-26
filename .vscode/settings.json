@@ -1,5 +1,8 @@
 {
     "ruby.rubocop.configFilePath": "/workspaces/ZurnoDoc/.rubocop.yml",
     "ruby.rubocop.executePath": "/workspaces/ZurnoDoc/bin/",
-    "rubyLsp.rubyExecutablePath": "/workspaces/ZurnoDoc/bin"
+    "rubyLsp.rubyExecutablePath": "/workspaces/ZurnoDoc/bin",
+    "chat.tools.terminal.autoApprove": {
+        "bin/rails": true
+    }
 }
