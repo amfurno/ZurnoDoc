@@ -75,12 +75,13 @@ RSpec.describe MedicationsController, type: :controller do
       get :index, params: { patient_id: patient.to_param, active_direction: 'sideways' }
       expect(assigns(:active_direction)).to eq('asc')
     end
+  end
+
+  describe 'GET #index sorting active medications by doctor name' do
+    let!(:med_a) { create(:medication, patient: patient, name: 'Zyrtec', doctor: create(:doctor, patient: patient, name: 'Dr. Adams')) }
+    let!(:med_z) { create(:medication, patient: patient, name: 'Aspirin', doctor: create(:doctor, patient: patient, name: 'Dr. Zane')) }
 
     it 'sorts active medications by doctor name ascending' do
-      doctor_a = create(:doctor, patient: patient, name: 'Dr. Adams')
-      doctor_z = create(:doctor, patient: patient, name: 'Dr. Zane')
-      med_z = create(:medication, patient: patient, name: 'Aspirin', doctor: doctor_z)
-      med_a = create(:medication, patient: patient, name: 'Zyrtec', doctor: doctor_a)
       get :index, params: { patient_id: patient.to_param, active_sort: 'doctor_name', active_direction: 'asc' }
       result = assigns(:active_medications).to_a
       expect(result.index(med_a)).to be < result.index(med_z)
@@ -117,12 +118,13 @@ RSpec.describe MedicationsController, type: :controller do
       get :index, params: { patient_id: patient.to_param, past_sort: 'injected_column' }
       expect(assigns(:past_sort)).to eq('name')
     end
+  end
+
+  describe 'GET #index sorting past medications by doctor name' do
+    let!(:past_a) { create(:medication, :past, patient: patient, name: 'Zyrtec', doctor: create(:doctor, patient: patient, name: 'Dr. Adams')) }
+    let!(:past_z) { create(:medication, :past, patient: patient, name: 'Aspirin', doctor: create(:doctor, patient: patient, name: 'Dr. Zane')) }
 
     it 'sorts past medications by doctor name ascending' do
-      doctor_a = create(:doctor, patient: patient, name: 'Dr. Adams')
-      doctor_z = create(:doctor, patient: patient, name: 'Dr. Zane')
-      past_z = create(:medication, :past, patient: patient, name: 'Aspirin', doctor: doctor_z)
-      past_a = create(:medication, :past, patient: patient, name: 'Zyrtec', doctor: doctor_a)
       get :index, params: { patient_id: patient.to_param, past_sort: 'doctor_name', past_direction: 'asc' }
       result = assigns(:past_medications).to_a
       expect(result.index(past_a)).to be < result.index(past_z)
@@ -316,6 +318,23 @@ RSpec.describe MedicationsController, type: :controller do
     it 'redirects to the medications list' do
       delete :destroy, params: { patient_id: patient.to_param, id: medication.to_param }
       expect(response).to redirect_to(patient_medications_path(patient))
+    end
+  end
+
+  describe 'PATCH #stop' do
+    let(:medication) { create(:medication, :active, patient: patient) }
+    let(:fixed_date) { Date.new(2026, 4, 26) }
+
+    before { allow(Date).to receive(:today).and_return(fixed_date) }
+
+    it 'sets date_stopped to today' do
+      patch :stop, params: { patient_id: patient.to_param, id: medication.to_param }
+      expect(medication.reload.date_stopped).to eq(fixed_date)
+    end
+
+    it 'redirects to the medication' do
+      patch :stop, params: { patient_id: patient.to_param, id: medication.to_param }
+      expect(response).to redirect_to(patient_medication_path(patient, medication))
     end
   end
 end
