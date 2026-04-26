@@ -2,7 +2,7 @@
 <div class="content">
   <h1>Add New Doctor</h1>
 
-  <%= form_with model: [@patient, @doctor] do |form| %>
+  <%= form_with class="content", model: [@patient, @doctor] do |form| %>
     <div class="field">
       <%= form.label :name, class: 'label' %>
       <%= form.text_field :name, class: 'input' %>
@@ -34,6 +34,5 @@
 
     <%= form.submit "Create Doctor", class: "button is-primary" %>
   <% end %> 
-  <%# TODO: add spacing %>
   <%= link_to "Cancel", patient_doctors_path(@patient), class: "button is-light" %>
 </div>

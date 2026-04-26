@@ -16,7 +16,7 @@ namespace :patient_data do
       Patient.transaction do
         # Generate doctors
         created_doctors = []
-        doctor_count.times do |i|
+        doctor_count.times do |_|
           doctor = patient.doctors.create!(
             name: Faker::Name.name,
             practice: Faker::Company.name,
@@ -31,7 +31,7 @@ namespace :patient_data do
 
         # Generate medications
         created_medications = []
-        medication_count.times do |i|
+        medication_count.times do |_|
           # Randomly associate medication to a doctor (if doctors exist), or nil
           doctor = created_doctors.sample
           medication = patient.medications.create!(

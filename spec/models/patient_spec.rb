@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe Patient, type: :model do
-  subject(:patient) { Patient.new(name: 'John Smith', user: user) }
+  subject(:patient) { described_class.new(name: 'John Smith', user: user) }
 
   let(:user) { User.create!(email_address: 'user@example.com', password: 'password123') }
 
@@ -24,17 +24,27 @@ RSpec.describe Patient, type: :model do
 
   describe 'associations' do
     it 'belongs to a user' do
-      expect(Patient.reflect_on_association(:user).macro).to eq(:belongs_to)
+      expect(described_class.reflect_on_association(:user).macro).to eq(:belongs_to)
     end
 
     it 'has many doctors' do
-      expect(Patient.reflect_on_association(:doctors).macro).to eq(:has_many)
+      expect(described_class.reflect_on_association(:doctors).macro).to eq(:has_many)
     end
 
     it 'destroys associated doctors when destroyed' do
       patient.save!
       patient.doctors.create!(name: 'Dr. Jones')
       expect { patient.destroy }.to change(Doctor, :count).by(-1)
+    end
+
+    it 'has many medications' do
+      expect(described_class.reflect_on_association(:medications).macro).to eq(:has_many)
+    end
+
+    it 'destroys associated medications when destroyed' do
+      patient.save!
+      patient.medications.create!(name: 'Aspirin')
+      expect { patient.destroy }.to change(Medication, :count).by(-1)
     end
   end
 end
