@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe User, type: :model do
-  subject(:user) { User.new(email_address: 'user@example.com', password: 'password123', password_confirmation: 'password123') }
+  subject(:user) { described_class.new(email_address: 'user@example.com', password: 'password123', password_confirmation: 'password123') }
 
   describe 'validations' do
     it 'is valid with valid attributes' do
@@ -15,7 +15,7 @@ RSpec.describe User, type: :model do
 
     it 'is invalid with a duplicate email address' do
       user.save!
-      duplicate = User.new(email_address: 'user@example.com', password: 'password123')
+      duplicate = described_class.new(email_address: 'user@example.com', password: 'password123')
       expect(duplicate).not_to be_valid
     end
 
@@ -47,7 +47,7 @@ RSpec.describe User, type: :model do
 
   describe 'associations' do
     it 'has many sessions' do
-      expect(User.reflect_on_association(:sessions).macro).to eq(:has_many)
+      expect(described_class.reflect_on_association(:sessions).macro).to eq(:has_many)
     end
 
     it 'destroys associated sessions on user destroy' do
@@ -61,15 +61,15 @@ RSpec.describe User, type: :model do
     before { user.save! }
 
     it 'returns the user when credentials are correct' do
-      expect(User.authenticate_by(email_address: 'user@example.com', password: 'password123')).to eq(user)
+      expect(described_class.authenticate_by(email_address: 'user@example.com', password: 'password123')).to eq(user)
     end
 
     it 'returns nil when the password is wrong' do
-      expect(User.authenticate_by(email_address: 'user@example.com', password: 'wrongpassword')).to be_nil
+      expect(described_class.authenticate_by(email_address: 'user@example.com', password: 'wrongpassword')).to be_nil
     end
 
     it 'returns nil when the email is not found' do
-      expect(User.authenticate_by(email_address: 'nobody@example.com', password: 'password123')).to be_nil
+      expect(described_class.authenticate_by(email_address: 'nobody@example.com', password: 'password123')).to be_nil
     end
   end
 end

@@ -1,0 +1,77 @@
+<%# app/views/medications/_form.html.erb %>
+<div class="content"> 
+  <%= form_with model: [@patient, @medication] do |form| %>
+    <% if @medication.errors.any? %>
+      <div class="notification is-danger">
+        <ul>
+          <% @medication.errors.full_messages.each do |msg| %>
+            <li><%= msg %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <div class="field">
+      <%= form.label :name, class: "label" %>
+      <div class="control">
+        <%= form.text_field :name, class: "input" %>
+      </div>
+    </div>
+
+    <div class="field">
+      <%= form.label :drug_class, "Drug Class", class: "label" %>
+      <div class="control">
+        <%= form.text_field :drug_class, class: "input" %>
+      </div>
+    </div>
+
+    <div class="field">
+      <%= form.label :dosage, class: "label" %>
+      <div class="control">
+        <%= form.text_field :dosage, class: "input" %>
+      </div>
+    </div>
+
+    <div class="field">
+      <%= form.label :doctor_id, "Doctor", class: "label" %>
+      <div class="control select">
+        <%= form.collection_select :doctor_id, @doctors, :id, :name,
+              { include_blank: "— None —" }%>
+      </div>
+    </div>
+
+    <div class="field">
+      <%= form.label :date_started, "Date Started", class: "label" %>
+      <div class="control">
+        <%= form.date_field :date_started, class: "input" %>
+      </div>
+    </div>
+
+    <div class="field">
+      <%= form.label :date_stopped, "Date Stopped", class: "label" %>
+      <div class="control">
+        <%= form.date_field :date_stopped, class: "input" %>
+      </div>
+    </div>
+
+    <div class="field">
+      <%= form.label :notes, class: "label" %>
+      <div class="control">
+        <%= form.text_area :notes, class: "textarea" %>
+      </div>
+    </div>
+
+    <div class="field">
+      <%= form.label :side_effects, "Side Effects", class: "label" %>
+      <div class="control">
+        <%= form.text_area :side_effects, class: "textarea" %>
+      </div>
+    </div>
+
+    <div class="field">
+      <div class="control">
+        <%= form.submit class: "button is-primary" %>
+      </div>
+    </div>
+  <% end %>
+</div>

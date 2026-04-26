@@ -58,15 +58,19 @@ end
 group :development do
   # Use console on exceptions pages [https://github.com/rails/web-console]
   gem "web-console"
+
+  # Generate realistic fake data for seeding development database
+  gem "faker"
 end
 
 group :test do
   # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
   gem "capybara"
   gem "selenium-webdriver"
-  gem "rspec-rails", "~> 7.1"
+  gem "rspec-rails", "~> 8.0"
   gem "simplecov", require: false
   gem "rails-controller-testing"
+  gem "factory_bot_rails"
 end
 
 gem "pg", "~> 1.6"

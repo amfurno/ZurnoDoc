@@ -104,7 +104,7 @@ RSpec.describe DoctorsController, type: :controller do
       it 'does not create a new Doctor' do
         expect {
           post :create, params: { patient_id: patient.to_param, doctor: invalid_attributes }
-        }.to change(Doctor, :count).by(0)
+        }.not_to change(Doctor, :count)
       end
 
       it 'assigns a newly created but unsaved doctor as @doctor' do

@@ -1,0 +1,17 @@
+<%# locals: (title:, message:, delete_path:) %>
+<div class="modal" data-confirm-delete-simple-target="modal">
+  <div class="modal-background" data-action="click->confirm-delete-simple#close"></div>
+  <div class="modal-card">
+    <header class="modal-card-head">
+      <p class="modal-card-title"><%= title %></p>
+      <button class="delete" aria-label="close" data-action="confirm-delete-simple#close"></button>
+    </header>
+    <section class="modal-card-body">
+      <p><%= message %></p>
+    </section>
+    <footer class="modal-card-foot buttons">
+      <%= button_to "Confirm Delete", delete_path, method: :delete, class: "button is-danger" %>
+      <button class="button" data-action="confirm-delete-simple#close">Cancel</button>
+    </footer>
+  </div>
+</div>
