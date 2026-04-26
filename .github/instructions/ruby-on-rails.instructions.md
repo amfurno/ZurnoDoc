@@ -121,3 +121,4 @@ applyTo: '**/*.rb'
 - Avoid brittle tests — don’t rely on specific timestamps, randomized data, or order unless explicitly necessary.
 - Write integration tests for end-to-end flows across multiple layers (model, view, controller).
 - Keep tests fast, reliable, and as DRY as production code.
+- use rubocop to enforce consistent test style and best practices across the codebase.
