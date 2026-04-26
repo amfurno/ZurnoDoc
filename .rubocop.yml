@@ -1,7 +1,7 @@
 # Omakase Ruby styling for Rails
 inherit_gem: { rubocop-rails-omakase: rubocop.yml }
 
-plugins: rubocop-rspec
+# plugins: rubocop-rspec
 
 AllCops:
   TargetRubyVersion: 4.0
