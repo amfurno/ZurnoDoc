@@ -22,11 +22,24 @@ module Authentication
     end
 
     def resume_session
-      Current.session ||= find_session_by_cookie
+      return Current.session if @session_resumed
+
+      @session_resumed = true
+      Current.session = find_session_by_cookie
+      return unless Current.session
+
+      if Current.session.slide!
+        set_session_cookie(Current.session)
+        return Current.session
+      end
+
+      cookies.delete(:session_id)
+      Current.session = nil
     end
 
     def find_session_by_cookie
-      Session.find_by(id: cookies.signed[:session_id]) if cookies.signed[:session_id]
+      session_id = cookies.signed[:session_id]
+      Session.active.find_by(id: session_id) if session_id
     end
 
     def request_authentication
@@ -39,14 +52,31 @@ module Authentication
     end
 
     def start_new_session_for(user)
-      user.sessions.create!(user_agent: request.user_agent, ip_address: request.remote_ip).tap do |session|
+      now = Time.current
+      user.sessions.create!(
+        user_agent: request.user_agent,
+        ip_address: request.remote_ip,
+        expires_at: now + Session::SESSION_LENGTH,
+        absolute_expires_at: now + Session::ABSOLUTE_TTL
+      ).tap do |session|
         Current.session = session
-        cookies.signed[:session_id] = { value: session.id, httponly: true, same_site: :lax, secure: Rails.env.production? }
+        set_session_cookie(session)
       end
     end
 
     def terminate_session
-      Current.session.destroy
+      Current.session&.destroy
+      Current.session = nil
       cookies.delete(:session_id)
+    end
+
+    def set_session_cookie(session)
+      cookies.signed[:session_id] = {
+        value: session.id,
+        httponly: true,
+        same_site: :lax,
+        secure: Rails.env.production?,
+        expires: session.expires_at
+      }
     end
 end

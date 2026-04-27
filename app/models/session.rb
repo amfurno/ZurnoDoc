@@ -11,13 +11,17 @@ class Session < ApplicationRecord
   validates :expires_at, :absolute_expires_at, presence: true
 
   def expired?
-    expires_at <= Time.current
+    now = Time.current
+    return expires_at <= now || absolute_expires_at <= now
   end
 
-  def slide!
-    return false if Time.current >= absolute_expires_at
+  def slide!(window = SESSION_LENGTH)
+    if Time.current >= absolute_expires_at
+      destroy!
+      return false
+    end
 
-    next_expiry = [ Time.current + SESSION_LENGTH, absolute_expires_at ].min
+    next_expiry = [ Time.current + window, absolute_expires_at ].min
     update!(expires_at: next_expiry)
   end
 

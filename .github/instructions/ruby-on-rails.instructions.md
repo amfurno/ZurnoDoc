@@ -41,7 +41,7 @@ applyTo: '**/*.rb'
 - Use background jobs (ActiveJob) for non-blocking operations like sending emails or calling APIs.
 - Avoid using `puts` — debug with `byebug`, `pry`, or logger utilities.
 - Document complex code paths and methods with YARD or RDoc.
-
+- Do not use implicit return values in methods — always use `return` for clarity.
 ## App Directory Structure
 
 - Define service objects in the `app/services` directory to encapsulate business logic.
