@@ -1,0 +1,357 @@
+{
+  "framework": {
+    "name": "bulma",
+    "version": "1.0.4",
+    "language": "css-scss",
+    "description": "Modern CSS framework based on Flexbox"
+  },
+  "scope": {
+    "notes": [
+      "This file is a practical summary for AI code generation and retrieval tasks.",
+      "Bulma class names are generated with an optional class prefix ($class-prefix).",
+      "Default build uses no class prefix (e.g. .button, .navbar).",
+      "Use `taxonomy` to pick a base class family (`elements`, `components`, `form`, `grid`, `layout`).",
+      "Add responsive suffixes from `responsive.common_suffixes`.",
+      "Add utility helpers from `helpers` before writing custom CSS."
+    ],
+    "prefixes": {
+      "class_prefix_var": "$class-prefix",
+      "class_prefix_default": "",
+      "helpers_prefix_var": "$helpers-prefix",
+      "helpers_prefix_default": "is-",
+      "helpers_has_prefix_var": "$helpers-has-prefix",
+      "helpers_has_prefix_default": "has-",
+      "cssvars_prefix_var": "$cssvars-prefix",
+      "cssvars_prefix_default": "bulma-"
+    }
+  },
+  "taxonomy": {
+    "elements": [
+      "block",
+      "box",
+      "button",
+      "content",
+      "delete",
+      "icon",
+      "image",
+      "loader",
+      "notification",
+      "progress",
+      "table",
+      "tag",
+      "title",
+      "subtitle"
+    ],
+    "components": [
+      "breadcrumb",
+      "card",
+      "dropdown",
+      "menu",
+      "message",
+      "modal",
+      "navbar",
+      "pagination",
+      "panel",
+      "tabs"
+    ],
+    "form": [
+      "field",
+      "control",
+      "label",
+      "help",
+      "input",
+      "textarea",
+      "select",
+      "checkbox",
+      "radio",
+      "file"
+    ],
+    "grid": [
+      "columns",
+      "column",
+      "grid",
+      "fixed-grid",
+      "cell"
+    ],
+    "layout": [
+      "container",
+      "hero",
+      "section",
+      "footer",
+      "level",
+      "media"
+    ],
+    "common_subclasses": [
+      "buttons",
+      "tags",
+      "table-container",
+      "card-header",
+      "card-content",
+      "card-footer",
+      "dropdown-menu",
+      "dropdown-content",
+      "dropdown-item",
+      "message-header",
+      "message-body",
+      "modal-background",
+      "modal-content",
+      "modal-card",
+      "modal-card-head",
+      "modal-card-body",
+      "modal-card-foot",
+      "navbar-brand",
+      "navbar-menu",
+      "navbar-start",
+      "navbar-end",
+      "navbar-item",
+      "navbar-link",
+      "navbar-burger",
+      "pagination-list",
+      "pagination-link",
+      "pagination-previous",
+      "pagination-next",
+      "panel-heading",
+      "panel-block",
+      "panel-tabs",
+      "tabs",
+      "level-left",
+      "level-right",
+      "level-item",
+      "media-left",
+      "media-content",
+      "media-right",
+      "hero-head",
+      "hero-body",
+      "hero-foot"
+    ]
+  },
+  "class_patterns": {
+    "modifier_prefixes": [
+      "is-*",
+      "has-*"
+    ],
+    "common_state_modifiers": [
+      "is-active",
+      "is-hovered",
+      "is-focused",
+      "is-selected",
+      "is-loading",
+      "is-disabled",
+      "is-hidden",
+      "is-invisible"
+    ],
+    "common_size_modifiers": [
+      "is-small",
+      "is-normal",
+      "is-medium",
+      "is-large"
+    ],
+    "common_style_modifiers": [
+      "is-primary",
+      "is-link",
+      "is-info",
+      "is-success",
+      "is-warning",
+      "is-danger",
+      "is-light",
+      "is-dark",
+      "is-rounded",
+      "is-outlined",
+      "is-inverted",
+      "is-fullwidth"
+    ]
+  },
+  "responsive": {
+    "breakpoints_px": {
+      "mobile": {
+        "from": 0,
+        "to": 768
+      },
+      "tablet": {
+        "from": 769,
+        "to": 1023
+      },
+      "desktop": {
+        "from": 1024,
+        "to": 1215
+      },
+      "widescreen": {
+        "from": 1216,
+        "to": 1407
+      },
+      "fullhd": {
+        "from": 1408,
+        "to": null
+      }
+    },
+    "common_suffixes": [
+      "-mobile",
+      "-tablet",
+      "-tablet-only",
+      "-touch",
+      "-desktop",
+      "-desktop-only",
+      "-widescreen",
+      "-widescreen-only",
+      "-fullhd"
+    ],
+    "examples": [
+      "is-size-3-mobile",
+      "has-text-right-desktop",
+      "is-flex-tablet-only",
+      "is-hidden-touch",
+      "is-offset-3-widescreen"
+    ]
+  },
+  "helpers": {
+    "spacing": {
+      "pattern": "{m|p}{t|r|b|l|x|y}-{0|1|2|3|4|5|6|auto}",
+      "examples": [
+        "mb-4",
+        "px-2",
+        "mt-0",
+        "mx-auto"
+      ]
+    },
+    "color": {
+      "text_pattern": "has-text-{token}",
+      "background_pattern": "has-background-{token}",
+      "status_tokens": [
+        "text",
+        "link",
+        "primary",
+        "info",
+        "success",
+        "warning",
+        "danger"
+      ],
+      "variant_suffixes": [
+        "-light",
+        "-dark",
+        "-soft",
+        "-bold",
+        "-invert",
+        "-on-scheme",
+        "-00 .. -100"
+      ]
+    },
+    "typography": {
+      "size_pattern": "is-size-{1..7}[-breakpoint]",
+      "alignment_patterns": [
+        "has-text-left",
+        "has-text-right",
+        "has-text-centered",
+        "has-text-justified"
+      ],
+      "transform_helpers": [
+        "is-capitalized",
+        "is-lowercase",
+        "is-uppercase",
+        "is-italic",
+        "is-underlined"
+      ],
+      "weight_helpers": [
+        "has-text-weight-light",
+        "has-text-weight-normal",
+        "has-text-weight-medium",
+        "has-text-weight-semibold",
+        "has-text-weight-bold",
+        "has-text-weight-extrabold"
+      ]
+    },
+    "visibility_display": {
+      "display_helpers": [
+        "is-block",
+        "is-flex",
+        "is-inline",
+        "is-inline-block",
+        "is-inline-flex",
+        "is-grid"
+      ],
+      "hide_helpers": [
+        "is-hidden",
+        "is-hidden-mobile",
+        "is-hidden-tablet-only",
+        "is-hidden-desktop",
+        "is-hidden-fullhd"
+      ],
+      "additional": [
+        "is-invisible",
+        "is-sr-only"
+      ]
+    },
+    "flexbox": {
+      "patterns": [
+        "is-flex-direction-{row|row-reverse|column|column-reverse}",
+        "is-flex-wrap-{nowrap|wrap|wrap-reverse}",
+        "is-justify-content-{value}",
+        "is-align-content-{value}",
+        "is-align-items-{value}",
+        "is-align-self-{value}",
+        "is-flex-grow-{0..5}",
+        "is-flex-shrink-{0..5}"
+      ]
+    },
+    "other": [
+      "is-clearfix",
+      "is-pulled-left",
+      "is-pulled-right",
+      "is-overlay",
+      "is-clipped",
+      "is-radiusless",
+      "is-shadowless",
+      "is-unselectable",
+      "is-clickable",
+      "is-relative"
+    ]
+  },
+  "ai_usage": {
+    "composition_rules": [
+      "Bulma is class-composition driven; combine a base class plus modifiers/helpers.",
+      "Prefer semantic component structure classes (e.g. navbar-item, card-content) over custom descendants.",
+      "Prefer helper classes for spacing/alignment/display before adding custom CSS.",
+      "When targeting breakpoints, append Bulma suffixes instead of writing custom media queries first."
+    ],
+    "example_compositions": [
+      "button is-primary is-medium",
+      "input is-danger is-rounded",
+      "columns is-mobile is-multiline",
+      "column is-half-tablet is-one-third-desktop",
+      "card has-background-primary-soft has-text-primary-soft-invert",
+      "is-flex is-justify-content-space-between is-align-items-center"
+    ]
+  },
+  "source_of_truth": {
+    "sass_entrypoints": [
+      "sass/_index.scss",
+      "sass/components/_index.scss",
+      "sass/elements/_index.scss",
+      "sass/form/_index.scss",
+      "sass/grid/_index.scss",
+      "sass/layout/_index.scss",
+      "sass/helpers/_index.scss",
+      "sass/utilities/initial-variables.scss"
+    ],
+    "docs_index_pages": [
+      "docs/documentation/components/components.html",
+      "docs/documentation/elements/elements.html",
+      "docs/documentation/form/form.html",
+      "docs/documentation/grid/grid.html",
+      "docs/documentation/layout/layout.html",
+      "docs/documentation/helpers/helpers.html"
+    ],
+    "structured_docs_data": [
+      "docs/_data/breakpoints.json",
+      "docs/_data/colors.json",
+      "docs/_data/sizes.json",
+      "docs/_data/variables/**"
+    ],
+    "build_outputs": [
+      "css/bulma.css",
+      "css/versions/bulma-no-dark-mode.css",
+      "css/versions/bulma-no-helpers.css",
+      "css/versions/bulma-no-helpers-prefixed.css",
+      "css/versions/bulma-prefixed.css"
+    ]
+  }
+}

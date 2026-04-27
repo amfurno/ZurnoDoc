@@ -30,7 +30,8 @@
 				"oderwat.indent-rainbow",
 				"streetsidesoftware.code-spell-checker",
 				"eamodio.gitlens",
-				"ms-vscode.live-server"
+				"ms-vscode.live-server",
+				"kaiwood.endwise"
 			]
 		}
 	}
