@@ -23,6 +23,7 @@ class Session < ApplicationRecord
 
     next_expiry = [ Time.current + window, absolute_expires_at ].min
     update!(expires_at: next_expiry)
+    return self
   end
 
   private

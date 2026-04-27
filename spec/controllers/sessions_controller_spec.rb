@@ -24,6 +24,10 @@ RSpec.describe SessionsController, type: :controller do
       it 'redirects back to sign-in with an alert' do
         post :create, params: { email_address: 'user@example.com', password: 'wrongpassword' }
         expect(response).to redirect_to(login_path)
+      end
+
+      it 'flashes alert' do
+        post :create, params: { email_address: 'user@example.com', password: 'wrongpassword' }
         expect(flash[:alert]).to be_present
       end
     end
