@@ -2,18 +2,21 @@ class PatientsController < ApplicationController
   before_action :set_patient, only: %i[show edit update destroy]
 
   def index
-    @patients = Current.user.patients
+    @patients = policy_scope(Patient)
   end
 
   def show
+    authorize @patient
   end
 
   def new
     @patient = Current.user.patients.build
+    authorize @patient
   end
 
   def create
     @patient = Current.user.patients.build(patient_params)
+    authorize @patient
     if @patient.save
       redirect_to @patient
     else
@@ -22,9 +25,11 @@ class PatientsController < ApplicationController
   end
 
   def edit
+    authorize @patient
   end
 
   def update
+    authorize @patient
     if @patient.update(patient_params)
       redirect_to @patient
     else
@@ -33,6 +38,7 @@ class PatientsController < ApplicationController
   end
 
   def destroy
+    authorize @patient
     @patient.destroy
     redirect_to patients_path
   end
