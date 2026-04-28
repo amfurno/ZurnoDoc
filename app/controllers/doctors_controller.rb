@@ -3,6 +3,8 @@ class DoctorsController < ApplicationController
   before_action :set_doctor, only: %i[show edit update destroy]
 
   def index
+    # Access is already scoped through set_patient, which gates the parent patient
+    # to the current user. policy_scope is intentionally skipped here.
     skip_policy_scope
     @doctors = @patient.doctors
   end

@@ -13,6 +13,11 @@ class ApplicationController < ActionController::Base
 
   rescue_from Pundit::NotAuthorizedError, with: :pundit_not_authorized
 
+  # Controllers that use allow_unauthenticated_access must also declare:
+  #   skip_after_action :verify_authorized
+  #   skip_after_action :verify_policy_scoped
+  # to prevent Pundit verification running with a nil user.
+
   private
 
   def pundit_not_authorized

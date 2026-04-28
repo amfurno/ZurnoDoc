@@ -4,6 +4,8 @@ class MedicationsController < ApplicationController
   before_action :set_doctors, only: %i[new create edit update]
 
   def index
+    # Access is already scoped through set_patient, which gates the parent patient
+    # to the current user. policy_scope is intentionally skipped here.
     skip_policy_scope
     @active_sort      = resolve_sort(params[:active_sort])
     @active_direction = resolve_direction(params[:active_direction])
