@@ -4,6 +4,9 @@ class MedicationsController < ApplicationController
   before_action :set_doctors, only: %i[new create edit update]
 
   def index
+    # Access is already scoped through set_patient, which gates the parent patient
+    # to the current user. policy_scope is intentionally skipped here.
+    skip_policy_scope
     @active_sort      = resolve_sort(params[:active_sort])
     @active_direction = resolve_direction(params[:active_direction])
     @past_sort        = resolve_sort(params[:past_sort])
@@ -18,14 +21,17 @@ class MedicationsController < ApplicationController
   end
 
   def show
+    authorize @medication
   end
 
   def new
     @medication = @patient.medications.build
+    authorize @medication
   end
 
   def create
     @medication = @patient.medications.build(medication_params)
+    authorize @medication
     if @medication.save
       redirect_to patient_medication_path(@patient, @medication)
     else
@@ -34,9 +40,11 @@ class MedicationsController < ApplicationController
   end
 
   def edit
+    authorize @medication
   end
 
   def update
+    authorize @medication
     if @medication.update(medication_params)
       redirect_to patient_medication_path(@patient, @medication)
     else
@@ -45,11 +53,13 @@ class MedicationsController < ApplicationController
   end
 
   def destroy
+    authorize @medication
     @medication.destroy
     redirect_to patient_medications_path(@patient)
   end
 
   def stop
+    authorize @medication
     @medication.update!(date_stopped: Date.today)
     redirect_to patient_medication_path(@patient, @medication)
   end
