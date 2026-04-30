@@ -1,28 +1,14 @@
 require 'rails_helper'
 
 RSpec.describe PatientsController, type: :controller do
-  let(:user) { User.create!(email_address: 'user@example.com', password: 'password123') }
-  let(:session_record) { user.sessions.create!(user_agent: 'TestBrowser', ip_address: '127.0.0.1') }
+  include_context 'with authenticated controller'
 
   let(:valid_attributes) { { name: 'John Smith' } }
   let(:invalid_attributes) { { name: nil } }
 
-  let(:patient) { user.patients.create!(name: 'Jane Doe') }
+  let(:patient) { create(:patient, user: user) }
 
-  before do
-    allow(controller).to receive(:resume_session) do
-      Current.session = session_record
-    end
-  end
-
-  describe 'unauthenticated access' do
-    before { allow(controller).to receive(:resume_session).and_call_original }
-
-    it 'redirects to sign-in when not authenticated' do
-      get :index
-      expect(response).to redirect_to(login_path)
-    end
-  end
+  it_behaves_like 'it redirects unauthenticated requests'
 
   describe 'GET #index' do
     it 'returns a success response' do
@@ -126,10 +112,8 @@ RSpec.describe PatientsController, type: :controller do
 
   describe 'PUT #update' do
     context 'with valid params' do
-      let(:new_attributes) { { name: 'Updated Name' } }
-
       it 'updates the requested patient' do
-        put :update, params: { id: patient.to_param, patient: new_attributes }
+        put :update, params: { id: patient.to_param, patient: { name: 'Updated Name' } }
         patient.reload
         expect(patient.name).to eq('Updated Name')
       end

@@ -1,9 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe DoctorsController, type: :controller do
-  let(:user) { User.create!(email_address: 'user@example.com', password: 'password123') }
-  let(:session_record) { user.sessions.create!(user_agent: 'TestBrowser', ip_address: '127.0.0.1') }
-  let(:patient) { user.patients.create!(name: 'Jane Doe') }
+  include_context 'with authenticated controller'
+
+  let(:patient) { create(:patient, user: user) }
 
   let(:valid_attributes) {
     {
@@ -19,20 +19,7 @@ RSpec.describe DoctorsController, type: :controller do
 
   let(:doctor) { patient.doctors.create! valid_attributes }
 
-  before do
-    allow(controller).to receive(:resume_session) do
-      Current.session = session_record
-    end
-  end
-
-  describe 'unauthenticated access' do
-    before { allow(controller).to receive(:resume_session).and_call_original }
-
-    it 'redirects to sign-in when not authenticated' do
-      get :index, params: { patient_id: patient.to_param }
-      expect(response).to redirect_to(login_path)
-    end
-  end
+  it_behaves_like 'it redirects unauthenticated requests', -> { { patient_id: patient.to_param } }
 
   describe 'GET #index' do
     it 'returns a success response' do
