@@ -17,10 +17,6 @@ RSpec.describe DoctorsController, type: :controller do
     }
   }
 
-  let(:invalid_attributes) {
-    { name: nil }
-  }
-
   let(:doctor) { patient.doctors.create! valid_attributes }
 
   before do
@@ -83,7 +79,7 @@ RSpec.describe DoctorsController, type: :controller do
         }.to change(Doctor, :count).by(1)
       end
 
-      it 'assigns a newly created doctor as @doctor' do
+      it 'assigns a newly created doctor as @doctor', :aggregate_failures do
         post :create, params: { patient_id: patient.to_param, doctor: valid_attributes }
         expect(assigns(:doctor)).to be_a(Doctor)
         expect(assigns(:doctor)).to be_persisted
@@ -103,22 +99,22 @@ RSpec.describe DoctorsController, type: :controller do
     context 'with invalid params' do
       it 'does not create a new Doctor' do
         expect {
-          post :create, params: { patient_id: patient.to_param, doctor: invalid_attributes }
+          post :create, params: { patient_id: patient.to_param, doctor: { name: '' } }
         }.not_to change(Doctor, :count)
       end
 
       it 'assigns a newly created but unsaved doctor as @doctor' do
-        post :create, params: { patient_id: patient.to_param, doctor: invalid_attributes }
+        post :create, params: { patient_id: patient.to_param, doctor: { name: '' } }
         expect(assigns(:doctor)).to be_a_new(Doctor)
       end
 
       it 're-renders the new template' do
-        post :create, params: { patient_id: patient.to_param, doctor: invalid_attributes }
+        post :create, params: { patient_id: patient.to_param, doctor: { name: '' } }
         expect(response).to render_template(:new)
       end
 
       it 'returns unprocessable_content status' do
-        post :create, params: { patient_id: patient.to_param, doctor: invalid_attributes }
+        post :create, params: { patient_id: patient.to_param, doctor: { name: '' } }
         expect(response).to have_http_status(:unprocessable_content)
       end
     end
@@ -138,12 +134,8 @@ RSpec.describe DoctorsController, type: :controller do
 
   describe 'PUT #update' do
     context 'with valid params' do
-      let(:new_attributes) {
-        { name: 'Dr. Jane Smith' }
-      }
-
       it 'updates the requested doctor' do
-        put :update, params: { patient_id: patient.to_param, id: doctor.to_param, doctor: new_attributes }
+        put :update, params: { patient_id: patient.to_param, id: doctor.to_param, doctor: { name: 'Dr. Jane Smith' } }
         doctor.reload
         expect(doctor.name).to eq('Dr. Jane Smith')
       end
@@ -162,23 +154,23 @@ RSpec.describe DoctorsController, type: :controller do
     context 'with invalid params' do
       it 'does not update the doctor' do
         original_name = doctor.name
-        put :update, params: { patient_id: patient.to_param, id: doctor.to_param, doctor: invalid_attributes }
+        put :update, params: { patient_id: patient.to_param, id: doctor.to_param, doctor: { name: '' } }
         doctor.reload
         expect(doctor.name).to eq(original_name)
       end
 
       it 'assigns the doctor as @doctor' do
-        put :update, params: { patient_id: patient.to_param, id: doctor.to_param, doctor: invalid_attributes }
+        put :update, params: { patient_id: patient.to_param, id: doctor.to_param, doctor: { name: '' } }
         expect(assigns(:doctor)).to eq(doctor)
       end
 
       it 're-renders the edit template' do
-        put :update, params: { patient_id: patient.to_param, id: doctor.to_param, doctor: invalid_attributes }
+        put :update, params: { patient_id: patient.to_param, id: doctor.to_param, doctor: { name: '' } }
         expect(response).to render_template(:edit)
       end
 
       it 'returns unprocessable_content status' do
-        put :update, params: { patient_id: patient.to_param, id: doctor.to_param, doctor: invalid_attributes }
+        put :update, params: { patient_id: patient.to_param, id: doctor.to_param, doctor: { name: '' } }
         expect(response).to have_http_status(:unprocessable_content)
       end
     end
