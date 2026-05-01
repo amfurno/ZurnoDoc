@@ -24,9 +24,9 @@ RSpec.describe UsersController, type: :controller do
   describe 'POST #create' do
     context 'with valid params' do
       it 'creates a new User' do
-        expect {
+        expect do
           post :create, params: { user: valid_attributes }
-        }.to change(User, :count).by(1)
+        end.to change(User, :count).by(1)
       end
 
       it 'redirects to root after creation' do
@@ -40,17 +40,17 @@ RSpec.describe UsersController, type: :controller do
       end
 
       it 'auto-signs-in the new user by creating a session' do
-        expect {
+        expect do
           post :create, params: { user: valid_attributes }
-        }.to change(Session, :count).by(1)
+        end.to change(Session, :count).by(1)
       end
     end
 
     context 'with invalid params' do
       it 'does not create a new User' do
-        expect {
+        expect do
           post :create, params: { user: invalid_attributes }
-        }.not_to change(User, :count)
+        end.not_to change(User, :count)
       end
 
       it 're-renders the new template' do

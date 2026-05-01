@@ -19,7 +19,7 @@ RSpec.describe PatientsController, type: :controller do
     it "assigns the current user's patients as @patients" do
       patient
       get :index
-      expect(assigns(:patients)).to eq([ patient ])
+      expect(assigns(:patients)).to eq([patient])
     end
 
     it 'does not include patients belonging to other users' do
@@ -27,7 +27,7 @@ RSpec.describe PatientsController, type: :controller do
       other_user.patients.create!(name: 'Other Patient')
       patient
       get :index
-      expect(assigns(:patients)).to eq([ patient ])
+      expect(assigns(:patients)).to eq([patient])
     end
   end
 
@@ -58,9 +58,9 @@ RSpec.describe PatientsController, type: :controller do
   describe 'POST #create' do
     context 'with valid params' do
       it 'creates a new Patient scoped to the current user' do
-        expect {
+        expect do
           post :create, params: { patient: valid_attributes }
-        }.to change(Patient, :count).by(1)
+        end.to change(Patient, :count).by(1)
       end
 
       it 'associates the new patient with the current user' do
@@ -76,9 +76,9 @@ RSpec.describe PatientsController, type: :controller do
 
     context 'with invalid params' do
       it 'does not create a new Patient' do
-        expect {
+        expect do
           post :create, params: { patient: invalid_attributes }
-        }.not_to change(Patient, :count)
+        end.not_to change(Patient, :count)
       end
 
       it 'assigns a newly created but unsaved patient as @patient' do
@@ -147,9 +147,9 @@ RSpec.describe PatientsController, type: :controller do
   describe 'DELETE #destroy' do
     it 'destroys the requested patient' do
       patient
-      expect {
+      expect do
         delete :destroy, params: { id: patient.to_param }
-      }.to change(Patient, :count).by(-1)
+      end.to change(Patient, :count).by(-1)
     end
 
     it 'redirects to the patients list' do

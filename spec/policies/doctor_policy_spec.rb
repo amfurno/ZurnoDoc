@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "rails_helper"
+require 'rails_helper'
 
 RSpec.describe DoctorPolicy, type: :policy do
   subject(:policy) { described_class.new(user, doctor) }
@@ -10,7 +10,7 @@ RSpec.describe DoctorPolicy, type: :policy do
   let(:patient) { create(:patient, user: owner) }
   let(:doctor) { create(:doctor, patient: patient) }
 
-  context "when the user owns the parent patient" do
+  context 'when the user owns the parent patient' do
     let(:user) { owner }
 
     it { is_expected.to permit_action(:index) }
@@ -22,7 +22,7 @@ RSpec.describe DoctorPolicy, type: :policy do
     it { is_expected.to permit_action(:destroy) }
   end
 
-  context "when the user does not own the parent patient" do
+  context 'when the user does not own the parent patient' do
     let(:user) { other_user }
 
     it { is_expected.to forbid_action(:index) }
@@ -34,7 +34,7 @@ RSpec.describe DoctorPolicy, type: :policy do
     it { is_expected.to forbid_action(:destroy) }
   end
 
-  describe "Scope" do
+  describe 'Scope' do
     subject(:scope) { described_class::Scope.new(user, Doctor.all).resolve }
 
     let(:user) { owner }

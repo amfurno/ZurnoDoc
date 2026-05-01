@@ -5,7 +5,6 @@ RSpec.describe Patient, type: :model do
 
   let(:user) { User.create!(email_address: 'user@example.com', password: 'password123') }
 
-
   describe 'validations' do
     it 'is valid with valid attributes' do
       expect(patient).to be_valid

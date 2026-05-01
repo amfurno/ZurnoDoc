@@ -5,7 +5,7 @@ RSpec.describe DoctorsController, type: :controller do
 
   let(:patient) { create(:patient, user: user) }
 
-  let(:valid_attributes) {
+  let(:valid_attributes) do
     {
       name: 'Dr. John Doe',
       practice: 'Family Practice',
@@ -15,7 +15,7 @@ RSpec.describe DoctorsController, type: :controller do
       fax_number: '123-456-7891',
       address: '123 Main St, Anytown, USA'
     }
-  }
+  end
 
   let(:doctor) { patient.doctors.create! valid_attributes }
 
@@ -30,7 +30,7 @@ RSpec.describe DoctorsController, type: :controller do
     it "assigns the patient's doctors as @doctors" do
       doctor
       get :index, params: { patient_id: patient.to_param }
-      expect(assigns(:doctors)).to eq([ doctor ])
+      expect(assigns(:doctors)).to eq([doctor])
     end
   end
 
@@ -61,9 +61,9 @@ RSpec.describe DoctorsController, type: :controller do
   describe 'POST #create' do
     context 'with valid params' do
       it 'creates a new Doctor' do
-        expect {
+        expect do
           post :create, params: { patient_id: patient.to_param, doctor: valid_attributes }
-        }.to change(Doctor, :count).by(1)
+        end.to change(Doctor, :count).by(1)
       end
 
       it 'assigns a newly created doctor as @doctor', :aggregate_failures do
@@ -85,9 +85,9 @@ RSpec.describe DoctorsController, type: :controller do
 
     context 'with invalid params' do
       it 'does not create a new Doctor' do
-        expect {
+        expect do
           post :create, params: { patient_id: patient.to_param, doctor: { name: '' } }
-        }.not_to change(Doctor, :count)
+        end.not_to change(Doctor, :count)
       end
 
       it 'assigns a newly created but unsaved doctor as @doctor' do
@@ -166,9 +166,9 @@ RSpec.describe DoctorsController, type: :controller do
   describe 'DELETE #destroy' do
     it 'destroys the requested doctor' do
       doctor
-      expect {
+      expect do
         delete :destroy, params: { patient_id: patient.to_param, id: doctor.to_param }
-      }.to change(Doctor, :count).by(-1)
+      end.to change(Doctor, :count).by(-1)
     end
 
     it 'redirects to the doctors list' do
