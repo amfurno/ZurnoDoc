@@ -17,8 +17,17 @@ Metrics/MethodLength:
   CountAsOne:
     - hash
 
+Rails/I18nLocaleTexts:
+  Enabled: false
+
 Style/RedundantReturn:
   Enabled: false
 
 Style/FrozenStringLiteralComment:
+  Enabled: false
+
+Style/Documentation:
+  Enabled: false
+
+Style/ConditionalAssignment:
   Enabled: false

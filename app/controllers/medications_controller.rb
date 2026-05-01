@@ -13,11 +13,11 @@ class MedicationsController < ApplicationController
     @past_direction   = resolve_direction(params[:past_direction])
 
     @active_medications = @patient.medications.active
-                                   .sorted(@active_sort, @active_direction)
-                                   .includes(:doctor)
+                                  .sorted(@active_sort, @active_direction)
+                                  .includes(:doctor)
     @past_medications   = @patient.medications.past
-                                   .sorted(@past_sort, @past_direction)
-                                   .includes(:doctor)
+                                  .sorted(@past_sort, @past_direction)
+                                  .includes(:doctor)
   end
 
   def show
@@ -29,6 +29,10 @@ class MedicationsController < ApplicationController
     authorize @medication
   end
 
+  def edit
+    authorize @medication
+  end
+
   def create
     @medication = @patient.medications.build(medication_params)
     authorize @medication
@@ -37,10 +41,6 @@ class MedicationsController < ApplicationController
     else
       render :new, status: :unprocessable_content
     end
-  end
-
-  def edit
-    authorize @medication
   end
 
   def update
@@ -79,14 +79,15 @@ class MedicationsController < ApplicationController
   end
 
   def resolve_sort(column)
-    Medication::SORTABLE_COLUMNS.include?(column.to_s) ? column.to_s : "name"
+    Medication::SORTABLE_COLUMNS.include?(column.to_s) ? column.to_s : 'name'
   end
 
   def resolve_direction(direction)
-    direction == "desc" ? "desc" : "asc"
+    direction == 'desc' ? 'desc' : 'asc'
   end
 
   def medication_params
-    params.expect(medication: [ :name, :drug_class, :dosage, :date_started, :date_stopped, :notes, :side_effects, :doctor_id ])
+    params.expect(medication: %i[name drug_class dosage date_started date_stopped notes side_effects
+                                 doctor_id])
   end
 end

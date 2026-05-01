@@ -21,7 +21,7 @@ class ApplicationController < ActionController::Base
   private
 
   def pundit_not_authorized
-    flash[:alert] = "You are not authorized to perform this action."
+    flash[:alert] = 'You are not authorized to perform this action.'
     redirect_back_or_to root_path, allow_other_host: false
   end
 

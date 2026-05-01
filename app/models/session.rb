@@ -4,7 +4,7 @@ class Session < ApplicationRecord
 
   belongs_to :user
 
-  scope :active, -> { where("expires_at > ?", Time.current) }
+  scope :active, -> { where('expires_at > ?', Time.current) }
 
   before_validation :set_expiry_defaults, on: :create
 
@@ -21,16 +21,16 @@ class Session < ApplicationRecord
       return false
     end
 
-    next_expiry = [ Time.current + window, absolute_expires_at ].min
+    next_expiry = [Time.current + window, absolute_expires_at].min
     update!(expires_at: next_expiry)
     return self
   end
 
   private
 
-    def set_expiry_defaults
-      now = Time.current
-      self.absolute_expires_at ||= now + ABSOLUTE_TTL
-      self.expires_at ||= [ now + SESSION_LENGTH, absolute_expires_at ].min
-    end
+  def set_expiry_defaults
+    now = Time.current
+    self.absolute_expires_at ||= now + ABSOLUTE_TTL
+    self.expires_at ||= [now + SESSION_LENGTH, absolute_expires_at].min
+  end
 end

@@ -12,7 +12,7 @@ class UsersController < ApplicationController
 
     if @user.save
       start_new_session_for @user
-      redirect_to root_path, notice: "Account created successfully."
+      redirect_to root_path, notice: 'Account created successfully.'
     else
       render :new, status: :unprocessable_content
     end
@@ -21,6 +21,6 @@ class UsersController < ApplicationController
   private
 
   def user_params
-    params.expect(user: [ :email_address, :password, :password_confirmation ])
+    params.expect(user: %i[email_address password password_confirmation])
   end
 end
