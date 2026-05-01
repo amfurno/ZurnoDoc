@@ -4,5 +4,8 @@
     "rubyLsp.rubyExecutablePath": "/workspaces/ZurnoDoc/bin",
     "chat.tools.terminal.autoApprove": {
         "bin/rails": true
-    }
+    },
+    "cSpell.words": [
+        "rubocop"
+    ]
 }
