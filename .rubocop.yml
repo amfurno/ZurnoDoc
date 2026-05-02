@@ -1,7 +1,11 @@
-# Omakase Ruby styling for Rails
-inherit_gem: { rubocop-rails-omakase: rubocop.yml }
+inherit_from: .rubocop_todo.yml
 
-# plugins: rubocop-rspec
+plugins:
+  - rubocop-rspec
+  - rubocop-rails
+  - rubocop-rspec_rails
+  - rubocop-factory_bot
+  - rubocop-performance
 
 AllCops:
   TargetRubyVersion: 4.0
@@ -15,8 +19,20 @@ Metrics/MethodLength:
   CountAsOne:
     - hash
 
+Rails/I18nLocaleTexts:
+  Enabled: false
+
 Style/RedundantReturn:
   Enabled: false
 
 Style/FrozenStringLiteralComment:
+  Enabled: false
+
+Style/Documentation:
+  Enabled: false
+
+Style/ConditionalAssignment:
+  Enabled: false
+
+RSpecRails/InferredSpecType:
   Enabled: false

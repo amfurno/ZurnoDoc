@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class MedicationPolicy < ApplicationPolicy
   def index? = owns_parent_patient?
   def show? = owns_parent_patient?

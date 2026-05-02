@@ -9,7 +9,7 @@ class CreatePatientsAndAddPatientToDoctors < ActiveRecord::Migration[8.1]
 
     # Remove any existing doctor rows before adding the null: false FK constraint
     reversible do |dir|
-      dir.up { execute "DELETE FROM doctors" }
+      dir.up { execute 'DELETE FROM doctors' }
     end
 
     add_reference :doctors, :patient, null: false, foreign_key: true

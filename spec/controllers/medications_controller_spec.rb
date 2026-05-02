@@ -1,24 +1,11 @@
 require 'rails_helper'
 
 RSpec.describe MedicationsController, type: :controller do
-  let(:user) { create(:user) }
-  let(:session_record) { create(:session, user: user) }
+  include_context 'with authenticated controller'
+
   let(:patient) { create(:patient, user: user) }
 
-  before do
-    allow(controller).to receive(:resume_session) do
-      Current.session = session_record
-    end
-  end
-
-  describe 'unauthenticated access' do
-    before { allow(controller).to receive(:resume_session).and_call_original }
-
-    it 'redirects to sign-in when not authenticated' do
-      get :index, params: { patient_id: patient.to_param }
-      expect(response).to redirect_to(login_path)
-    end
-  end
+  it_behaves_like 'it redirects unauthenticated requests', -> { { patient_id: patient.to_param } }
 
   describe 'GET #index' do
     it 'returns a success response' do
@@ -43,27 +30,27 @@ RSpec.describe MedicationsController, type: :controller do
       get :index, params: { patient_id: patient.to_param }
       expect(assigns(:active_sort)).to eq('name')
       expect(assigns(:active_direction)).to eq('asc')
-      expect(assigns(:active_medications).to_a).to eq([ med_a, med_b ])
+      expect(assigns(:active_medications).to_a).to eq([med_a, med_b])
     end
 
     it 'sorts by name descending' do
       get :index, params: { patient_id: patient.to_param, active_sort: 'name', active_direction: 'desc' }
-      expect(assigns(:active_medications).to_a).to eq([ med_b, med_a ])
+      expect(assigns(:active_medications).to_a).to eq([med_b, med_a])
     end
 
     it 'sorts by dosage ascending' do
       get :index, params: { patient_id: patient.to_param, active_sort: 'dosage', active_direction: 'asc' }
-      expect(assigns(:active_medications).to_a).to eq([ med_a, med_b ])
+      expect(assigns(:active_medications).to_a).to eq([med_a, med_b])
     end
 
     it 'sorts by date_started ascending' do
       get :index, params: { patient_id: patient.to_param, active_sort: 'date_started', active_direction: 'asc' }
-      expect(assigns(:active_medications).to_a).to eq([ med_a, med_b ])
+      expect(assigns(:active_medications).to_a).to eq([med_a, med_b])
     end
 
     it 'sorts by date_started descending' do
       get :index, params: { patient_id: patient.to_param, active_sort: 'date_started', active_direction: 'desc' }
-      expect(assigns(:active_medications).to_a).to eq([ med_b, med_a ])
+      expect(assigns(:active_medications).to_a).to eq([med_b, med_a])
     end
 
     it 'ignores an invalid sort column and falls back to name' do
@@ -78,8 +65,26 @@ RSpec.describe MedicationsController, type: :controller do
   end
 
   describe 'GET #index sorting active medications by doctor name' do
-    let!(:med_a) { create(:medication, patient: patient, name: 'Zyrtec', doctor: create(:doctor, patient: patient, name: 'Dr. Adams')) }
-    let!(:med_z) { create(:medication, patient: patient, name: 'Aspirin', doctor: create(:doctor, patient: patient, name: 'Dr. Zane')) }
+    let!(:med_a) do
+      create(
+        :medication,
+        patient: patient,
+        name: 'Aspirin',
+        dosage: '100mg',
+        date_started: '2026-01-01',
+        doctor: create(:doctor, patient: patient, name: 'Dr. Adams')
+      )
+    end
+    let!(:med_z) do
+      create(
+        :medication,
+        patient: patient,
+        name: 'Zyrtec',
+        dosage: '10mg',
+        date_started: '2026-03-01',
+        doctor: create(:doctor, patient: patient, name: 'Dr. Zane')
+      )
+    end
 
     it 'sorts active medications by doctor name ascending' do
       get :index, params: { patient_id: patient.to_param, active_sort: 'doctor_name', active_direction: 'asc' }
@@ -89,45 +94,60 @@ RSpec.describe MedicationsController, type: :controller do
   end
 
   describe 'GET #index sorting past medications' do
-    let!(:past_x) { create(:medication, :past, patient: patient, name: 'Prednisone', date_started: '2025-06-01', date_stopped: '2025-12-01') }
-    let!(:past_y) { create(:medication, :past, patient: patient, name: 'Amoxicillin', date_started: '2025-01-01', date_stopped: '2025-03-01') }
+    let!(:past_x) do
+      create(
+        :medication,
+        :past,
+        patient: patient,
+        name: 'Prednisone',
+        date_started: '2025-06-01',
+        date_stopped: '2025-12-01',
+        doctor: create(:doctor, patient: patient, name: 'Dr. Adams')
+      )
+    end
+    let!(:past_y) do
+      create(
+        :medication,
+        :past,
+        patient: patient,
+        name: 'Amoxicillin',
+        date_started: '2025-01-01',
+        date_stopped: '2025-03-01',
+        doctor: create(:doctor, patient: patient, name: 'Dr. Zane')
+      )
+    end
 
     it 'defaults to sorting by name ascending', :aggregate_failures do
       get :index, params: { patient_id: patient.to_param }
       expect(assigns(:past_sort)).to eq('name')
       expect(assigns(:past_direction)).to eq('asc')
-      expect(assigns(:past_medications).to_a).to eq([ past_y, past_x ])
+      expect(assigns(:past_medications).to_a).to eq([past_y, past_x])
     end
 
     it 'sorts by name descending' do
       get :index, params: { patient_id: patient.to_param, past_sort: 'name', past_direction: 'desc' }
-      expect(assigns(:past_medications).to_a).to eq([ past_x, past_y ])
+      expect(assigns(:past_medications).to_a).to eq([past_x, past_y])
     end
 
     it 'sorts by date_stopped ascending' do
       get :index, params: { patient_id: patient.to_param, past_sort: 'date_stopped', past_direction: 'asc' }
-      expect(assigns(:past_medications).to_a).to eq([ past_y, past_x ])
+      expect(assigns(:past_medications).to_a).to eq([past_y, past_x])
     end
 
     it 'sorts by date_stopped descending' do
       get :index, params: { patient_id: patient.to_param, past_sort: 'date_stopped', past_direction: 'desc' }
-      expect(assigns(:past_medications).to_a).to eq([ past_x, past_y ])
+      expect(assigns(:past_medications).to_a).to eq([past_x, past_y])
     end
 
     it 'ignores an invalid sort column and falls back to name' do
       get :index, params: { patient_id: patient.to_param, past_sort: 'injected_column' }
       expect(assigns(:past_sort)).to eq('name')
     end
-  end
-
-  describe 'GET #index sorting past medications by doctor name' do
-    let!(:past_a) { create(:medication, :past, patient: patient, name: 'Zyrtec', doctor: create(:doctor, patient: patient, name: 'Dr. Adams')) }
-    let!(:past_z) { create(:medication, :past, patient: patient, name: 'Aspirin', doctor: create(:doctor, patient: patient, name: 'Dr. Zane')) }
 
     it 'sorts past medications by doctor name ascending' do
       get :index, params: { patient_id: patient.to_param, past_sort: 'doctor_name', past_direction: 'asc' }
       result = assigns(:past_medications).to_a
-      expect(result.index(past_a)).to be < result.index(past_z)
+      expect(result.index(past_x)).to be < result.index(past_y)
     end
   end
 
@@ -207,9 +227,9 @@ RSpec.describe MedicationsController, type: :controller do
 
     context 'with valid params' do
       it 'creates a new Medication' do
-        expect {
+        expect do
           post :create, params: { patient_id: patient.to_param, medication: valid_attributes }
-        }.to change(Medication, :count).by(1)
+        end.to change(Medication, :count).by(1)
       end
 
       it 'assigns a newly created medication as @medication', :aggregate_failures do
@@ -233,9 +253,9 @@ RSpec.describe MedicationsController, type: :controller do
       let(:invalid_attributes) { { name: nil } }
 
       it 'does not create a new Medication' do
-        expect {
+        expect do
           post :create, params: { patient_id: patient.to_param, medication: invalid_attributes }
-        }.not_to change(Medication, :count)
+        end.not_to change(Medication, :count)
       end
 
       it 'assigns a newly created but unsaved medication as @medication' do
@@ -268,12 +288,14 @@ RSpec.describe MedicationsController, type: :controller do
       end
 
       it 'assigns the requested medication as @medication' do
-        put :update, params: { patient_id: patient.to_param, id: medication.to_param, medication: attributes_for(:medication) }
+        put :update,
+            params: { patient_id: patient.to_param, id: medication.to_param, medication: attributes_for(:medication) }
         expect(assigns(:medication)).to eq(medication)
       end
 
       it 'redirects to the medication' do
-        put :update, params: { patient_id: patient.to_param, id: medication.to_param, medication: attributes_for(:medication) }
+        put :update,
+            params: { patient_id: patient.to_param, id: medication.to_param, medication: attributes_for(:medication) }
         expect(response).to redirect_to(patient_medication_path(patient, medication))
       end
     end
@@ -310,9 +332,9 @@ RSpec.describe MedicationsController, type: :controller do
 
     it 'destroys the requested medication' do
       medication
-      expect {
+      expect do
         delete :destroy, params: { patient_id: patient.to_param, id: medication.to_param }
-      }.to change(Medication, :count).by(-1)
+      end.to change(Medication, :count).by(-1)
     end
 
     it 'redirects to the medications list' do
@@ -325,7 +347,7 @@ RSpec.describe MedicationsController, type: :controller do
     let(:medication) { create(:medication, :active, patient: patient) }
     let(:fixed_date) { Date.new(2026, 4, 26) }
 
-    before { allow(Date).to receive(:today).and_return(fixed_date) }
+    around { |example| travel_to(fixed_date, &example) }
 
     it 'sets date_stopped to today' do
       patch :stop, params: { patient_id: patient.to_param, id: medication.to_param }

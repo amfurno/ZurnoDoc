@@ -1,6 +1,6 @@
 namespace :patient_data do
-  desc "Generate faker-backed doctor and medication records for a patient"
-  task :generate, [ :patient_id, :doctor_count, :medication_count ] => :environment do |_task, args|
+  desc 'Generate faker-backed doctor and medication records for a patient'
+  task :generate, %i[patient_id doctor_count medication_count] => :environment do |_task, args|
     patient_id = args[:patient_id]
     doctor_count = args[:doctor_count].to_i.positive? ? args[:doctor_count].to_i : 3
     medication_count = args[:medication_count].to_i.positive? ? args[:medication_count].to_i : 8
@@ -35,11 +35,11 @@ namespace :patient_data do
           # Randomly associate medication to a doctor (if doctors exist), or nil
           doctor = created_doctors.sample
           medication = patient.medications.create!(
-            name: Faker::Lorem.words(number: Faker::Number.between(from: 1, to: 3)).join(" ").titleize,
+            name: Faker::Lorem.words(number: Faker::Number.between(from: 1, to: 3)).join(' ').titleize,
             drug_class: Faker::Job.title,
-            dosage: "#{Faker::Number.between(from: 1, to: 1000)} #{[ 'mg', 'ml', 'units' ].sample}",
+            dosage: "#{Faker::Number.between(from: 1, to: 1000)} #{%w[mg ml units].sample}",
             date_started: Faker::Date.backward(days: 365),
-            date_stopped: [ nil, Faker::Date.backward(days: 1) ].sample,
+            date_stopped: [nil, Faker::Date.backward(days: 1)].sample,
             notes: Faker::Lorem.paragraph(sentence_count: 2),
             side_effects: Faker::Lorem.sentence,
             doctor_id: doctor&.id

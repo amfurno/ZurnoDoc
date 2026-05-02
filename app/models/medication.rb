@@ -10,10 +10,10 @@ class Medication < ApplicationRecord
   scope :past,   -> { where.not(date_stopped: nil) }
 
   def self.sorted(column, direction)
-    col = SORTABLE_COLUMNS.include?(column.to_s) ? column.to_s : "name"
-    dir = direction == "desc" ? "desc" : "asc"
+    col = SORTABLE_COLUMNS.include?(column.to_s) ? column.to_s : 'name'
+    dir = direction == 'desc' ? 'desc' : 'asc'
 
-    if col == "doctor_name"
+    if col == 'doctor_name'
       left_joins(:doctor).order(Arel.sql("doctors.name #{dir} NULLS LAST"))
     else
       order(Arel.sql("#{connection.quote_column_name(col)} #{dir}"))

@@ -7,17 +7,14 @@ class MedicationsController < ApplicationController
     # Access is already scoped through set_patient, which gates the parent patient
     # to the current user. policy_scope is intentionally skipped here.
     skip_policy_scope
-    @active_sort      = resolve_sort(params[:active_sort])
-    @active_direction = resolve_direction(params[:active_direction])
-    @past_sort        = resolve_sort(params[:past_sort])
-    @past_direction   = resolve_direction(params[:past_direction])
+    assign_sort_vars(params)
 
     @active_medications = @patient.medications.active
-                                   .sorted(@active_sort, @active_direction)
-                                   .includes(:doctor)
+                                  .sorted(@active_sort, @active_direction)
+                                  .includes(:doctor)
     @past_medications   = @patient.medications.past
-                                   .sorted(@past_sort, @past_direction)
-                                   .includes(:doctor)
+                                  .sorted(@past_sort, @past_direction)
+                                  .includes(:doctor)
   end
 
   def show
@@ -29,6 +26,10 @@ class MedicationsController < ApplicationController
     authorize @medication
   end
 
+  def edit
+    authorize @medication
+  end
+
   def create
     @medication = @patient.medications.build(medication_params)
     authorize @medication
@@ -37,10 +38,6 @@ class MedicationsController < ApplicationController
     else
       render :new, status: :unprocessable_content
     end
-  end
-
-  def edit
-    authorize @medication
   end
 
   def update
@@ -60,7 +57,7 @@ class MedicationsController < ApplicationController
 
   def stop
     authorize @medication
-    @medication.update!(date_stopped: Date.today)
+    @medication.update!(date_stopped: Time.zone.today)
     redirect_to patient_medication_path(@patient, @medication)
   end
 
@@ -79,14 +76,22 @@ class MedicationsController < ApplicationController
   end
 
   def resolve_sort(column)
-    Medication::SORTABLE_COLUMNS.include?(column.to_s) ? column.to_s : "name"
+    Medication::SORTABLE_COLUMNS.include?(column.to_s) ? column.to_s : 'name'
   end
 
   def resolve_direction(direction)
-    direction == "desc" ? "desc" : "asc"
+    direction == 'desc' ? 'desc' : 'asc'
   end
 
   def medication_params
-    params.expect(medication: [ :name, :drug_class, :dosage, :date_started, :date_stopped, :notes, :side_effects, :doctor_id ])
+    params.expect(medication: %i[name drug_class dosage date_started date_stopped notes side_effects
+                                 doctor_id])
+  end
+
+  def assign_sort_vars(req_params)
+    @active_sort      = resolve_sort(req_params[:active_sort])
+    @active_direction = resolve_direction(req_params[:active_direction])
+    @past_sort        = resolve_sort(req_params[:past_sort])
+    @past_direction   = resolve_direction(req_params[:past_direction])
   end
 end

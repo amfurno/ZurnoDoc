@@ -1,11 +1,11 @@
 require 'rails_helper'
 
 RSpec.describe DoctorsController, type: :controller do
-  let(:user) { User.create!(email_address: 'user@example.com', password: 'password123') }
-  let(:session_record) { user.sessions.create!(user_agent: 'TestBrowser', ip_address: '127.0.0.1') }
-  let(:patient) { user.patients.create!(name: 'Jane Doe') }
+  include_context 'with authenticated controller'
 
-  let(:valid_attributes) {
+  let(:patient) { create(:patient, user: user) }
+
+  let(:valid_attributes) do
     {
       name: 'Dr. John Doe',
       practice: 'Family Practice',
@@ -15,28 +15,11 @@ RSpec.describe DoctorsController, type: :controller do
       fax_number: '123-456-7891',
       address: '123 Main St, Anytown, USA'
     }
-  }
-
-  let(:invalid_attributes) {
-    { name: nil }
-  }
+  end
 
   let(:doctor) { patient.doctors.create! valid_attributes }
 
-  before do
-    allow(controller).to receive(:resume_session) do
-      Current.session = session_record
-    end
-  end
-
-  describe 'unauthenticated access' do
-    before { allow(controller).to receive(:resume_session).and_call_original }
-
-    it 'redirects to sign-in when not authenticated' do
-      get :index, params: { patient_id: patient.to_param }
-      expect(response).to redirect_to(login_path)
-    end
-  end
+  it_behaves_like 'it redirects unauthenticated requests', -> { { patient_id: patient.to_param } }
 
   describe 'GET #index' do
     it 'returns a success response' do
@@ -47,7 +30,7 @@ RSpec.describe DoctorsController, type: :controller do
     it "assigns the patient's doctors as @doctors" do
       doctor
       get :index, params: { patient_id: patient.to_param }
-      expect(assigns(:doctors)).to eq([ doctor ])
+      expect(assigns(:doctors)).to eq([doctor])
     end
   end
 
@@ -78,12 +61,12 @@ RSpec.describe DoctorsController, type: :controller do
   describe 'POST #create' do
     context 'with valid params' do
       it 'creates a new Doctor' do
-        expect {
+        expect do
           post :create, params: { patient_id: patient.to_param, doctor: valid_attributes }
-        }.to change(Doctor, :count).by(1)
+        end.to change(Doctor, :count).by(1)
       end
 
-      it 'assigns a newly created doctor as @doctor' do
+      it 'assigns a newly created doctor as @doctor', :aggregate_failures do
         post :create, params: { patient_id: patient.to_param, doctor: valid_attributes }
         expect(assigns(:doctor)).to be_a(Doctor)
         expect(assigns(:doctor)).to be_persisted
@@ -102,23 +85,23 @@ RSpec.describe DoctorsController, type: :controller do
 
     context 'with invalid params' do
       it 'does not create a new Doctor' do
-        expect {
-          post :create, params: { patient_id: patient.to_param, doctor: invalid_attributes }
-        }.not_to change(Doctor, :count)
+        expect do
+          post :create, params: { patient_id: patient.to_param, doctor: { name: '' } }
+        end.not_to change(Doctor, :count)
       end
 
       it 'assigns a newly created but unsaved doctor as @doctor' do
-        post :create, params: { patient_id: patient.to_param, doctor: invalid_attributes }
+        post :create, params: { patient_id: patient.to_param, doctor: { name: '' } }
         expect(assigns(:doctor)).to be_a_new(Doctor)
       end
 
       it 're-renders the new template' do
-        post :create, params: { patient_id: patient.to_param, doctor: invalid_attributes }
+        post :create, params: { patient_id: patient.to_param, doctor: { name: '' } }
         expect(response).to render_template(:new)
       end
 
       it 'returns unprocessable_content status' do
-        post :create, params: { patient_id: patient.to_param, doctor: invalid_attributes }
+        post :create, params: { patient_id: patient.to_param, doctor: { name: '' } }
         expect(response).to have_http_status(:unprocessable_content)
       end
     end
@@ -138,12 +121,8 @@ RSpec.describe DoctorsController, type: :controller do
 
   describe 'PUT #update' do
     context 'with valid params' do
-      let(:new_attributes) {
-        { name: 'Dr. Jane Smith' }
-      }
-
       it 'updates the requested doctor' do
-        put :update, params: { patient_id: patient.to_param, id: doctor.to_param, doctor: new_attributes }
+        put :update, params: { patient_id: patient.to_param, id: doctor.to_param, doctor: { name: 'Dr. Jane Smith' } }
         doctor.reload
         expect(doctor.name).to eq('Dr. Jane Smith')
       end
@@ -162,23 +141,23 @@ RSpec.describe DoctorsController, type: :controller do
     context 'with invalid params' do
       it 'does not update the doctor' do
         original_name = doctor.name
-        put :update, params: { patient_id: patient.to_param, id: doctor.to_param, doctor: invalid_attributes }
+        put :update, params: { patient_id: patient.to_param, id: doctor.to_param, doctor: { name: '' } }
         doctor.reload
         expect(doctor.name).to eq(original_name)
       end
 
       it 'assigns the doctor as @doctor' do
-        put :update, params: { patient_id: patient.to_param, id: doctor.to_param, doctor: invalid_attributes }
+        put :update, params: { patient_id: patient.to_param, id: doctor.to_param, doctor: { name: '' } }
         expect(assigns(:doctor)).to eq(doctor)
       end
 
       it 're-renders the edit template' do
-        put :update, params: { patient_id: patient.to_param, id: doctor.to_param, doctor: invalid_attributes }
+        put :update, params: { patient_id: patient.to_param, id: doctor.to_param, doctor: { name: '' } }
         expect(response).to render_template(:edit)
       end
 
       it 'returns unprocessable_content status' do
-        put :update, params: { patient_id: patient.to_param, id: doctor.to_param, doctor: invalid_attributes }
+        put :update, params: { patient_id: patient.to_param, id: doctor.to_param, doctor: { name: '' } }
         expect(response).to have_http_status(:unprocessable_content)
       end
     end
@@ -187,9 +166,9 @@ RSpec.describe DoctorsController, type: :controller do
   describe 'DELETE #destroy' do
     it 'destroys the requested doctor' do
       doctor
-      expect {
+      expect do
         delete :destroy, params: { patient_id: patient.to_param, id: doctor.to_param }
-      }.to change(Doctor, :count).by(-1)
+      end.to change(Doctor, :count).by(-1)
     end
 
     it 'redirects to the doctors list' do

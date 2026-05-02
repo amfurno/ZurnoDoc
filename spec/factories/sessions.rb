@@ -1,8 +1,8 @@
 FactoryBot.define do
   factory :session do
-    association :user
-    user_agent { "TestBrowser" }
-    ip_address { "127.0.0.1" }
+    user
+    user_agent { 'TestBrowser' }
+    ip_address { '127.0.0.1' }
     expires_at { Time.current + Session::SESSION_LENGTH }
     absolute_expires_at { Time.current + Session::ABSOLUTE_TTL }
 

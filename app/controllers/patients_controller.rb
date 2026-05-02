@@ -14,6 +14,10 @@ class PatientsController < ApplicationController
     authorize @patient
   end
 
+  def edit
+    authorize @patient
+  end
+
   def create
     @patient = Current.user.patients.build(patient_params)
     authorize @patient
@@ -22,10 +26,6 @@ class PatientsController < ApplicationController
     else
       render :new, status: :unprocessable_content
     end
-  end
-
-  def edit
-    authorize @patient
   end
 
   def update
@@ -50,6 +50,6 @@ class PatientsController < ApplicationController
   end
 
   def patient_params
-    params.expect(patient: [ :name ])
+    params.expect(patient: [:name])
   end
 end
