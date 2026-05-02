@@ -31,3 +31,6 @@ Style/Documentation:
 
 Style/ConditionalAssignment:
   Enabled: false
+
+RSpecRails/InferredSpecType:
+  Enabled: false

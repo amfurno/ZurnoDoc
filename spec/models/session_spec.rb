@@ -8,7 +8,7 @@ RSpec.describe Session, type: :model do
   let(:frozen_time) { Time.zone.parse('2026-01-01 12:00:00') }
   let(:user) { User.create!(email_address: 'user@example.com', password: 'password123') }
 
-  around { |example| travel_to(frozen_time) { example.run } }
+  before { travel_to(frozen_time) }
 
   describe 'associations' do
     it 'belongs to a user' do

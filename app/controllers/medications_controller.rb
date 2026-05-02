@@ -7,10 +7,7 @@ class MedicationsController < ApplicationController
     # Access is already scoped through set_patient, which gates the parent patient
     # to the current user. policy_scope is intentionally skipped here.
     skip_policy_scope
-    @active_sort      = resolve_sort(params[:active_sort])
-    @active_direction = resolve_direction(params[:active_direction])
-    @past_sort        = resolve_sort(params[:past_sort])
-    @past_direction   = resolve_direction(params[:past_direction])
+    assign_sort_vars(params)
 
     @active_medications = @patient.medications.active
                                   .sorted(@active_sort, @active_direction)
@@ -60,7 +57,7 @@ class MedicationsController < ApplicationController
 
   def stop
     authorize @medication
-    @medication.update!(date_stopped: Date.today)
+    @medication.update!(date_stopped: Time.zone.today)
     redirect_to patient_medication_path(@patient, @medication)
   end
 
@@ -89,5 +86,12 @@ class MedicationsController < ApplicationController
   def medication_params
     params.expect(medication: %i[name drug_class dosage date_started date_stopped notes side_effects
                                  doctor_id])
+  end
+
+  def assign_sort_vars(req_params)
+    @active_sort      = resolve_sort(req_params[:active_sort])
+    @active_direction = resolve_direction(req_params[:active_direction])
+    @past_sort        = resolve_sort(req_params[:past_sort])
+    @past_direction   = resolve_direction(req_params[:past_direction])
   end
 end
