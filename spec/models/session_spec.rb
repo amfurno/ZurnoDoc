@@ -60,13 +60,13 @@ RSpec.describe Session, type: :model do
 
     it 'returns true when expires_at is in the past' do
       session.save!
-      session.update_columns(expires_at: 1.minute.ago)
+      session.update(expires_at: 1.minute.ago)
       expect(session).to be_expired
     end
 
     it 'returns true when absolute_expires_at is in the past' do
       session.save!
-      session.update_columns(absolute_expires_at: 1.minute.ago)
+      session.update(absolute_expires_at: 1.minute.ago)
       expect(session).to be_expired
     end
   end
@@ -87,7 +87,7 @@ RSpec.describe Session, type: :model do
 
       it 'caps expires_at at absolute_expires_at' do
         close_to_absolute = frozen_time + 5.minutes
-        active_session.update_columns(absolute_expires_at: close_to_absolute)
+        active_session.update(absolute_expires_at: close_to_absolute)
         active_session.slide!
         expect(active_session.reload.expires_at).to eq(close_to_absolute)
       end

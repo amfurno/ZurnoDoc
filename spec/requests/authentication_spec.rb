@@ -12,7 +12,7 @@ RSpec.describe 'Authentication', type: :request do
     before { sign_in }
 
     it 'redirects to login when the session has expired' do
-      Session.last.update_columns(expires_at: 1.minute.ago)
+      Session.last.update(expires_at: 1.minute.ago)
       get patients_path
       expect(response).to redirect_to(login_path)
     end
@@ -24,14 +24,14 @@ RSpec.describe 'Authentication', type: :request do
     context 'when absolute TTL is reached' do
       it 'destroys the session' do
         session_record = Session.last
-        session_record.update_columns(absolute_expires_at: 1.minute.ago, expires_at: 5.minutes.from_now)
+        session_record.update(absolute_expires_at: 1.minute.ago, expires_at: 5.minutes.from_now)
 
         expect { get patients_path }.to change(Session, :count).by(-1)
       end
 
       it 'redirects to login when absolute TTL is reached' do
         session_record = Session.last
-        session_record.update_columns(absolute_expires_at: 1.minute.ago, expires_at: 5.minutes.from_now)
+        session_record.update(absolute_expires_at: 1.minute.ago, expires_at: 5.minutes.from_now)
         get patients_path
         expect(response).to redirect_to(login_path)
       end

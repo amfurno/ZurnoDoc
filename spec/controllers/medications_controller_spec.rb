@@ -347,7 +347,7 @@ RSpec.describe MedicationsController, type: :controller do
     let(:medication) { create(:medication, :active, patient: patient) }
     let(:fixed_date) { Date.new(2026, 4, 26) }
 
-    before { allow(Date).to receive(:today).and_return(fixed_date) }
+    around { |example| travel_to(fixed_date, &example) }
 
     it 'sets date_stopped to today' do
       patch :stop, params: { patient_id: patient.to_param, id: medication.to_param }
