@@ -34,7 +34,13 @@
 				"kaiwood.endwise"
 			]
 		}
-	}
+	},
+
+	// Mount host SSH keys into the container as read-only so Kamal/SSH can use them
+	// without the container being able to modify or delete them.
+	"mounts": [
+		"source=${localEnv:HOME}/.ssh,target=/root/.ssh,type=bind,consistency=cached,readonly"
+	]
 
 	// Configure tool-specific properties.
 	// "customizations": {},
