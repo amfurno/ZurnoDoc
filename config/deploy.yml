@@ -5,10 +5,9 @@ service: zurno_doc
 # Replace YOURNAME with your Docker Hub username.
 image: amfurno/zurnodoc
 # Deploy to these servers.
-# Replace with your VM's public IP address.
 servers:
   web:
-    - YOUR_SERVER_IP
+    - 146.190.209.9
 
 # Enable SSL auto certification via Let's Encrypt and allow for multiple apps on a single web server.
 # If used with Cloudflare, set encryption mode in SSL/TLS setting to "Full" to enable CF-to-app encryption.
@@ -17,13 +16,11 @@ servers:
 #
 # Don't use this when deploying to multiple web servers (then you have to terminate SSL at your load balancer).
 #
-# proxy:
-#   ssl: true
-#   host: app.example.com
+proxy:
+  ssl: true
+  host: zurnodoc.com
 
-# Docker Hub registry.
-# Replace YOURNAME with your Docker Hub username.
-# Set KAMAL_REGISTRY_PASSWORD to a Docker Hub access token in .kamal/secrets.
+# password set in .env file
 registry:
   server: registry.hub.docker.com
   username: amfurno
@@ -86,7 +83,7 @@ builder:
 accessories:
   db:
     image: postgres:16
-    host: YOUR_SERVER_IP
+    host: 146.190.209.9
     port: "127.0.0.1:5432:5432"
     env:
       secret:
