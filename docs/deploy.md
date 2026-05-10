@@ -56,15 +56,6 @@ Docker Hub  ──────────────────────�
 - A fresh Linux VM (Kamal installs Docker automatically via `kamal setup`)
 - Ports 80 and 22 open in the firewall
 
-## Configuration
-
-Two placeholder values in [config/deploy.yml](../config/deploy.yml) must be set before first deploy:
-
-| Placeholder | Replace with |
-|---|---|
-| `YOURNAME` | Your Docker Hub username (appears twice — `image` and `registry.username`) |
-| `YOUR_SERVER_IP` | The VM's public IP address (appears twice — `servers.web` and `accessories.db.host`) |
-
 ## Secrets
 
 Secrets are never committed to git. They are read from your shell environment by [.kamal/secrets](../.kamal/secrets) at deploy time.
@@ -141,29 +132,6 @@ bin/kamal app details
 bin/kamal accessory reboot db
 ```
 
-## Adding SSL
+## SSL
 
-When you have a domain name pointed at the VM:
-
-1. Uncomment and configure the `proxy` block in [config/deploy.yml](../config/deploy.yml):
-
-    ```yaml
-    proxy:
-      ssl: true
-      host: your-domain.com
-    ```
-
-2. Uncomment in [config/environments/production.rb](../config/environments/production.rb):
-
-    ```ruby
-    config.assume_ssl = true
-    config.force_ssl  = true
-    ```
-
-3. Update the mailer host:
-
-    ```ruby
-    config.action_mailer.default_url_options = { host: 'your-domain.com' }
-    ```
-
-4. Run `bin/kamal deploy`. Thruster will obtain a Let's Encrypt certificate automatically.
+SSL is already configured. Thruster obtains and renews a Let's Encrypt certificate for `zurnodoc.com` automatically on first deploy. No manual steps needed.
