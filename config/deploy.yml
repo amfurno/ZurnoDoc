@@ -3,8 +3,7 @@ service: zurno_doc
 
 # Name of the container image.
 # Replace YOURNAME with your Docker Hub username.
-image: YOURNAME/zurno_doc
-
+image: amfurno/zurnodoc
 # Deploy to these servers.
 # Replace with your VM's public IP address.
 servers:
@@ -27,7 +26,7 @@ servers:
 # Set KAMAL_REGISTRY_PASSWORD to a Docker Hub access token in .kamal/secrets.
 registry:
   server: registry.hub.docker.com
-  username: YOURNAME
+  username: amfurno
   password:
     - KAMAL_REGISTRY_PASSWORD
 
