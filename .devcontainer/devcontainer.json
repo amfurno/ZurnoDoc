@@ -36,11 +36,8 @@
 		}
 	},
 
-	// Mount host SSH keys into the container as read-only so Kamal/SSH can use them
-	// without the container being able to modify or delete them.
-	"mounts": [
-		"source=${localEnv:HOME}/.ssh,target=/root/.ssh,type=bind,consistency=cached,readonly"
-	]
+	// SSH keys are mounted via docker-compose.yml volumes (${HOME}/.ssh → /home/vscode/.ssh:ro)
+	// so that WSL2's ~/.ssh is used rather than the Windows host HOME resolved by devcontainer.json.
 
 	// Configure tool-specific properties.
 	// "customizations": {},
