@@ -23,6 +23,23 @@ test:
   <<: *default
   database: zurnoDoc_test
 
-# Production uses DATABASE_URL environment variable for deployment flexibility
+# Production uses separate connections for the Solid suite (queue, cache, cable).
+# POSTGRES_HOST, POSTGRES_USER, and POSTGRES_PASSWORD are injected by Kamal (see config/deploy.yml).
 production:
-  url: <%= ENV["DATABASE_URL"] %>
+  primary: &production_default
+    adapter: postgresql
+    encoding: unicode
+    pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+    host: <%= ENV.fetch("POSTGRES_HOST", "localhost") %>
+    username: <%= ENV.fetch("POSTGRES_USER", "postgres") %>
+    password: <%= ENV["POSTGRES_PASSWORD"] %>
+    database: zurno_doc_production
+  queue:
+    <<: *production_default
+    database: zurno_doc_queue
+  cache:
+    <<: *production_default
+    database: zurno_doc_cache
+  cable:
+    <<: *production_default
+    database: zurno_doc_cable

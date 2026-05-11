@@ -25,6 +25,13 @@
 # Any libraries that use a connection pool or another resource pool should
 # be configured to provide at least as many connections as the number of
 # threads. This includes Active Record's `pool` parameter in `database.yml`.
+# Single mode: only 1 vCPU available, so cluster mode (workers > 0) would add
+# master-process overhead without any parallelism benefit. Puma docs recommend
+# single mode for single-core environments.
+workers 0
+
+# With 1 GB RAM, keep threads low. Each thread holds a DB connection and stack
+# memory. 3 threads is a safe ceiling that still absorbs typical I/O wait.
 threads_count = ENV.fetch('RAILS_MAX_THREADS', 3)
 threads threads_count, threads_count
 
