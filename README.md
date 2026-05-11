@@ -164,7 +164,7 @@ See [`docs/deploy.md`](docs/deploy.md) for the full deployment guide.
 ## Repository highlights
 
 - `app/controllers/concerns/authentication.rb` handles session-based auth
-- `app/policies/` contains authorization rules
+- `app/policies/` contains the Pundit authorization rules
 - `app/models/` contains the core medical record models
 - `spec/` contains the RSpec suite
 - `docker-compose.dev.yml` provides an isolated test stack
