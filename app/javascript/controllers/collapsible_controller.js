@@ -1,7 +1,7 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ["content", "icon"]
+  static targets = ["content", "icon", "header"]
   static values = { key: String, expanded: { type: Boolean, default: true } }
 
   connect() {
@@ -23,9 +23,11 @@ export default class extends Controller {
   }
 
   applyState() {
-    if (this.expandedValue) {
+    const expanded = this.expandedValue
+    this.headerTarget.setAttribute("aria-expanded", expanded)
+    if (expanded) {
       this.contentTarget.classList.remove("is-hidden")
-      this.iconTarget.textContent = "−"
+      this.iconTarget.textContent = "-"
     } else {
       this.contentTarget.classList.add("is-hidden")
       this.iconTarget.textContent = "+"
