@@ -58,7 +58,7 @@ RSpec.describe 'Collapsible boxes on patient show page', type: :request do
   end
 
   it 'renders role=button on each section header' do
-    expect(response.body.scan('role="button"').length).to eq(3)
+    expect(response.body.scan(/role="button"[^>]*data-collapsible-target="header"|data-collapsible-target="header"[^>]*role="button"/).length).to eq(3)
   end
 
   it 'renders tabindex=0 on each section header' do
