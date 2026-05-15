@@ -1,0 +1,21 @@
+<%# locals: (title:, key:, actions: nil) %>
+<div class="box has-background-primary-95" data-controller="collapsible" data-collapsible-key-value="<%= key %>">
+  <div class="level collapsible-header"
+       role="button"
+       tabindex="0"
+       aria-expanded="true"
+       data-collapsible-target="header"
+       data-action="click->collapsible#toggle keydown.enter->collapsible#toggle keydown.space->collapsible#toggle">
+    <div class="level-left">
+      <h2 class="title is-4"><span data-collapsible-target="icon" class="mr-2 collapsible-icon">-</span><%= title %></h2>
+    </div>
+    <% if actions.present? %>
+      <div class="level-right collapsible-actions">
+        <%= actions %>
+      </div>
+    <% end %>
+  </div>
+  <div data-collapsible-target="content">
+    <%= yield %>
+  </div>
+</div>

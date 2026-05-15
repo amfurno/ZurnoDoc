@@ -54,6 +54,13 @@ rubocop             # check remaining offenses (fix manually)
 - TargetRubyVersion is 4.0.
 - Always use **LF** line endings (`\n`) when creating or editing `.rb` files. CRLF (`\r\n`) will cause a `Layout/EndOfLine` rubocop offense.
 
+## GitHub Access
+
+- The `gh` CLI is **not available** in this dev container. Do not attempt to use it.
+- GitHub operations (creating PRs, fetching issues, etc.) must be done via the **MCP GitHub tools** (`mcp_io_github_git_*`), which are available to Copilot agents.
+- Repository: `amfurno/ZurnoDoc` — owner `amfurno`, repo `ZurnoDoc`.
+- Issue and PR details can also be fetched from the GitHub REST API: `https://api.github.com/repos/amfurno/ZurnoDoc/issues/<number>`.
+
 ## CI Pipeline
 
 Five GitHub Actions jobs (all run from `zurnoDoc/`):
