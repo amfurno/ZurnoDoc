@@ -24,24 +24,17 @@
   </head>
 
   <body>
-    <nav class="navbar" role="navigation" aria-label="main navigation" data-controller="navbar">
+    <nav class="navbar is-light" role="navigation" aria-label="main navigation">
       <div class="navbar-brand">
         <span class="navbar-item has-text-weight-bold">Zurno Doc</span>
-        <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false"
-           data-navbar-target="burger" data-action="click->navbar#toggle">
-          <span aria-hidden="true"></span>
-          <span aria-hidden="true"></span>
-          <span aria-hidden="true"></span>
-          <span aria-hidden="true"></span>
-        </a>
       </div>
-      <div class="navbar-menu" data-navbar-target="menu">
+      <div class="navbar-menu">
         <div class="navbar-end">
           <div class="navbar-item">
             <% if authenticated? %>
               <%= button_to "Sign Out", session_path, method: :delete, class: "button is-danger is-light" %>
             <% else %>
-              <%= link_to "Sign In", login_path, class: "button is-outlined mr-2" unless current_page?(login_path) %>
+              <%= link_to "Sign In", login_path, class: "button is-light mr-2" %>
               <%= link_to "Sign Up", new_user_path, class: "button is-primary" %>
             <% end %>
           </div>
