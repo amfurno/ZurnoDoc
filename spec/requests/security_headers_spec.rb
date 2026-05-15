@@ -75,4 +75,16 @@ RSpec.describe 'Security headers', type: :request do
       expect(policy).to include('payment=()')
     end
   end
+
+  describe 'Cross-Origin-Opener-Policy' do
+    it 'is set to same-origin' do
+      expect(response_headers['Cross-Origin-Opener-Policy']).to eq('same-origin')
+    end
+  end
+
+  describe 'Cross-Origin-Resource-Policy' do
+    it 'is set to same-origin' do
+      expect(response_headers['Cross-Origin-Resource-Policy']).to eq('same-origin')
+    end
+  end
 end

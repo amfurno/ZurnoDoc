@@ -10,6 +10,14 @@ Rails.application.configure do
     'X-Frame-Options' => 'DENY',
 
     # Restrict browser feature access. Adjust if the app ever needs camera/geo.
-    'Permissions-Policy' => 'camera=(), microphone=(), geolocation=(), payment=()'
+    'Permissions-Policy' => 'camera=(), microphone=(), geolocation=(), payment=()',
+
+    # Prevents cross-origin windows from retaining a reference to this browsing
+    # context — mitigates Spectre-style cross-origin data leak attacks.
+    'Cross-Origin-Opener-Policy' => 'same-origin',
+
+    # Prevents other origins from loading our responses via no-cors requests
+    # (e.g. <img>, <script> tags from foreign pages).
+    'Cross-Origin-Resource-Policy' => 'same-origin'
   )
 end
