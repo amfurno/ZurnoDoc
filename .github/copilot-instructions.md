@@ -52,6 +52,7 @@ rubocop             # check remaining offenses (fix manually)
 - Style base: `rubocop-rails-omakase` (inherited in `.rubocop.yml`).
 - `rubocop-rspec` cop set is also active.
 - TargetRubyVersion is 4.0.
+- Always use **LF** line endings (`\n`) when creating or editing `.rb` files. CRLF (`\r\n`) will cause a `Layout/EndOfLine` rubocop offense.
 
 ## CI Pipeline
 
