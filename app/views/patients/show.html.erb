@@ -10,90 +10,69 @@
 
     <%# Doctors %>
     <div class="column">
-      <div class="box has-background-primary-95" data-controller="collapsible" data-collapsible-key-value="doctors">
-        <div class="level" style="cursor: pointer;" data-action="click->collapsible#toggle">
-          <div class="level-left">
-            <h2 class="title is-4"><span data-collapsible-target="icon" class="mr-2" style="font-weight: normal;">−</span>Doctors</h2>
-          </div>
-          <div class="level-right" style="gap: 0.5rem;">
-            <%= link_to "View All", patient_doctors_path(@patient), class: "button is-info is-small", data: { action: "click->collapsible#stopPropagation" } %>
-            <%= link_to "Add Doctor", new_patient_doctor_path(@patient), class: "button is-primary is-small", data: { action: "click->collapsible#stopPropagation" } %>
-          </div>
-        </div>
-        <div data-collapsible-target="content">
-          <% if @patient.doctors.any? %>
-            <% @patient.doctors.order(updated_at: :desc).limit(5).each do |doctor| %>
-              <div class="box">
-                <div class="level is-flex-wrap-wrap" style="gap: 0.5rem;">
-                  <div class="level-left is-flex-grow-1" style="min-width: 0;">
-                    <div>
-                      <p class="has-text-weight-bold"><%= doctor.name %></p>
-                      <p class="is-size-6"><%= doctor.practice %></p>
-                      <p class="is-size-6 has-text-grey"><%= doctor.speciality %></p>
-                    </div>
-                  </div>
-                  <div class="level-right">
-                    <%= link_to "View", patient_doctor_path(@patient, doctor), class: "button is-info is-small" %>
+      <% doctors_actions = capture do %>
+        <%= link_to "View All", patient_doctors_path(@patient), class: "button is-info is-small", data: { action: "click->collapsible#stopPropagation" } %>
+        <%= link_to "Add Doctor", new_patient_doctor_path(@patient), class: "button is-primary is-small", data: { action: "click->collapsible#stopPropagation" } %>
+      <% end %>
+      <%= render layout: "patients/section_box", locals: { title: "Doctors", key: "doctors", actions: doctors_actions } do %>
+        <% if @patient.doctors.any? %>
+          <% @patient.doctors.order(updated_at: :desc).limit(5).each do |doctor| %>
+            <div class="box">
+              <div class="level is-flex-wrap-wrap" style="gap: 0.5rem;">
+                <div class="level-left is-flex-grow-1" style="min-width: 0;">
+                  <div>
+                    <p class="has-text-weight-bold"><%= doctor.name %></p>
+                    <p class="is-size-6"><%= doctor.practice %></p>
+                    <p class="is-size-6 has-text-grey"><%= doctor.speciality %></p>
                   </div>
                 </div>
+                <div class="level-right">
+                  <%= link_to "View", patient_doctor_path(@patient, doctor), class: "button is-info is-small" %>
+                </div>
               </div>
-            <% end %>
-          <% else %>
-            <p class="has-text-grey">No doctors added yet.</p>
+            </div>
           <% end %>
-        </div>
-      </div>
+        <% else %>
+          <p class="has-text-grey">No doctors added yet.</p>
+        <% end %>
+      <% end %>
     </div>
 
     <%# Medications %>
     <div class="column">
-      <div class="box has-background-primary-95" data-controller="collapsible" data-collapsible-key-value="medications">
-        <div class="level" style="cursor: pointer;" data-action="click->collapsible#toggle">
-          <div class="level-left">
-            <h2 class="title is-4"><span data-collapsible-target="icon" class="mr-2" style="font-weight: normal;">−</span>Medications</h2>
-          </div>
-          <div class="level-right" style="gap: 0.5rem;">
-            <%= link_to "View All", patient_medications_path(@patient), class: "button is-info is-small", data: { action: "click->collapsible#stopPropagation" } %>
-            <%= link_to "Add Medication", new_patient_medication_path(@patient), class: "button is-primary is-small", data: { action: "click->collapsible#stopPropagation" } %>
-          </div>
-        </div>
-        <div data-collapsible-target="content">
-          <% if @patient.medications.any? %>
-            <% @patient.medications.includes(:doctor).order(updated_at: :desc).where(date_stopped: nil).limit(5).each do |medication| %>
-              <div class="box">
-                <div class="level is-flex-wrap-wrap" style="gap: 0.5rem;">
-                  <div class="level-left is-flex-grow-1" style="min-width: 0;">
-                    <div>
-                      <p class="has-text-weight-bold"><%= medication.name %></p>
-                      <p class="is-size-6"><%= medication.drug_class %></p>
-                      <p class="is-size-6 has-text-grey"><%= medication.doctor&.name %></p>
-                    </div>
-                  </div>
-                  <div class="level-right">
-                    <%= link_to "View", patient_medication_path(@patient, medication), class: "button is-info is-small" %>
+      <% medications_actions = capture do %>
+        <%= link_to "View All", patient_medications_path(@patient), class: "button is-info is-small", data: { action: "click->collapsible#stopPropagation" } %>
+        <%= link_to "Add Medication", new_patient_medication_path(@patient), class: "button is-primary is-small", data: { action: "click->collapsible#stopPropagation" } %>
+      <% end %>
+      <%= render layout: "patients/section_box", locals: { title: "Medications", key: "medications", actions: medications_actions } do %>
+        <% if @patient.medications.any? %>
+          <% @patient.medications.includes(:doctor).order(updated_at: :desc).where(date_stopped: nil).limit(5).each do |medication| %>
+            <div class="box">
+              <div class="level is-flex-wrap-wrap" style="gap: 0.5rem;">
+                <div class="level-left is-flex-grow-1" style="min-width: 0;">
+                  <div>
+                    <p class="has-text-weight-bold"><%= medication.name %></p>
+                    <p class="is-size-6"><%= medication.drug_class %></p>
+                    <p class="is-size-6 has-text-grey"><%= medication.doctor&.name %></p>
                   </div>
                 </div>
+                <div class="level-right">
+                  <%= link_to "View", patient_medication_path(@patient, medication), class: "button is-info is-small" %>
+                </div>
               </div>
-            <% end %>
-          <% else %>
-            <p class="has-text-grey">No medications added yet.</p>
+            </div>
           <% end %>
-        </div>
-      </div>
+        <% else %>
+          <p class="has-text-grey">No medications added yet.</p>
+        <% end %>
+      <% end %>
     </div>
 
     <%# Visits (placeholder) %>
     <div class="column">
-      <div class="box has-background-primary-95" data-controller="collapsible" data-collapsible-key-value="visits">
-        <div class="level" style="cursor: pointer;" data-action="click->collapsible#toggle">
-          <div class="level-left">
-            <h2 class="title is-4"><span data-collapsible-target="icon" class="mr-2" style="font-weight: normal;">−</span>Visits</h2>
-          </div>
-        </div>
-        <div data-collapsible-target="content">
-          <p class="has-text-grey">Coming soon.</p>
-        </div>
-      </div>
+      <%= render layout: "patients/section_box", locals: { title: "Visits", key: "visits" } do %>
+        <p class="has-text-grey">Coming soon.</p>
+      <% end %>
     </div>
 
   </div>

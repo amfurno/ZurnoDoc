@@ -23,8 +23,8 @@ RSpec.describe 'Collapsible boxes on patient show page', type: :request do
     expect(response.body).to include('data-collapsible-key-value="visits"')
   end
 
-  it 'wires the header row click to the toggle action' do
-    expect(response.body).to include('data-action="click->collapsible#toggle"')
+  it 'wires the header row click to the toggle action on all three sections' do
+    expect(response.body.scan('data-action="click->collapsible#toggle"').length).to eq(3)
   end
 
   it 'renders a collapsible content target for each section' do
