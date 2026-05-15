@@ -37,7 +37,7 @@ threads threads_count, threads_count
 
 # Specifies the `port` that Puma will listen on to receive requests; default is 3000.
 # Bind to both IPv4 and IPv6 so Thruster (which connects via [::1]) can reach Puma.
-port_number = ENV.fetch("PORT", 3000)
+port_number = ENV.fetch('PORT', 3000)
 bind "tcp://0.0.0.0:#{port_number}"
 bind "tcp://[::1]:#{port_number}"
 
