@@ -12,8 +12,11 @@ RSpec.describe 'Navbar', type: :request do
       expect(response.body).to include('navbar-burger')
     end
 
-    it 'wires the burger toggle via Stimulus' do
+    it 'sets the navbar Stimulus controller' do
       expect(response.body).to include('data-controller="navbar"')
+    end
+
+    it 'wires the burger click action to the Stimulus toggle' do
       expect(response.body).to include('data-action="click->navbar#toggle"')
     end
 
@@ -27,10 +30,10 @@ RSpec.describe 'Navbar', type: :request do
   end
 
   describe 'unauthenticated layout' do
-    context 'on a page other than sign-in' do
+    context 'when visiting a page other than sign-in' do
       before { get new_user_path }
 
-      include_examples 'a responsive, theme-aware navbar'
+      it_behaves_like 'a responsive, theme-aware navbar'
 
       it 'shows the sign-in link' do
         expect(response.body).to include('Sign In')
@@ -41,13 +44,13 @@ RSpec.describe 'Navbar', type: :request do
       end
     end
 
-    context 'on the sign-in page' do
+    context 'when on the sign-in page' do
       before { get login_path }
 
-      include_examples 'a responsive, theme-aware navbar'
+      it_behaves_like 'a responsive, theme-aware navbar'
 
-      it 'does not show the sign-in link' do
-        expect(response.body).not_to include('Sign In')
+      it 'does not render the sign-in link' do
+        expect(response.body).not_to include("href=\"#{login_path}\"")
       end
 
       it 'still shows the sign-up link' do
@@ -62,7 +65,7 @@ RSpec.describe 'Navbar', type: :request do
       get patients_path
     end
 
-    include_examples 'a responsive, theme-aware navbar'
+    it_behaves_like 'a responsive, theme-aware navbar'
 
     it 'shows a sign-out button' do
       expect(response.body).to include('Sign Out')
