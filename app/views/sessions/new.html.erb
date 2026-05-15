@@ -16,6 +16,10 @@
           <%= form.submit "Sign in", class: "button is-primary" %> <br>
         <% end %>
 
+        <div class="mt-4">
+          <p>Don't have an account? <%= link_to "Sign Up", new_user_path, class: "has-text-primary has-text-weight-semibold" %></p>
+        </div>
+
   <!--- <%= link_to "Forgot password?", new_password_path, class: "button is-danger" %> --->
       </div>
     </div>
