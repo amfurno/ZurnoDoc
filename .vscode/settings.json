@@ -3,7 +3,9 @@
     "ruby.rubocop.executePath": "/workspaces/ZurnoDoc/bin/",
     "rubyLsp.rubyExecutablePath": "/workspaces/ZurnoDoc/bin",
     "chat.tools.terminal.autoApprove": {
-        "bin/rails": true
+        "bin/rails": true,
+        "git rev-parse": true,
+        "git remote": true
     },
     "cSpell.words": [
         "rubocop"
