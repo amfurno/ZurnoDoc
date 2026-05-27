@@ -63,6 +63,8 @@ RSpec.describe 'Navbar', type: :request do
   end
 
   describe 'authenticated layout' do
+    let!(:patient) { create(:patient, user: user) }
+
     before do
       sign_in
       get patients_path
@@ -80,11 +82,11 @@ RSpec.describe 'Navbar', type: :request do
     end
 
     it 'does not show the Doctors nav link when no patient is selected' do
-      expect(response.body).not_to include('navbar-item">Doctors')
+      expect(response.body).not_to include(patient_doctors_path(patient))
     end
 
     it 'does not show the Medications nav link when no patient is selected' do
-      expect(response.body).not_to include('navbar-item">Medications')
+      expect(response.body).not_to include(patient_medications_path(patient))
     end
   end
 
