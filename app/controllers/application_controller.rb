@@ -10,6 +10,9 @@ class ApplicationController < ActionController::Base
 
   after_action :verify_authorized, except: :index
   after_action :verify_policy_scoped, only: :index
+  after_action :persist_current_patient, if: -> { @patient.present? && @patient.persisted? }
+
+  before_action :load_current_patient
 
   rescue_from Pundit::NotAuthorizedError, with: :pundit_not_authorized
 
@@ -27,5 +30,16 @@ class ApplicationController < ActionController::Base
 
   def pundit_user
     Current.user
+  end
+
+  def load_current_patient
+    return unless authenticated? && session[:current_patient_id].present?
+
+    Current.patient = Current.user.patients.find_by(id: session[:current_patient_id])
+    session[:current_patient_id] = nil unless Current.patient
+  end
+
+  def persist_current_patient
+    session[:current_patient_id] = @patient.id
   end
 end
