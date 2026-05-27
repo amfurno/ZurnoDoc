@@ -38,6 +38,16 @@
         <% end %>
       </div>
       <div class="navbar-menu" data-navbar-target="menu">
+        <div class="navbar-start">
+          <% if authenticated? %>
+            <%= link_to "Patients", patients_path, class: "navbar-item" %>
+            <% if current_patient %>
+              <%= link_to current_patient.name, patient_path(current_patient), class: "navbar-item" %>
+              <%= link_to "Doctors", patient_doctors_path(current_patient), class: "navbar-item" %>
+              <%= link_to "Medications", patient_medications_path(current_patient), class: "navbar-item" %>
+            <% end %>
+          <% end %>
+        </div>
         <div class="navbar-end">
           <div class="navbar-item">
             <% if authenticated? %>
