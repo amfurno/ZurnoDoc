@@ -93,26 +93,47 @@ RSpec.describe 'Navbar', type: :request do
   describe 'patient nav links' do
     let(:patient) { create(:patient, user: user) }
 
-    before do
-      sign_in
-      get patient_path(patient) # sets session[:current_patient_id]
-      get patients_path # next request loads Current.patient from session
+    context 'when visiting a patient page for the first time (no prior session cookie)' do
+      before do
+        sign_in
+        get patient_path(patient)
+      end
+
+      it 'shows the patient name in the navbar immediately' do
+        expect(response.body).to include(patient.name)
+      end
+
+      it 'shows the Doctors nav link immediately' do
+        expect(response.body).to include(patient_doctors_path(patient))
+      end
+
+      it 'shows the Medications nav link immediately' do
+        expect(response.body).to include(patient_medications_path(patient))
+      end
     end
 
-    it 'shows the patient name in the navbar' do
-      expect(response.body).to include(patient.name)
-    end
+    context 'when revisiting after a session has been established' do
+      before do
+        sign_in
+        get patient_path(patient) # sets session[:current_patient_id]
+        get patients_path # next request loads Current.patient from session
+      end
 
-    it 'links the patient name to their show page' do
-      expect(response.body).to include(patient_path(patient))
-    end
+      it 'shows the patient name in the navbar' do
+        expect(response.body).to include(patient.name)
+      end
 
-    it 'shows the Doctors nav link for the selected patient' do
-      expect(response.body).to include(patient_doctors_path(patient))
-    end
+      it 'links the patient name to their show page' do
+        expect(response.body).to include(patient_path(patient))
+      end
 
-    it 'shows the Medications nav link for the selected patient' do
-      expect(response.body).to include(patient_medications_path(patient))
+      it 'shows the Doctors nav link for the selected patient' do
+        expect(response.body).to include(patient_doctors_path(patient))
+      end
+
+      it 'shows the Medications nav link for the selected patient' do
+        expect(response.body).to include(patient_medications_path(patient))
+      end
     end
   end
 
