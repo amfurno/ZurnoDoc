@@ -14,3 +14,8 @@ local-cleanup:
 	$(COMPOSE) down --rmi local --volumes --remove-orphans
 	rm -f $(ENV_FILE)
 	@echo "Cleaned up"
+
+deploy:
+	source .env
+	bin/kamal app stop
+	bin/kamal deploy
