@@ -1,18 +1,64 @@
 <%# app/views/doctors/show.html.erb %>
-<div class="content">
-  <h1 class="title"><%= @doctor.name %></h1>
-  <p><strong>Practice:</strong> <%= @doctor.practice %></p>
-  <p><strong>Speciality:</strong> <%= @doctor.speciality %></p>
-  <p><strong>Email:</strong> <%= @doctor.email %></p>
-  <p><strong>Phone:</strong> <%= @doctor.phone_number %></p>
-  <p><strong>Fax:</strong> <%= @doctor.fax_number %></p>
-  <p><strong>Address:</strong> <%= @doctor.address %></p>
+<div class="content" data-controller="confirm-delete-simple">
+  <div class="level is-mobile">
+    <div class="level-left">
+      <h1 class="title mb-0"><%= @doctor.name %></h1>
+    </div>
+  </div>
 
-  <div class="buttons">
+  <% if @doctor.practice.present? || @doctor.speciality.present? || @doctor.email.present? || @doctor.phone_number.present? || @doctor.fax_number.present? %>
+    <div class="box mt-4">
+      <div class="columns is-multiline">
+        <% if @doctor.practice.present? %>
+          <div class="column is-half">
+            <p class="subtitle is-5 mb-1">Practice</p>
+            <p><%= @doctor.practice %></p>
+          </div>
+        <% end %>
+        <% if @doctor.speciality.present? %>
+          <div class="column is-half">
+            <p class="subtitle is-5 mb-1">Speciality</p>
+            <p><%= @doctor.speciality %></p>
+          </div>
+        <% end %>
+        <% if @doctor.email.present? %>
+          <div class="column is-half">
+            <p class="subtitle is-5 mb-1">Email</p>
+            <p><%= @doctor.email %></p>
+          </div>
+        <% end %>
+        <% if @doctor.phone_number.present? %>
+          <div class="column is-half">
+            <p class="subtitle is-5 mb-1">Phone</p>
+            <p><%= @doctor.phone_number %></p>
+          </div>
+        <% end %>
+        <% if @doctor.fax_number.present? %>
+          <div class="column is-half">
+            <p class="subtitle is-5 mb-1">Fax</p>
+            <p><%= @doctor.fax_number %></p>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+
+  <% if @doctor.address.present? %>
+    <div class="box">
+      <p class="subtitle is-5 mb-1">Address</p>
+      <p><%= @doctor.address %></p>
+    </div>
+  <% end %>
+
+  <div class="buttons mt-4">
     <%= link_to "Edit", edit_patient_doctor_path(@patient, @doctor), class: "button is-warning" %>
-    <%= button_to "Delete", patient_doctor_path(@patient, @doctor), method: :delete, class: "button is-danger",
-          data: { turbo_confirm: "Delete Dr. #{@doctor.name}?" } %>
+    <button class="button is-danger" data-action="confirm-delete-simple#open">Delete</button>
   </div>
 
   <%= link_to "Back to Doctors", patient_doctors_path(@patient), class: "button is-light" %>
+
+  <%= render "shared/confirm_delete_modal",
+        title: "Delete Doctor",
+        message: "This will permanently delete Dr. #{@doctor.name}. This cannot be undone.",
+        delete_path: patient_doctor_path(@patient, @doctor) %>
 </div>
