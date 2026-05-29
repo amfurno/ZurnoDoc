@@ -47,6 +47,7 @@ class PatientsController < ApplicationController
 
   def set_patient
     @patient = Current.user.patients.find(params[:id])
+    Current.patient = @patient
   end
 
   def patient_params
