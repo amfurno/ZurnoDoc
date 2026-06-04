@@ -42,7 +42,7 @@ gem 'thruster', require: false
 gem 'image_processing', '~> 1.2'
 
 group :development, :test do
-  gem 'rubocop', '~> 1.86'
+  gem 'rubocop', '~> 1.87'
   gem 'rubocop-factory_bot'
   gem 'rubocop-performance'
   gem 'rubocop-rails'
