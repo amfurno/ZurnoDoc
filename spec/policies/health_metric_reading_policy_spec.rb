@@ -3,9 +3,8 @@ require 'rails_helper'
 RSpec.describe HealthMetricReadingPolicy, type: :policy do
   subject(:policy) { described_class.new(user, reading) }
 
-  let(:owner)      { create(:user) }
-  let(:other_user) { create(:user) }
-  let(:patient)    { create(:patient, user: owner) }
+  let(:owner)   { create(:user) }
+  let(:patient) { create(:patient, user: owner) }
   let(:metric)     { create(:health_metric, patient: patient) }
   let(:reading)    { create(:health_metric_reading, health_metric: metric) }
 
@@ -20,7 +19,7 @@ RSpec.describe HealthMetricReadingPolicy, type: :policy do
   end
 
   context 'when the user does not own the parent patient' do
-    let(:user) { other_user }
+    let(:user) { create(:user) }
 
     it { is_expected.to forbid_action(:new) }
     it { is_expected.to forbid_action(:create) }
@@ -36,14 +35,14 @@ RSpec.describe HealthMetricReadingPolicy, type: :policy do
 
     it "includes readings belonging to the user's metrics" do
       owned = create(:health_metric_reading, health_metric: metric)
-      other_metric = create(:health_metric, patient: create(:patient, user: other_user))
+      other_metric = create(:health_metric, patient: create(:patient, user: create(:user)))
       create(:health_metric_reading, health_metric: other_metric)
       expect(scope).to include(owned)
     end
 
     it "excludes readings belonging to other users' metrics" do
       create(:health_metric_reading, health_metric: metric)
-      other_metric = create(:health_metric, patient: create(:patient, user: other_user))
+      other_metric = create(:health_metric, patient: create(:patient, user: create(:user)))
       other = create(:health_metric_reading, health_metric: other_metric)
       expect(scope).not_to include(other)
     end

@@ -52,9 +52,13 @@ RSpec.describe HealthMetric, type: :model do
       expect(described_class.reflect_on_association(:patient).macro).to eq(:belongs_to)
     end
 
-    it 'has many readings dependent destroy' do
+    it 'has many readings' do
       reflection = described_class.reflect_on_association(:readings)
       expect(reflection.macro).to eq(:has_many)
+    end
+
+    it 'destroys readings dependently' do
+      reflection = described_class.reflect_on_association(:readings)
       expect(reflection.options[:dependent]).to eq(:destroy)
     end
 
