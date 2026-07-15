@@ -1,0 +1,42 @@
+<%# app/views/health_metric_readings/_form.html.erb %>
+<div class="content">
+  <%= form_with model: @reading,
+                url: @reading.new_record? ? health_metric_readings_path(@health_metric) : reading_path(@reading) do |form| %>
+    <% if @reading.errors.any? %>
+      <div class="notification is-danger">
+        <ul>
+          <% @reading.errors.full_messages.each do |msg| %>
+            <li><%= msg %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <div class="field">
+      <%= form.label :recorded_at, "Recorded At", class: "label" %>
+      <div class="control">
+        <%= form.datetime_local_field :recorded_at, class: "input" %>
+      </div>
+    </div>
+
+    <div class="field">
+      <%= form.label :value, "Value (#{@health_metric.unit})", class: "label" %>
+      <div class="control">
+        <%= form.number_field :value, class: "input", step: "any" %>
+      </div>
+    </div>
+
+    <div class="field">
+      <%= form.label :notes, class: "label" %>
+      <div class="control">
+        <%= form.text_area :notes, class: "textarea", rows: 3 %>
+      </div>
+    </div>
+
+    <div class="field">
+      <div class="control">
+        <%= form.submit class: "button is-primary" %>
+      </div>
+    </div>
+  <% end %>
+</div>

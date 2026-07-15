@@ -77,6 +77,37 @@
 
   </div>
 
+  <%# Health Metrics %>
+  <div class="columns">
+    <div class="column">
+      <% health_metrics_actions = capture do %>
+        <%= link_to "View All", patient_health_metrics_path(@patient), class: "button is-info is-small", data: { action: "click->collapsible#stopPropagation" } %>
+        <%= link_to "Add Metric", new_patient_health_metric_path(@patient), class: "button is-primary is-small", data: { action: "click->collapsible#stopPropagation" } %>
+      <% end %>
+      <%= render layout: "patients/section_box", locals: { title: "Health Metrics", key: "patient-#{@patient.id}-health-metrics", actions: health_metrics_actions } do %>
+        <% if @health_metrics_preview.any? %>
+          <% @health_metrics_preview.each do |metric| %>
+            <div class="box">
+              <div class="level is-flex-wrap-wrap" style="gap: 0.5rem;">
+                <div class="level-left is-flex-grow-1" style="min-width: 0;">
+                  <div>
+                    <p class="has-text-weight-bold"><%= metric.name %></p>
+                    <p class="is-size-6 has-text-grey"><%= metric.unit %></p>
+                  </div>
+                </div>
+                <div class="level-right">
+                  <%= link_to "View", health_metric_path(metric), class: "button is-info is-small" %>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        <% else %>
+          <p class="has-text-grey">No health metrics added yet.</p>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+
   <div class="buttons">
     <%= link_to "Back to Patients", patients_path, class: "button is-light" %>
   </div>

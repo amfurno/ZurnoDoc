@@ -1,0 +1,6 @@
+<%# app/views/health_metrics/edit.html.erb %>
+<div class="content">
+  <h1 class="title">Edit <%= @health_metric.name %></h1>
+  <%= render "form" %>
+  <%= link_to "Cancel", health_metric_path(@health_metric), class: "button is-light mt-2" %>
+</div>
