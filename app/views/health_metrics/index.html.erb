@@ -1,0 +1,46 @@
+<%# app/views/health_metrics/index.html.erb %>
+<div class="content" data-controller="confirm-delete-simple">
+  <div class="level is-mobile">
+    <div class="level-left">
+      <h1 class="title">Health Metrics for <%= @patient.name %></h1>
+    </div>
+    <div class="level-right">
+      <%= link_to "Add Metric", new_patient_health_metric_path(@patient), class: "button is-primary" %>
+    </div>
+  </div>
+
+  <% if @health_metrics.any? %>
+    <div class="columns is-multiline">
+      <% @health_metrics.each do |metric| %>
+        <% latest = metric.readings.max_by(&:recorded_at) %>
+        <div class="column is-full-mobile is-half-tablet is-one-third-desktop">
+          <div class="box">
+            <div class="level is-mobile is-flex-wrap-wrap" style="gap: 0.5rem;">
+              <div class="level-left is-flex-grow-1" style="min-width: 0;">
+                <div>
+                  <p class="has-text-weight-bold is-size-5"><%= metric.name %></p>
+                  <p class="is-size-6 has-text-grey"><%= metric.unit %></p>
+                  <% if latest %>
+                    <p class="is-size-6 mt-1">
+                      <span class="has-text-weight-semibold"><%= latest.value %></span>
+                      <span class="has-text-grey is-size-7 ml-1"><%= latest.recorded_at.strftime("%b %-d, %Y %H:%M") %></span>
+                    </p>
+                  <% else %>
+                    <p class="is-size-7 has-text-grey mt-1">No readings yet</p>
+                  <% end %>
+                </div>
+              </div>
+              <div class="level-right">
+                <%= link_to "View", health_metric_path(metric), class: "button is-info is-small" %>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    <p class="has-text-grey">No health metrics added yet.</p>
+  <% end %>
+
+  <%= link_to "Back to Patient", @patient, class: "button is-light mt-2" %>
+</div>

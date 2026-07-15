@@ -1,0 +1,64 @@
+<%# app/views/health_metrics/show.html.erb %>
+<div class="content" data-controller="confirm-delete-simple">
+  <div class="level is-mobile">
+    <div class="level-left">
+      <div>
+        <h1 class="title mb-0"><%= @health_metric.name %></h1>
+        <p class="subtitle is-6 has-text-grey mt-1">Unit: <%= @health_metric.unit %></p>
+      </div>
+    </div>
+    <div class="level-right">
+      <%= link_to "Add Reading", new_health_metric_reading_path(@health_metric), class: "button is-primary" %>
+    </div>
+  </div>
+
+  <% if @health_metric.notes.present? %>
+    <div class="box">
+      <p class="subtitle is-5 mb-1">Notes</p>
+      <p><%= @health_metric.notes %></p>
+    </div>
+  <% end %>
+
+  <% if @readings.any? %>
+    <div class="table-container">
+      <table class="table is-fullwidth is-striped is-hoverable">
+        <thead>
+          <tr>
+            <th>Recorded At</th>
+            <th>Value (<%= @health_metric.unit %>)</th>
+            <th>Notes</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @readings.each do |reading| %>
+            <tr>
+              <td><%= reading.recorded_at.strftime("%b %-d, %Y %H:%M") %></td>
+              <td><%= reading.value %></td>
+              <td><%= reading.notes %></td>
+              <td>
+                <div class="buttons are-small">
+                  <%= link_to "Edit", edit_reading_path(reading), class: "button is-warning is-small" %>
+                  <%= button_to "Delete", reading_path(reading), method: :delete,
+                        class: "button is-danger is-small",
+                        data: { turbo_confirm: "Delete this reading?" } %>
+                </div>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  <% else %>
+    <p class="has-text-grey">No readings recorded yet.</p>
+  <% end %>
+
+  <div class="buttons mt-4">
+    <%= link_to "Edit Metric", edit_health_metric_path(@health_metric), class: "button is-warning" %>
+    <%= button_to "Delete Metric", health_metric_path(@health_metric), method: :delete,
+          class: "button is-danger",
+          data: { turbo_confirm: "Delete #{@health_metric.name} and all its readings?" } %>
+  </div>
+
+  <%= link_to "All Metrics", patient_health_metrics_path(@patient), class: "button is-light" %>
+</div>
