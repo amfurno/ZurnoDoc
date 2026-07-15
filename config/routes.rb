@@ -26,7 +26,7 @@ Rails.application.routes.draw do
     end
     resources :health_metrics, shallow: true do
       resources :readings, shallow: true, except: %i[index show],
-                           controller: "health_metric_readings"
+                           controller: 'health_metric_readings'
     end
   end
 end

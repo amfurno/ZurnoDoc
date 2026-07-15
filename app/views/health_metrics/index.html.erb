@@ -19,7 +19,7 @@
               <div class="level-left is-flex-grow-1" style="min-width: 0;">
                 <div>
                   <p class="has-text-weight-bold is-size-5"><%= metric.name %></p>
-                  <p class="is-size-6 has-text-grey"><%= metric.unit %></p>
+                  <p class="is-size-6 has-text-grey"><%= metric.notes.presence || "—" %></p>
                   <% if latest %>
                     <p class="is-size-6 mt-1">
                       <span class="has-text-weight-semibold"><%= latest.value %></span>

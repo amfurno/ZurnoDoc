@@ -1,4 +1,4 @@
-require "rails_helper"
+require 'rails_helper'
 
 RSpec.describe HealthMetricReadingPolicy, type: :policy do
   subject(:policy) { described_class.new(user, reading) }
@@ -9,7 +9,7 @@ RSpec.describe HealthMetricReadingPolicy, type: :policy do
   let(:metric)     { create(:health_metric, patient: patient) }
   let(:reading)    { create(:health_metric_reading, health_metric: metric) }
 
-  context "when the user owns the parent patient" do
+  context 'when the user owns the parent patient' do
     let(:user) { owner }
 
     it { is_expected.to permit_action(:new) }
@@ -19,7 +19,7 @@ RSpec.describe HealthMetricReadingPolicy, type: :policy do
     it { is_expected.to permit_action(:destroy) }
   end
 
-  context "when the user does not own the parent patient" do
+  context 'when the user does not own the parent patient' do
     let(:user) { other_user }
 
     it { is_expected.to forbid_action(:new) }
@@ -29,7 +29,7 @@ RSpec.describe HealthMetricReadingPolicy, type: :policy do
     it { is_expected.to forbid_action(:destroy) }
   end
 
-  describe "Scope" do
+  describe 'Scope' do
     subject(:scope) { described_class::Scope.new(user, HealthMetricReading.all).resolve }
 
     let(:user) { owner }

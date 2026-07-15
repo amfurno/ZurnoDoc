@@ -10,8 +10,8 @@ class CreateHealthMetrics < ActiveRecord::Migration[8.1]
     end
 
     add_index :health_metrics,
-              "patient_id, lower(name)",
+              'patient_id, lower(name)',
               unique: true,
-              name: "index_health_metrics_on_patient_id_lower_name"
+              name: 'index_health_metrics_on_patient_id_lower_name'
   end
 end

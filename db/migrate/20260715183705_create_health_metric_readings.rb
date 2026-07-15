@@ -11,6 +11,6 @@ class CreateHealthMetricReadings < ActiveRecord::Migration[8.1]
 
     add_index :health_metric_readings,
               %i[health_metric_id recorded_at],
-              name: "index_health_metric_readings_on_metric_and_recorded_at"
+              name: 'index_health_metric_readings_on_metric_and_recorded_at'
   end
 end
