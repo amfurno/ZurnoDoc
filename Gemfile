@@ -21,6 +21,12 @@ gem 'bcrypt', '~> 3.1.7'
 # Policy-based authorization [https://github.com/varvet/pundit]
 gem 'pundit'
 
+# Pagination [https://ddnexus.github.io/pagy/]
+gem 'pagy', '~> 43.6'
+
+# Charts [https://chartkick.com/]
+gem 'chartkick'
+
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: %i[windows jruby]
 

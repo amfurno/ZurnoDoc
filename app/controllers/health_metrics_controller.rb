@@ -10,7 +10,9 @@ class HealthMetricsController < ApplicationController
 
   def show
     authorize @health_metric
-    @readings = @health_metric.readings.order(recorded_at: :desc)
+    sorted_readings = @health_metric.readings.order(sort_column => sort_direction)
+    @pagy, @readings = pagy(:offset, sorted_readings, limit: 10, max_limit: 50)
+    @chart_data = @health_metric.readings.order(recorded_at: :asc).pluck(:recorded_at, :value)
   end
 
   def new
@@ -62,5 +64,13 @@ class HealthMetricsController < ApplicationController
 
   def health_metric_params
     params.expect(health_metric: %i[name unit notes])
+  end
+
+  def sort_column
+    %w[recorded_at value].include?(params[:sort]) ? params[:sort] : 'recorded_at'
+  end
+
+  def sort_direction
+    %w[asc desc].include?(params[:dir]) ? params[:dir] : 'desc'
   end
 end

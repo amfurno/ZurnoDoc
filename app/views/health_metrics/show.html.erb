@@ -1,15 +1,11 @@
 <%# app/views/health_metrics/show.html.erb %>
 <div class="content" data-controller="confirm-delete-simple">
-  <div class="level is-mobile">
-    <div class="level-left">
-      <div>
-        <h1 class="title mb-0"><%= @health_metric.name %></h1>
-        <p class="subtitle is-6 has-text-grey mt-1">Unit: <%= @health_metric.unit %></p>
-      </div>
+  <div class="is-flex is-flex-wrap-wrap is-justify-content-space-between is-align-items-flex-start mb-4" style="gap: 0.75rem;">
+    <div>
+      <h1 class="title mb-0"><%= @health_metric.name %></h1>
+      <p class="subtitle is-4 mt-1">Unit: <%= @health_metric.unit %></p>
     </div>
-    <div class="level-right">
-      <%= link_to "Add Reading", new_health_metric_reading_path(@health_metric), class: "button is-primary" %>
-    </div>
+    <%= link_to "Add Reading", new_health_metric_reading_path(@health_metric), class: "button is-primary" %>
   </div>
 
   <% if @health_metric.notes.present? %>
@@ -19,13 +15,39 @@
     </div>
   <% end %>
 
+  <% if @chart_data.any? %>
+    <div class="box mb-4">
+      <%= line_chart @chart_data,
+            height: "250px",
+            label: @health_metric.unit,
+            ytitle: @health_metric.unit,
+            points: true,
+            curve: false,
+            legend: false %>
+    </div>
+  <% end %>
+
   <% if @readings.any? %>
+
+
     <div class="table-container">
       <table class="table is-fullwidth is-striped is-hoverable">
         <thead>
           <tr>
-            <th>Recorded At</th>
-            <th>Value (<%= @health_metric.unit %>)</th>
+            <th>
+              <%= sort_link("Recorded At", "recorded_at", health_metric_path(@health_metric),
+                    sort_param: :sort, dir_param: :dir,
+                    current_sort: params[:sort] || "recorded_at",
+                    current_direction: params[:dir] || "desc",
+                    extra_params: { limit: params[:limit] }) %>
+            </th>
+            <th>
+              <%= sort_link("Value (#{@health_metric.unit})", "value", health_metric_path(@health_metric),
+                    sort_param: :sort, dir_param: :dir,
+                    current_sort: params[:sort] || "recorded_at",
+                    current_direction: params[:dir] || "desc",
+                    extra_params: { limit: params[:limit] }) %>
+            </th>
             <th>Notes</th>
             <th></th>
           </tr>
@@ -36,18 +58,48 @@
               <td><%= reading.recorded_at.strftime("%b %-d, %Y %H:%M") %></td>
               <td><%= reading.value %></td>
               <td><%= reading.notes %></td>
-              <td>
-                <div class="buttons are-small">
-                  <%= link_to "Edit", edit_reading_path(reading), class: "button is-warning is-small" %>
-                  <%= button_to "Delete", reading_path(reading), method: :delete,
-                        class: "button is-danger is-small",
-                        data: { turbo_confirm: "Delete this reading?" } %>
+              <td class="has-text-right">
+                <div class="dropdown is-right" data-controller="dropdown">
+                  <div class="dropdown-trigger">
+                    <button class="button is-small is-ghost" aria-haspopup="true"
+                            data-action="click->dropdown#toggle"
+                            aria-label="Actions for reading <%= reading.id %>">
+                      &#8942;
+                    </button>
+                  </div>
+                  <div class="dropdown-menu" role="menu">
+                    <div class="dropdown-content">
+                      <%= link_to "Edit", edit_reading_path(reading),
+                            class: "dropdown-item" %>
+                      <%= button_to "Delete", reading_path(reading), method: :delete,
+                            class: "dropdown-item has-text-danger",
+                            form_class: "is-inline",
+                            data: { turbo_confirm: "Delete this reading?" } %>
+                    </div>
+                  </div>
                 </div>
               </td>
             </tr>
           <% end %>
         </tbody>
       </table>
+    </div>
+    <div class="is-flex is-justify-content-space-between is-align-items-center mb-2">
+      <p class="has-text-grey is-size-7">
+        <%== @pagy.info_tag %>
+      </p>
+      <div class="field has-addons mb-0">
+        <% [10, 25, 50].each do |size| %>
+          <p class="control">
+            <%= link_to size,
+                  health_metric_path(@health_metric, sort: params[:sort], dir: params[:dir], limit: size),
+                  class: "button is-small #{@pagy.limit == size ? 'is-info is-selected' : ''}" %>
+          </p>
+        <% end %>
+      </div>
+    </div>
+    <div class="is-flex is-justify-content-center mt-3">
+      <%== @pagy.series_nav(:bulma, aria_label: "Readings pages") %>
     </div>
   <% else %>
     <p class="has-text-grey">No readings recorded yet.</p>
