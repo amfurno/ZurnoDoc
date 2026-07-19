@@ -11,6 +11,21 @@ AllCops:
   TargetRubyVersion: 4.0
   DisabledByDefault: false
   NewCops: enable
+  Exclude:
+    - 'node_modules/**/*'
+    - 'tmp/**/*'
+    - 'vendor/**/*'
+    - '.git/**/*'
+    - '**/app/assets/**/*'
+    - bin/*
+    # Exclude db/schema.rb and db/[CONFIGURATION_NAMESPACE]_schema.rb by default.
+    # See: https://guides.rubyonrails.org/active_record_multiple_databases.html#setting-up-your-application
+    - db/*schema.rb
+    - log/**/*
+    - public/**/*
+    - storage/**/*
+    - 'lib/tasks/*.rake'
+  MigratedSchemaVersion: '20260427000000'
 
 Layout/FirstHashElementIndentation:
   Enabled: false
@@ -39,3 +54,11 @@ Style/ConditionalAssignment:
 
 RSpecRails/InferredSpecType:
   Enabled: false
+
+Metrics/BlockLength:
+  Exclude:
+    - 'config/environments/*.rb'
+
+Style/StringLiterals:
+  Exclude:
+    - 'config/application.rb'

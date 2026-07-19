@@ -6,25 +6,6 @@
 # Note that changes in the inspected code, or installation of new
 # versions of RuboCop, may require this file to be generated again.
 
-# Offense count: 7
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: native, lf, crlf
-Layout/EndOfLine:
-  Exclude:
-    - 'app/models/patient.rb'
-    - 'app/policies/doctor_policy.rb'
-    - 'app/policies/medication_policy.rb'
-    - 'app/policies/patient_policy.rb'
-    - 'db/migrate/20260427000000_add_expiry_fields_to_sessions.rb'
-    - 'spec/requests/authentication_spec.rb'
-    - 'spec/support/shared_contexts/authenticated_controller.rb'
-
-# Offense count: 4
-# Configuration parameters: CountComments, CountAsOne, AllowedMethods, AllowedPatterns, inherit_mode.
-# AllowedMethods: refine
-Metrics/BlockLength:
-  Max: 47
-
 # Offense count: 1
 # Configuration parameters: CountComments, CountAsOne, AllowedMethods, AllowedPatterns.
 Metrics/MethodLength:
@@ -40,13 +21,6 @@ Naming/AccessorMethodName:
   Exclude:
     - 'app/controllers/concerns/authentication.rb'
 
-# Offense count: 1
-# Configuration parameters: MinNameLength, AllowNamesEndingInNumbers, AllowedNames, ForbiddenNames.
-# AllowedNames: as, at, by, cc, db, id, if, in, io, ip, of, on, os, pp, to
-Naming/MethodParameterName:
-  Exclude:
-    - 'spec/requests/authentication_spec.rb'
-
 # Offense count: 3
 # Configuration parameters: Database.
 # SupportedDatabases: mysql, postgresql
@@ -59,37 +33,9 @@ Rails/LexicallyScopedActionFilter:
   Exclude:
     - 'app/controllers/application_controller.rb'
 
-# Offense count: 1
-# Configuration parameters: Database.
-# SupportedDatabases: mysql
-Rails/NotNullColumn:
-  Exclude:
-    - 'db/migrate/20260420000001_create_patients_and_add_patient_to_doctors.rb'
-
-# Offense count: 1
-# Configuration parameters: ForbiddenMethods, AllowedMethods.
-# ForbiddenMethods: decrement!, decrement_counter, increment!, increment_counter, insert, insert!, insert_all, insert_all!, toggle!, touch, touch_all, update_all, update_attribute, update_column, update_columns, update_counters, upsert, upsert_all
-Rails/SkipsModelValidations:
-  Exclude:
-    - 'db/migrate/20260427000000_add_expiry_fields_to_sessions.rb'
 
 # Offense count: 1
 # This cop supports unsafe autocorrection (--autocorrect-all).
 Style/GlobalStdStream:
   Exclude:
     - 'config/environments/production.rb'
-
-# Offense count: 1
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: EnforcedStyle, ConsistentQuotesInMultiline.
-# SupportedStyles: single_quotes, double_quotes
-Style/StringLiterals:
-  Exclude:
-    - 'config/application.rb'
-
-# Offense count: 1
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: AllowHeredoc, AllowURI, AllowQualifiedName, URISchemes, AllowRBSInlineAnnotation, AllowCopDirectives, AllowedPatterns, SplitStrings.
-# URISchemes: http, https
-Layout/LineLength:
-  Max: 156

@@ -4,8 +4,8 @@ RSpec.describe 'Authentication', type: :request do
   let(:user) { create(:user) }
 
   # Sign in via the normal login flow so a real signed cookie is issued.
-  def sign_in(u = user)
-    post session_path, params: { email_address: u.email_address, password: 'password123' }
+  def sign_in
+    post session_path, params: { email_address: user.email_address, password: 'password123' }
   end
 
   describe 'expired session' do

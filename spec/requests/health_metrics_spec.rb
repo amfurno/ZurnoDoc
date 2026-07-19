@@ -37,6 +37,57 @@ RSpec.describe 'HealthMetrics', type: :request do
       get health_metric_path(other_metric)
       expect(response).to redirect_to(root_path)
     end
+
+    context 'with sort params' do
+      let!(:early_reading) do
+        create(:health_metric_reading, health_metric: metric,
+                                       recorded_at: 2.days.ago, value: 50)
+      end
+      let!(:late_reading) do
+        create(:health_metric_reading, health_metric: metric,
+                                       recorded_at: 1.day.ago, value: 100)
+      end
+
+      it 'sorts by recorded_at asc', :aggregate_failures do
+        get health_metric_path(metric, sort: 'recorded_at', dir: 'asc')
+        expect(response).to have_http_status(:ok)
+        expect(assigns(:readings).first).to eq(early_reading)
+      end
+
+      it 'sorts by value desc', :aggregate_failures do
+        get health_metric_path(metric, sort: 'value', dir: 'desc')
+        expect(response).to have_http_status(:ok)
+        expect(assigns(:readings).first).to eq(late_reading)
+      end
+
+      it 'falls back to recorded_at desc for an invalid sort column and direction', :aggregate_failures do
+        get health_metric_path(metric, sort: 'notes', dir: 'sideways')
+        expect(response).to have_http_status(:ok)
+        expect(assigns(:readings).first).to eq(late_reading)
+      end
+    end
+
+    context 'with pagination params' do
+      before do
+        create_list(:health_metric_reading, 6, health_metric: metric,
+                                               recorded_at: Time.current)
+      end
+
+      it 'returns 200 for page 2 with limit 5' do
+        get health_metric_path(metric, page: 2, limit: 5)
+        expect(response).to have_http_status(:ok)
+      end
+
+      it 'respects the limit param within max_limit' do
+        get health_metric_path(metric, limit: 25)
+        expect(assigns(:pagy).limit).to eq(25)
+      end
+
+      it 'caps limit at max_limit of 50' do
+        get health_metric_path(metric, limit: 999)
+        expect(assigns(:pagy).limit).to eq(50)
+      end
+    end
   end
 
   describe 'GET /patients/:patient_id/health_metrics/new' do
