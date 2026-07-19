@@ -30,7 +30,9 @@ RSpec.describe 'Collapsible boxes on patient show page', type: :request do
   end
 
   it 'sets the health-metrics key scoped to the patient' do
-    expect(response.body).to include("data-collapsible-key-value=\"patient-#{patient.id}-health-metrics\"")
+    expect(response.body).to include(
+      "data-collapsible-key-value=\"patient-#{patient.id}-health-metrics\""
+    )
   end
 
   it 'wires the header row click to the toggle action on all three sections' do
@@ -62,7 +64,8 @@ RSpec.describe 'Collapsible boxes on patient show page', type: :request do
   end
 
   it 'renders role=button on each section header' do
-    expect(response.body.scan(/role="button"[^>]*data-collapsible-target="header"|data-collapsible-target="header"[^>]*role="button"/).length).to eq(4)
+    xpath = /role="button"[^>]*data-collapsible-target="header"|data-collapsible-target="header"[^>]*role="button"/
+    expect(response.body.scan(xpath).length).to eq(4)
   end
 
   it 'renders tabindex=0 on each section header' do
