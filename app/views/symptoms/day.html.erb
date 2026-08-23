@@ -1,0 +1,13 @@
+<%# app/views/symptoms/day.html.erb %>
+<%= turbo_frame_tag "day_detail" do %>
+  <h3 class="has-text-weight-bold"><%= @date.strftime('%B %-d, %Y') %></h3>
+  <% if @entries.any? %>
+    <div class="tags">
+      <% @entries.each do |symptom| %>
+        <span class="tag is-medium"><%= symptom.name %></span>
+      <% end %>
+    </div>
+  <% else %>
+    <p class="has-text-grey">No symptoms reported on this day.</p>
+  <% end %>
+<% end %>

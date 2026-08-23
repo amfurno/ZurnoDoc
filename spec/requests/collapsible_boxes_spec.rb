@@ -35,41 +35,45 @@ RSpec.describe 'Collapsible boxes on patient show page', type: :request do
     )
   end
 
-  it 'wires the header row click to the toggle action on all three sections' do
-    expect(response.body.scan('click->collapsible#toggle').length).to eq(4)
+  it 'sets the symptoms key scoped to the patient' do
+    expect(response.body).to include("data-collapsible-key-value=\"patient-#{patient.id}-symptoms\"")
   end
 
-  it 'wires the header row enter key to the toggle action on all three sections' do
-    expect(response.body.scan('keydown.enter->collapsible#toggle').length).to eq(4)
+  it 'wires the header row click to the toggle action on all sections' do
+    expect(response.body.scan('click->collapsible#toggle').length).to eq(5)
   end
 
-  it 'wires the header row space key to the toggle action on all three sections' do
-    expect(response.body.scan('keydown.space->collapsible#toggle').length).to eq(4)
+  it 'wires the header row enter key to the toggle action on all sections' do
+    expect(response.body.scan('keydown.enter->collapsible#toggle').length).to eq(5)
+  end
+
+  it 'wires the header row space key to the toggle action on all sections' do
+    expect(response.body.scan('keydown.space->collapsible#toggle').length).to eq(5)
   end
 
   it 'renders the header target on each section' do
-    expect(response.body.scan('data-collapsible-target="header"').length).to eq(4)
+    expect(response.body.scan('data-collapsible-target="header"').length).to eq(5)
   end
 
   it 'renders aria-expanded on each section header' do
-    expect(response.body.scan('aria-expanded="true"').length).to eq(4)
+    expect(response.body.scan('aria-expanded="true"').length).to eq(5)
   end
 
   it 'renders a collapsible content target for each section' do
-    expect(response.body.scan('data-collapsible-target="content"').length).to eq(4)
+    expect(response.body.scan('data-collapsible-target="content"').length).to eq(5)
   end
 
   it 'renders an icon target for each section' do
-    expect(response.body.scan('data-collapsible-target="icon"').length).to eq(4)
+    expect(response.body.scan('data-collapsible-target="icon"').length).to eq(5)
   end
 
   it 'renders role=button on each section header' do
     xpath = /role="button"[^>]*data-collapsible-target="header"|data-collapsible-target="header"[^>]*role="button"/
-    expect(response.body.scan(xpath).length).to eq(4)
+    expect(response.body.scan(xpath).length).to eq(5)
   end
 
   it 'renders tabindex=0 on each section header' do
-    expect(response.body.scan('tabindex="0"').length).to eq(4)
+    expect(response.body.scan('tabindex="0"').length).to eq(5)
   end
 
   it 'wires the action buttons to stop propagation' do

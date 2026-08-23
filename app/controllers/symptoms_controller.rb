@@ -12,7 +12,7 @@ class SymptomsController < ApplicationController
   end
 
   def day
-    authorize @patient
+    authorize @patient, :show?
     @date = parse_date(params[:date]) || Date.current
     @entries = @patient.symptoms
                        .joins(:entries)

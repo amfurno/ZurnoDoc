@@ -75,6 +75,17 @@
       <% end %>
     </div>
 
+    <%# Symptoms %>
+    <div class="column">
+      <% symptoms_actions = capture do %>
+        <%= link_to "View Calendar", patient_symptoms_path(@patient), class: "button is-info is-small", data: { action: "click->collapsible#stopPropagation" } %>
+        <%= link_to "Report Symptoms", new_patient_symptom_report_path(@patient), class: "button is-primary is-small", data: { action: "click->collapsible#stopPropagation" } %>
+      <% end %>
+      <%= render layout: "patients/section_box", locals: { title: "Symptoms", key: "patient-#{@patient.id}-symptoms", actions: symptoms_actions } do %>
+        <p class="has-text-grey">Track daily symptoms on the calendar.</p>
+      <% end %>
+    </div>
+
   </div>
 
   <%# Health Metrics %>

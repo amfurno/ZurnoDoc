@@ -1,4 +1,10 @@
 class SymptomReportsController < ApplicationController
+  # No index action — skip inherited index-only/index-except Pundit callbacks
+  # and re-declare verify_authorized unconditionally for this controller.
+  skip_after_action :verify_policy_scoped
+  skip_after_action :verify_authorized
+  after_action :verify_authorized
+
   before_action :set_patient
 
   def new
