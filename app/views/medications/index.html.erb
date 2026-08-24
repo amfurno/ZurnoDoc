@@ -1,12 +1,8 @@
 <%# app/views/medications/index.html.erb %>
 <div class="content">
-  <div class="level is-mobile">
-    <div class="level-left">
-      <h1 class="title">Medications for <%= @patient.name %></h1>
-    </div>
-    <div class="level-right">
-      <%= link_to "Add Medication", new_patient_medication_path(@patient), class: "button is-primary" %>
-    </div>
+  <h1 class="block title is-size-2-mobile">Medications for <%= @patient.name %></h1>
+  <div class="mb-4">
+    <%= link_to "Add Medication", new_patient_medication_path(@patient), class: "button is-primary" %>
   </div>
 
   <h2 class="title is-4">Active Medications</h2>
