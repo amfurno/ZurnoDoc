@@ -9,7 +9,9 @@
       <div class="buttons">
         <%= link_to t('simple_calendar.previous', default: 'Previous'), calendar.url_for_previous_view, class: 'button is-small' %>
         <%= link_to t('simple_calendar.today', default: 'Today'), calendar.url_for_today_view, class: 'button is-small' %>
-        <%= link_to t('simple_calendar.next', default: 'Next'), calendar.url_for_next_view, class: 'button is-small' %>
+        <% unless start_date.beginning_of_month == Date.current.beginning_of_month %>
+          <%= link_to t('simple_calendar.next', default: 'Next'), calendar.url_for_next_view, class: 'button is-small' %>
+        <% end %>
       </div>
     </div>
   </div>
