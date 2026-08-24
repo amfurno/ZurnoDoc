@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_07_15_183705) do
+ActiveRecord::Schema[8.1].define(version: 2026_08_23_211950) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -126,6 +126,24 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_183705) do
     t.index ["user_id"], name: "index_sessions_on_user_id"
   end
 
+  create_table "symptom_entries", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.date "date", null: false
+    t.bigint "symptom_id", null: false
+    t.datetime "updated_at", null: false
+    t.index ["symptom_id", "date"], name: "index_symptom_entries_on_symptom_id_and_date", unique: true
+    t.index ["symptom_id"], name: "index_symptom_entries_on_symptom_id"
+  end
+
+  create_table "symptoms", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "name", null: false
+    t.bigint "patient_id", null: false
+    t.datetime "updated_at", null: false
+    t.index "patient_id, lower((name)::text)", name: "index_symptoms_on_patient_id_lower_name", unique: true
+    t.index ["patient_id"], name: "index_symptoms_on_patient_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.string "email_address", null: false
@@ -145,4 +163,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_183705) do
   add_foreign_key "medications", "patients"
   add_foreign_key "patients", "users"
   add_foreign_key "sessions", "users"
+  add_foreign_key "symptom_entries", "symptoms"
+  add_foreign_key "symptoms", "patients"
 end

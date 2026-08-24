@@ -27,6 +27,9 @@ gem 'pagy', '~> 43.6'
 # Charts [https://chartkick.com/]
 gem 'chartkick'
 
+# Calendar rendering for the symptom tracker [https://github.com/excid3/simple_calendar]
+gem 'simple_calendar', '~> 3.1'
+
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: %i[windows jruby]
 
