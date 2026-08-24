@@ -1,5 +1,5 @@
 <%# app/views/symptoms/index.html.erb %>
-<div class="content" data-controller="symptom-calendar" data-symptom-calendar-data-value="<%= @calendar_data.to_json %>">
+<div class="content" data-controller="symptom-calendar">
   <h1 class="title"><%= @patient.name %>'s Symptoms</h1>
 
   <div class="buttons">
@@ -29,7 +29,8 @@
                       data: {
                         turbo_frame: "day_detail",
                         symptom_calendar_target: "day",
-                        date: date.iso8601
+                        date: date.iso8601,
+                        symptom_ids: entries.map(&:symptom_id).to_json
                       } %>
         <% else %>
           <span><%= date.day %></span>

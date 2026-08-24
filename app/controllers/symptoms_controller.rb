@@ -8,7 +8,6 @@ class SymptomsController < ApplicationController
     @start_date = parse_date(params[:start_date]) || Date.current
     @symptoms = @patient.symptoms.order(Arel.sql('lower(name)'))
     @symptom_entries = month_entries(@start_date)
-    @calendar_data = build_calendar_data(@symptom_entries)
   end
 
   def day
@@ -39,10 +38,5 @@ class SymptomsController < ApplicationController
     SymptomEntry.joins(:symptom)
                 .where(symptoms: { patient_id: @patient.id }, date: range)
                 .includes(:symptom)
-  end
-
-  def build_calendar_data(entries)
-    entries.group_by { |entry| entry.date.iso8601 }
-           .transform_values { |day_entries| day_entries.map(&:symptom_id) }
   end
 end
