@@ -23,13 +23,17 @@
   <%= turbo_frame_tag "calendar" do %>
     <%= month_calendar(start_date: @start_date, events: @symptom_entries, attribute: :date) do |date, entries| %>
       <% if date.month == @start_date.month %>
-        <%= link_to date.day,
-                    day_patient_symptoms_path(@patient, date: date.iso8601),
-                    data: {
-                      turbo_frame: "day_detail",
-                      symptom_calendar_target: "day",
-                      date: date.iso8601
-                    } %>
+        <% if entries.any? %>
+          <%= link_to date.day,
+                      day_patient_symptoms_path(@patient, date: date.iso8601),
+                      data: {
+                        turbo_frame: "day_detail",
+                        symptom_calendar_target: "day",
+                        date: date.iso8601
+                      } %>
+        <% else %>
+          <span><%= date.day %></span>
+        <% end %>
       <% end %>
     <% end %>
   <% end %>
