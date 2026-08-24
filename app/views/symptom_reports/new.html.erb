@@ -25,7 +25,8 @@
       <div class="control">
         <% @symptoms.each do |symptom| %>
           <label class="checkbox is-block">
-            <%= check_box_tag "symptom_report[symptom_ids][]", symptom.id, false, id: "symptom_#{symptom.id}" %>
+            <%= check_box_tag "symptom_report[symptom_ids][]", symptom.id,
+                              @selected_symptom_ids.include?(symptom.id), id: "symptom_#{symptom.id}" %>
             <%= symptom.name %>
           </label>
         <% end %>

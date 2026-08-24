@@ -21,6 +21,15 @@ RSpec.describe 'SymptomReports', type: :request do
       get new_patient_symptom_report_path(other_patient)
       expect(response).to have_http_status(:not_found)
     end
+
+    it 'pre-checks symptoms already reported for the default date' do
+      symptom = create(:symptom, patient: patient, name: 'Headache')
+      create(:symptom_entry, symptom: symptom, date: Date.current)
+
+      get new_patient_symptom_report_path(patient)
+
+      expect(response.body).to match(/id="symptom_#{symptom.id}"[^>]*checked/)
+    end
   end
 
   describe 'POST /patients/:patient_id/symptom_report' do
