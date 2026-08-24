@@ -4,7 +4,7 @@
   <% if @entries.any? %>
     <div class="tags">
       <% @entries.each do |symptom| %>
-        <span class="tag is-medium"><%= symptom.name %></span>
+        <span class="tag is-medium is-info"><%= symptom.name %></span>
       <% end %>
     </div>
   <% else %>
