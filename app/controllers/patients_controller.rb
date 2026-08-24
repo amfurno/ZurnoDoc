@@ -7,6 +7,7 @@ class PatientsController < ApplicationController
 
   def show
     authorize @patient
+    @health_metrics_preview = @patient.health_metrics.order(created_at: :desc).limit(5)
   end
 
   def new
@@ -47,6 +48,7 @@ class PatientsController < ApplicationController
 
   def set_patient
     @patient = Current.user.patients.find(params[:id])
+    Current.patient = @patient
   end
 
   def patient_params
