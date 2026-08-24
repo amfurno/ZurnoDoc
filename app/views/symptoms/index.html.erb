@@ -1,0 +1,46 @@
+<%# app/views/symptoms/index.html.erb %>
+<div class="content" data-controller="symptom-calendar">
+  <h1 class="title"><%= @patient.name %>'s Symptoms</h1>
+
+  <div class="buttons">
+    <%= link_to "Report Symptoms", new_patient_symptom_report_path(@patient), class: "button is-primary" %>
+  </div>
+
+  <div class="field">
+    <label class="label" for="symptom-filter">Highlight a symptom</label>
+    <div class="control">
+      <div class="select is-fullwidth">
+        <select id="symptom-filter" data-symptom-calendar-target="filter" data-action="change->symptom-calendar#filterChanged">
+          <option value="">All symptoms</option>
+          <% @symptoms.each do |symptom| %>
+            <option value="<%= symptom.id %>"><%= symptom.name %></option>
+          <% end %>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <%= turbo_frame_tag "calendar" do %>
+    <%= month_calendar(start_date: @start_date, events: @symptom_entries, attribute: :date) do |date, entries| %>
+      <% if date.month == @start_date.month %>
+        <% if entries.any? %>
+          <%= link_to date.day,
+                      day_patient_symptoms_path(@patient, date: date.iso8601),
+                      data: {
+                        turbo_frame: "day_detail",
+                        symptom_calendar_target: "day",
+                        date: date.iso8601,
+                        symptom_ids: entries.map(&:symptom_id).to_json
+                      } %>
+        <% else %>
+          <span><%= date.day %></span>
+        <% end %>
+      <% end %>
+    <% end %>
+  <% end %>
+
+  <h2 class="subtitle mt-4">Reported Symptoms</h2>
+  <%= turbo_frame_tag "day_detail" do %>
+    <p class="has-text-grey">Select a day on the calendar to see reported symptoms.</p>
+  <% end %>
+</div>

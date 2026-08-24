@@ -45,6 +45,7 @@
               <%= link_to Current.patient.name, patient_path(Current.patient), class: "navbar-item" %>
               <%= link_to "Doctors", patient_doctors_path(Current.patient), class: "navbar-item" %>
               <%= link_to "Medications", patient_medications_path(Current.patient), class: "navbar-item" %>
+              <%= link_to "Metrics", patient_health_metrics_path(Current.patient), class: "navbar-item" %>
             <% end %>
           <% end %>
         </div>
