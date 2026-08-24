@@ -24,5 +24,15 @@ Rails.application.routes.draw do
         patch :stop
       end
     end
+    resources :health_metrics, shallow: true do
+      resources :readings, shallow: true, except: %i[index show],
+                           controller: 'health_metric_readings'
+    end
+    resources :symptoms, only: %i[index] do
+      collection do
+        get 'day/:date', action: :day, as: :day, constraints: { date: /\d{4}-\d{2}-\d{2}/ }
+      end
+    end
+    resource :symptom_report, only: %i[new create]
   end
 end

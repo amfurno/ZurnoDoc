@@ -7,6 +7,7 @@ class PatientsController < ApplicationController
 
   def show
     authorize @patient
+    @health_metrics_preview = @patient.health_metrics.order(created_at: :desc).limit(5)
   end
 
   def new

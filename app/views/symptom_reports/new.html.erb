@@ -1,0 +1,53 @@
+<%# app/views/symptom_reports/new.html.erb %>
+<div class="content">
+  <h1 class="title">Report Symptoms for <%= @patient.name %></h1>
+
+  <%= form_with model: @symptom_report, url: patient_symptom_report_path(@patient), method: :post do |form| %>
+    <% if @symptom_report.errors.any? %>
+      <div class="notification is-danger">
+        <ul>
+          <% @symptom_report.errors.full_messages.each do |msg| %>
+            <li><%= msg %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <div class="field">
+      <%= form.label :date, class: "label" %>
+      <div class="control">
+        <%= form.date_field :date, value: (@symptom_report.date || Date.current).iso8601, class: "input" %>
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="label">Symptoms</label>
+      <div class="control">
+        <% @symptoms.each do |symptom| %>
+          <label class="checkbox is-block">
+            <%= check_box_tag "symptom_report[symptom_ids][]", symptom.id,
+                              @selected_symptom_ids.include?(symptom.id), id: "symptom_#{symptom.id}" %>
+            <%= symptom.name %>
+          </label>
+        <% end %>
+        <% if @symptoms.none? %>
+          <p class="has-text-grey">No symptoms reported yet — add some below.</p>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="field">
+      <%= form.label :new_symptoms_text, "New symptoms (one per line)", class: "label" %>
+      <div class="control">
+        <%= form.text_area :new_symptoms_text, class: "textarea", rows: 3 %>
+      </div>
+    </div>
+
+    <div class="field">
+      <div class="control buttons">
+        <%= form.submit "Save", class: "button is-primary" %>
+        <%= link_to "Cancel", patient_symptoms_path(@patient), class: "button is-light" %>
+      </div>
+    </div>
+  <% end %>
+</div>
