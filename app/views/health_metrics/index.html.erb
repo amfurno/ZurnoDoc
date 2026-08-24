@@ -1,12 +1,8 @@
 <%# app/views/health_metrics/index.html.erb %>
 <div class="content" data-controller="confirm-delete-simple">
-  <div class="level is-mobile">
-    <div class="level-left">
-      <h1 class="title">Health Metrics for <%= @patient.name %></h1>
-    </div>
-    <div class="level-right">
-      <%= link_to "Add Metric", new_patient_health_metric_path(@patient), class: "button is-primary" %>
-    </div>
+  <h1 class="block title is-size-2-mobile">Health Metrics for <%= @patient.name %></h1>
+  <div class="mb-4">
+    <%= link_to "Add Metric", new_patient_health_metric_path(@patient), class: "button is-primary" %>
   </div>
 
   <% if @health_metrics.any? %>
