@@ -1,0 +1,42 @@
+<%# app/views/health_metrics/_form.html.erb %>
+<div class="content">
+  <%= form_with model: @health_metric,
+                url: @health_metric.new_record? ? patient_health_metrics_path(@patient) : health_metric_path(@health_metric) do |form| %>
+    <% if @health_metric.errors.any? %>
+      <div class="notification is-danger">
+        <ul>
+          <% @health_metric.errors.full_messages.each do |msg| %>
+            <li><%= msg %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <div class="field">
+      <%= form.label :name, class: "label" %>
+      <div class="control">
+        <%= form.text_field :name, class: "input", placeholder: "e.g. Blood Pressure" %>
+      </div>
+    </div>
+
+    <div class="field">
+      <%= form.label :unit, class: "label" %>
+      <div class="control">
+        <%= form.text_field :unit, class: "input", placeholder: "e.g. mmHg, kg, bpm" %>
+      </div>
+    </div>
+
+    <div class="field">
+      <%= form.label :notes, class: "label" %>
+      <div class="control">
+        <%= form.text_area :notes, class: "textarea", rows: 3 %>
+      </div>
+    </div>
+
+    <div class="field">
+      <div class="control">
+        <%= form.submit class: "button is-primary" %>
+      </div>
+    </div>
+  <% end %>
+</div>
